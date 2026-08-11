@@ -1,0 +1,465 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+Dashboard | Retail Demand Forecasting System
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="dashboard-container">
+
+
+    <!-- HEADER -->
+
+    <div class="dashboard-header">
+
+        <div>
+
+            <div class="dashboard-label">
+
+                RETAIL ANALYTICS PLATFORM
+
+            </div>
+
+
+            <h1>
+
+                Welcome, {{ user.name }}
+
+            </h1>
+
+
+            <p>
+
+                Monitor sales, forecasts, inventory and
+                business insights from one place.
+
+            </p>
+
+        </div>
+
+
+        <div class="role-badge">
+
+            <i class="bi bi-person-badge"></i>
+
+            {{ user.role }}
+
+        </div>
+
+    </div>
+
+
+    <!-- CARDS -->
+
+    <div class="row g-4">
+
+
+        <!-- SALES -->
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="dashboard-card">
+
+
+                <div class="card-icon">
+
+                    <i class="bi bi-bar-chart-line"></i>
+
+                </div>
+
+
+                <h5>
+
+                    Sales Forecast
+
+                </h5>
+
+
+                <p>
+
+                    Predict future product demand.
+
+                </p>
+
+
+                <span>
+
+                    Ready
+
+                </span>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- INVENTORY -->
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="dashboard-card">
+
+
+                <div class="card-icon">
+
+                    <i class="bi bi-box-seam"></i>
+
+                </div>
+
+
+                <h5>
+
+                    Inventory
+
+                </h5>
+
+
+                <p>
+
+                    Monitor stock and reorder levels.
+
+                </p>
+
+
+                <span>
+
+                    Ready
+
+                </span>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- ANALYTICS -->
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="dashboard-card">
+
+
+                <div class="card-icon">
+
+                    <i class="bi bi-graph-up"></i>
+
+                </div>
+
+
+                <h5>
+
+                    Analytics
+
+                </h5>
+
+
+                <p>
+
+                    Analyze trends and demand drivers.
+
+                </p>
+
+
+                <span>
+
+                    Ready
+
+                </span>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- ALERTS -->
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="dashboard-card">
+
+
+                <div class="card-icon">
+
+                    <i class="bi bi-bell"></i>
+
+                </div>
+
+
+                <h5>
+
+                    Smart Alerts
+
+                </h5>
+
+
+                <p>
+
+                    Receive proactive inventory alerts.
+
+                </p>
+
+
+                <span>
+
+                    Ready
+
+                </span>
+
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- WORKFLOW -->
+
+    <div class="row g-4 mt-3">
+
+
+        <div class="col-lg-8">
+
+
+            <div class="large-card">
+
+
+                <h4>
+
+                    System Workflow
+
+                </h4>
+
+
+                <p class="muted">
+
+                    Your retail data will move through
+                    the following process.
+
+                </p>
+
+
+                <div class="workflow">
+
+
+                    <div class="workflow-item">
+
+                        <div class="workflow-number">
+
+                            1
+
+                        </div>
+
+                        <div>
+
+                            <strong>
+
+                                Dataset Upload
+
+                            </strong>
+
+                            <p>
+
+                                Import your retail CSV files.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="workflow-item">
+
+                        <div class="workflow-number">
+
+                            2
+
+                        </div>
+
+                        <div>
+
+                            <strong>
+
+                                Data Cleaning
+
+                            </strong>
+
+                            <p>
+
+                                Handle missing values,
+                                duplicates and outliers.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="workflow-item">
+
+                        <div class="workflow-number">
+
+                            3
+
+                        </div>
+
+                        <div>
+
+                            <strong>
+
+                                Demand Forecasting
+
+                            </strong>
+
+                            <p>
+
+                                Predict future demand.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="workflow-item">
+
+                        <div class="workflow-number">
+
+                            4
+
+                        </div>
+
+                        <div>
+
+                            <strong>
+
+                                Inventory Optimization
+
+                            </strong>
+
+                            <p>
+
+                                Generate reorder recommendations.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div class="col-lg-4">
+
+
+            <div class="large-card">
+
+
+                <h4>
+
+                    System Status
+
+                </h4>
+
+
+                <div class="status-item">
+
+                    <span>
+
+                        Flask Backend
+
+                    </span>
+
+                    <strong class="online">
+
+                        Online
+
+                    </strong>
+
+                </div>
+
+
+                <div class="status-item">
+
+                    <span>
+
+                        Authentication
+
+                    </span>
+
+                    <strong class="online">
+
+                        Active
+
+                    </strong>
+
+                </div>
+
+
+                <div class="status-item">
+
+                    <span>
+
+                        MySQL
+
+                    </span>
+
+                    <strong class="online">
+
+                        Connected
+
+                    </strong>
+
+                </div>
+
+
+                <div class="status-item">
+
+                    <span>
+
+                        ML Engine
+
+                    </span>
+
+                    <strong class="ready">
+
+                        Ready
+
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+{% endblock %}

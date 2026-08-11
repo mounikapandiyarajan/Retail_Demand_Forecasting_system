@@ -1,0 +1,875 @@
+/* =========================================================
+   RETAIL DEMAND FORECASTING SYSTEM
+   LAVENDER GLASSMORPHISM UI
+========================================================= */
+
+
+:root {
+
+    --lavender: #8b7cf6;
+
+    --lavender-dark: #6f5de7;
+
+    --lavender-light: #c9c2ff;
+
+    --text-dark: #29243d;
+
+    --text-muted: #77718d;
+
+}
+
+
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+* {
+
+    box-sizing: border-box;
+
+}
+
+
+body {
+
+    margin: 0;
+
+    min-height: 100vh;
+
+    font-family:
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    color: var(--text-dark);
+
+    background:
+
+        radial-gradient(
+            circle at 10% 20%,
+            rgba(139, 124, 246, 0.20),
+            transparent 30%
+        ),
+
+        radial-gradient(
+            circle at 90% 10%,
+            rgba(201, 194, 255, 0.30),
+            transparent 30%
+        ),
+
+        linear-gradient(
+            135deg,
+            #faf9ff,
+            #eeebff
+        );
+
+}
+
+
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+.background-decoration {
+
+    position: fixed;
+
+    border-radius: 50%;
+
+    filter: blur(80px);
+
+    pointer-events: none;
+
+    z-index: -1;
+
+}
+
+
+.decoration-one {
+
+    width: 300px;
+
+    height: 300px;
+
+    background:
+        rgba(139, 124, 246, 0.18);
+
+    top: -100px;
+
+    left: -100px;
+
+}
+
+
+.decoration-two {
+
+    width: 350px;
+
+    height: 350px;
+
+    background:
+        rgba(201, 194, 255, 0.22);
+
+    right: -120px;
+
+    top: 20%;
+
+}
+
+
+.decoration-three {
+
+    width: 250px;
+
+    height: 250px;
+
+    background:
+        rgba(139, 124, 246, 0.12);
+
+    bottom: -100px;
+
+    left: 40%;
+
+}
+
+
+/* =========================================================
+   NAVBAR
+========================================================= */
+
+.glass-navbar {
+
+    margin: 15px;
+
+    padding: 15px 25px;
+
+    border-radius: 18px;
+
+    background:
+        rgba(255, 255, 255, 0.60);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.80);
+
+    backdrop-filter: blur(20px);
+
+    box-shadow:
+        0 15px 40px
+        rgba(95, 82, 160, 0.10);
+
+}
+
+
+.brand-text {
+
+    color: var(--text-dark);
+
+    font-weight: 750;
+
+}
+
+
+.brand-text i {
+
+    color: var(--lavender);
+
+    margin-right: 7px;
+
+}
+
+
+.user-role {
+
+    padding:
+        8px 14px;
+
+    border-radius: 20px;
+
+    color:
+        var(--lavender-dark);
+
+    background:
+        rgba(139, 124, 246, 0.10);
+
+    font-size: 13px;
+
+    font-weight: 650;
+
+}
+
+
+.logout-link {
+
+    margin-left: 15px;
+
+    color:
+        var(--text-muted);
+
+    text-decoration: none;
+
+}
+
+
+.logout-link:hover {
+
+    color:
+        var(--lavender-dark);
+
+}
+
+
+/* =========================================================
+   AUTH
+========================================================= */
+
+.auth-page {
+
+    min-height: 100vh;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 30px 20px;
+
+}
+
+
+.glass-card {
+
+    width: 100%;
+
+    max-width: 450px;
+
+    padding: 42px;
+
+    border-radius: 28px;
+
+    background:
+        rgba(255, 255, 255, 0.58);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.80);
+
+    backdrop-filter:
+        blur(22px);
+
+    box-shadow:
+        0 25px 60px
+        rgba(95, 82, 160, 0.15);
+
+}
+
+
+.register-card {
+
+    max-width: 480px;
+
+}
+
+
+.logo-container {
+
+    display: flex;
+
+    justify-content: center;
+
+    margin-bottom: 22px;
+
+}
+
+
+.logo {
+
+    width: 72px;
+
+    height: 72px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 22px;
+
+    color: white;
+
+    font-size: 30px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--lavender),
+            var(--lavender-dark)
+        );
+
+    box-shadow:
+        0 15px 30px
+        rgba(139, 124, 246, 0.30);
+
+}
+
+
+.auth-title {
+
+    text-align: center;
+
+    font-size: 30px;
+
+    font-weight: 750;
+
+    margin-bottom: 8px;
+
+}
+
+
+.auth-subtitle {
+
+    text-align: center;
+
+    color: var(--text-muted);
+
+    font-size: 14px;
+
+    line-height: 1.6;
+
+    margin-bottom: 30px;
+
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.form-group {
+
+    margin-bottom: 20px;
+
+}
+
+
+.form-group label {
+
+    display: block;
+
+    font-size: 14px;
+
+    font-weight: 650;
+
+    margin-bottom: 8px;
+
+}
+
+
+.input-wrapper {
+
+    position: relative;
+
+}
+
+
+.input-wrapper i {
+
+    position: absolute;
+
+    left: 16px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color:
+        var(--lavender-dark);
+
+    z-index: 2;
+
+}
+
+
+.form-control-custom {
+
+    width: 100%;
+
+    height: 54px;
+
+    padding:
+        0 16px 0 46px;
+
+    border-radius: 14px;
+
+    border:
+        1px solid
+        rgba(139, 124, 246, 0.18);
+
+    outline: none;
+
+    color: var(--text-dark);
+
+    background:
+        rgba(255, 255, 255, 0.60);
+
+}
+
+
+.form-control-custom:focus {
+
+    border-color:
+        var(--lavender);
+
+    background:
+        rgba(255, 255, 255, 0.85);
+
+    box-shadow:
+        0 0 0 4px
+        rgba(139, 124, 246, 0.10);
+
+}
+
+
+/* =========================================================
+   BUTTON
+========================================================= */
+
+.login-button {
+
+    width: 100%;
+
+    height: 54px;
+
+    border: none;
+
+    border-radius: 14px;
+
+    color: white;
+
+    font-weight: 650;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--lavender),
+            var(--lavender-dark)
+        );
+
+    box-shadow:
+        0 12px 25px
+        rgba(139, 124, 246, 0.25);
+
+    transition: 0.2s ease;
+
+}
+
+
+.login-button:hover {
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 16px 30px
+        rgba(139, 124, 246, 0.32);
+
+}
+
+
+.login-button i {
+
+    margin-right: 7px;
+
+}
+
+
+/* =========================================================
+   REGISTER LINK
+========================================================= */
+
+.register-section {
+
+    text-align: center;
+
+    margin-top: 24px;
+
+    color: var(--text-muted);
+
+    font-size: 14px;
+
+}
+
+
+.register-section a {
+
+    color:
+        var(--lavender-dark);
+
+    font-weight: 650;
+
+    text-decoration: none;
+
+}
+
+
+.register-section a:hover {
+
+    text-decoration: underline;
+
+}
+
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+.dashboard-container {
+
+    padding:
+        35px;
+
+}
+
+
+.dashboard-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 35px;
+
+}
+
+
+.dashboard-label {
+
+    color:
+        var(--lavender-dark);
+
+    font-size: 12px;
+
+    font-weight: 750;
+
+    letter-spacing: 1.5px;
+
+}
+
+
+.dashboard-header h1 {
+
+    font-size: 32px;
+
+    font-weight: 750;
+
+    margin: 5px 0;
+
+}
+
+
+.dashboard-header p {
+
+    color:
+        var(--text-muted);
+
+}
+
+
+.role-badge {
+
+    padding:
+        10px 16px;
+
+    border-radius: 25px;
+
+    color:
+        var(--lavender-dark);
+
+    background:
+        rgba(139, 124, 246, 0.10);
+
+    font-size: 13px;
+
+    font-weight: 650;
+
+}
+
+
+.dashboard-card {
+
+    min-height: 210px;
+
+    padding: 25px;
+
+    border-radius: 22px;
+
+    background:
+        rgba(255, 255, 255, 0.58);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.80);
+
+    backdrop-filter:
+        blur(20px);
+
+    box-shadow:
+        0 20px 45px
+        rgba(95, 82, 160, 0.10);
+
+    transition: 0.25s;
+
+}
+
+
+.dashboard-card:hover {
+
+    transform:
+        translateY(-5px);
+
+}
+
+
+.card-icon {
+
+    width: 50px;
+
+    height: 50px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 15px;
+
+    color:
+        var(--lavender-dark);
+
+    background:
+        rgba(139, 124, 246, 0.11);
+
+    font-size: 22px;
+
+    margin-bottom: 20px;
+
+}
+
+
+.dashboard-card h5 {
+
+    font-weight: 700;
+
+}
+
+
+.dashboard-card p {
+
+    color:
+        var(--text-muted);
+
+    font-size: 14px;
+
+}
+
+
+.dashboard-card span {
+
+    color:
+        var(--lavender-dark);
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+}
+
+
+/* =========================================================
+   LARGE CARD
+========================================================= */
+
+.large-card {
+
+    padding: 28px;
+
+    border-radius: 22px;
+
+    background:
+        rgba(255, 255, 255, 0.58);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.80);
+
+    backdrop-filter:
+        blur(20px);
+
+    box-shadow:
+        0 20px 45px
+        rgba(95, 82, 160, 0.10);
+
+}
+
+
+.large-card h4 {
+
+    font-weight: 700;
+
+}
+
+
+.muted {
+
+    color:
+        var(--text-muted);
+
+}
+
+
+/* =========================================================
+   WORKFLOW
+========================================================= */
+
+.workflow-item {
+
+    display: flex;
+
+    gap: 15px;
+
+    padding: 15px;
+
+    margin-top: 12px;
+
+    border-radius: 15px;
+
+    background:
+        rgba(139, 124, 246, 0.06);
+
+}
+
+
+.workflow-number {
+
+    width: 35px;
+
+    height: 35px;
+
+    min-width: 35px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 11px;
+
+    color:
+        var(--lavender-dark);
+
+    background:
+        rgba(139, 124, 246, 0.13);
+
+    font-weight: 750;
+
+}
+
+
+.workflow-item p {
+
+    margin: 3px 0 0;
+
+    color:
+        var(--text-muted);
+
+    font-size: 13px;
+
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.status-item {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    padding: 17px 0;
+
+    border-bottom:
+        1px solid
+        rgba(139, 124, 246, 0.10);
+
+}
+
+
+.status-item:last-child {
+
+    border-bottom: none;
+
+}
+
+
+.online {
+
+    color:
+        #4c9a6a;
+
+}
+
+
+.ready {
+
+    color:
+        var(--lavender-dark);
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .dashboard-container {
+
+        padding: 20px 15px;
+
+    }
+
+
+    .dashboard-header {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 15px;
+
+    }
+
+
+    .dashboard-header h1 {
+
+        font-size: 26px;
+
+    }
+
+
+    .glass-card {
+
+        padding: 30px 22px;
+
+    }
+
+}
