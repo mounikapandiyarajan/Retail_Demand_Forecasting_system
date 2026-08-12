@@ -1,3 +1,8 @@
+import os
+import pandas as pd
+from flask import request, render_template, redirect, url_for
+from werkzeug.utils import secure_filename
+
 from flask import (
     Flask,
     render_template,
@@ -386,3 +391,344 @@ if __name__ == "__main__":
         host="127.0.0.1",
         port=5000
     )
+
+
+# ============================================================
+# DATASET UPLOAD CONFIGURATION
+# ============================================================
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+UPLOAD_FOLDER = os.path.join(
+    BASE_DIR,
+    "data",
+    "uploads"
+)
+
+RAW_FOLDER = os.path.join(
+    BASE_DIR,
+    "data",
+    "raw"
+)
+
+CLEANED_FOLDER = os.path.join(
+    BASE_DIR,
+    "data",
+    "cleaned"
+)
+
+REPORT_FOLDER = os.path.join(
+    BASE_DIR,
+    "data",
+    "reports"
+)
+
+
+# Create folders automatically
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+os.makedirs(RAW_FOLDER, exist_ok=True)
+os.makedirs(CLEANED_FOLDER, exist_ok=True)
+os.makedirs(REPORT_FOLDER, exist_ok=True)
+
+
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+
+# Maximum upload size: 100 MB
+app.config["MAX_CONTENT_LENGTH"] = 100 * 1024 * 1024
+
+
+ALLOWED_EXTENSIONS = {"csv"}
+
+
+def allowed_file(filename):
+    """
+    Check whether the uploaded file is a CSV file.
+    """
+
+    return (
+        "." in filename
+        and filename.rsplit(".", 1)[1].lower()
+        in ALLOWED_EXTENSIONS
+    )
+
+
+# ============================================================
+# DATASET MANAGEMENT PAGE
+# ============================================================
+
+@app.route("/datasets")
+def datasets():
+
+    return render_template(
+        "dataset_upload.html"
+    )
+
+# ============================================================
+# DATASET UPLOAD
+# ============================================================
+
+@app.route("/upload-dataset", methods=["POST"])
+def upload_dataset():
+
+    # --------------------------------------------------------
+    # Get dataset type
+    # --------------------------------------------------------
+
+    dataset_type = request.form.get(
+        "dataset_type",
+        ""
+    ).strip()
+
+
+    # --------------------------------------------------------
+    # Validate dataset type
+    # --------------------------------------------------------
+
+    allowed_dataset_types = {
+        "sales",
+        "inventory",
+        "product",
+        "supplier",
+        "weather",
+        "holiday",
+        "other"
+    }
+
+    if dataset_type not in allowed_dataset_types:
+
+        return render_template(
+            "dataset_upload.html",
+            error="Please select a valid dataset type."
+        )
+
+
+    # --------------------------------------------------------
+    # Check file
+    # --------------------------------------------------------
+
+    if "dataset" not in request.files:
+
+        return render_template(
+            "dataset_upload.html",
+            error="No dataset file was selected."
+        )
+
+
+    file = request.files["dataset"]
+
+
+    if file.filename == "":
+
+        return render_template(
+            "dataset_upload.html",
+            error="Please select a CSV file."
+        )
+
+
+    # --------------------------------------------------------
+    # Check extension
+    # --------------------------------------------------------
+
+    if not allowed_file(file.filename):
+
+        return render_template(
+            "dataset_upload.html",
+            error="Invalid file format. Please upload a CSV file."
+        )
+
+
+    # --------------------------------------------------------
+    # Secure filename
+    # --------------------------------------------------------
+
+    filename = secure_filename(
+        file.filename
+    )
+
+
+    # --------------------------------------------------------
+    # Save uploaded file
+    # --------------------------------------------------------
+
+    upload_path = os.path.join(
+        app.config["UPLOAD_FOLDER"],
+        filename
+    )
+
+
+    try:
+
+        file.save(upload_path)
+
+    except Exception as e:
+
+        return render_template(
+            "dataset_upload.html",
+            error=f"Could not save the uploaded file: {str(e)}"
+        )
+
+
+    # --------------------------------------------------------
+    # Read CSV
+    # --------------------------------------------------------
+
+    try:
+
+        df = pd.read_csv(
+            upload_path,
+            low_memory=False
+        )
+
+    except UnicodeDecodeError:
+
+        try:
+
+            df = pd.read_csv(
+                upload_path,
+                encoding="latin1",
+                low_memory=False
+            )
+
+        except Exception as e:
+
+            return render_template(
+                "dataset_upload.html",
+                error=f"Unable to read CSV encoding: {str(e)}"
+            )
+
+    except pd.errors.EmptyDataError:
+
+        return render_template(
+            "dataset_upload.html",
+            error="The uploaded CSV file is empty."
+        )
+
+    except pd.errors.ParserError as e:
+
+        return render_template(
+            "dataset_upload.html",
+            error=f"CSV parsing error. Please check the file structure: {str(e)}"
+        )
+
+    except Exception as e:
+
+        return render_template(
+            "dataset_upload.html",
+            error=f"Could not process the CSV file: {str(e)}"
+        )
+
+
+    # --------------------------------------------------------
+    # Check empty dataset
+    # --------------------------------------------------------
+
+    if df.empty:
+
+        return render_template(
+            "dataset_upload.html",
+            error="The CSV file contains no usable rows."
+        )
+
+
+    # --------------------------------------------------------
+    # Clean column names temporarily
+    # --------------------------------------------------------
+
+    df.columns = [
+        str(column).strip()
+        for column in df.columns
+    ]
+
+
+    # --------------------------------------------------------
+    # Dataset information
+    # --------------------------------------------------------
+
+    rows = len(df)
+
+    columns = len(df.columns)
+
+    missing_values = int(
+        df.isnull().sum().sum()
+    )
+
+    duplicate_rows = int(
+        df.duplicated().sum()
+    )
+
+
+    # --------------------------------------------------------
+    # Dataset preview
+    # --------------------------------------------------------
+
+    preview_df = df.head(10)
+
+    preview_html = preview_df.to_html(
+        classes="table table-bordered table-hover",
+        index=False
+    )
+
+
+    # --------------------------------------------------------
+    # Save a copy into raw folder
+    # --------------------------------------------------------
+
+    raw_filename = (
+        dataset_type
+        + "_"
+        + filename
+    )
+
+    raw_path = os.path.join(
+        RAW_FOLDER,
+        raw_filename
+    )
+
+
+    try:
+
+        df.to_csv(
+            raw_path,
+            index=False
+        )
+
+    except Exception:
+        pass
+
+
+    # --------------------------------------------------------
+    # Prepare result
+    # --------------------------------------------------------
+
+    dataset_info = {
+
+        "filename": filename,
+
+        "dataset_type": dataset_type,
+
+        "rows": rows,
+
+        "columns": columns,
+
+        "missing": missing_values,
+
+        "duplicates": duplicate_rows,
+
+        "column_names": list(df.columns),
+
+        "preview": preview_html
+
+    }
+
+
+    return render_template(
+
+        "dataset_upload.html",
+
+        success="Dataset uploaded and analyzed successfully.",
+
+        dataset_info=dataset_info
+
+    )
+
+
