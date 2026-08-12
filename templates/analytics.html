@@ -1,0 +1,736 @@
+{% extends "base.html" %}
+
+{% block title %}
+Analytics | Retail Demand Forecasting System
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-container">
+
+    <!-- =====================================================
+         PAGE HEADER
+    ====================================================== -->
+
+    <div class="dashboard-header">
+
+        <div>
+
+            <div class="dashboard-label">
+                RETAIL BUSINESS ANALYTICS
+            </div>
+
+            <h1>
+                Demand & Sales Analytics
+            </h1>
+
+            <p>
+                Analyze sales trends, demand drivers,
+                promotions and seasonal patterns.
+            </p>
+
+        </div>
+
+        <div class="role-badge">
+
+            <i class="bi bi-bar-chart-line"></i>
+
+            Business Analyst
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         KPI CARDS
+    ====================================================== -->
+
+    <div class="row g-4 mb-4">
+
+
+        <!-- TOTAL SALES -->
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="dashboard-card">
+
+                <div class="card-icon">
+
+                    <i class="bi bi-currency-rupee"></i>
+
+                </div>
+
+                <h5>
+                    Total Sales
+                </h5>
+
+                <h3 id="totalSales">
+                    ₹ —
+                </h3>
+
+                <p>
+                    Waiting for dataset
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- TOTAL UNITS -->
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="dashboard-card">
+
+                <div class="card-icon">
+
+                    <i class="bi bi-box-seam"></i>
+
+                </div>
+
+                <h5>
+                    Units Sold
+                </h5>
+
+                <h3 id="unitsSold">
+                    —
+                </h3>
+
+                <p>
+                    Historical sales
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- DEMAND GROWTH -->
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="dashboard-card">
+
+                <div class="card-icon">
+
+                    <i class="bi bi-graph-up-arrow"></i>
+
+                </div>
+
+                <h5>
+                    Demand Growth
+                </h5>
+
+                <h3 id="demandGrowth">
+                    —
+                </h3>
+
+                <p>
+                    Compared with previous period
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- BEST PRODUCT -->
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="dashboard-card">
+
+                <div class="card-icon">
+
+                    <i class="bi bi-trophy"></i>
+
+                </div>
+
+                <h5>
+                    Best Product
+                </h5>
+
+                <h3 id="bestProduct">
+                    —
+                </h3>
+
+                <p>
+                    Highest demand
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         TREND ANALYSIS
+    ====================================================== -->
+
+    <div class="row g-4 mb-4">
+
+
+        <!-- SALES TREND -->
+
+        <div class="col-lg-8">
+
+            <div class="large-card">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <h4>
+                            Sales & Demand Trend
+                        </h4>
+
+                        <p class="muted mb-0">
+                            Historical sales and demand patterns.
+                        </p>
+
+                    </div>
+
+                    <span class="badge bg-secondary">
+                        Waiting for Dataset
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="chart-placeholder mt-4"
+                    id="salesChart">
+
+                    <div class="text-center">
+
+                        <i
+                            class="bi bi-bar-chart-line"
+                            style="font-size: 40px;">
+                        </i>
+
+                        <h5 class="mt-3">
+                            Sales chart will appear here
+                        </h5>
+
+                        <p class="muted">
+
+                            Historical sales data will be
+                            visualized after dataset processing.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- DEMAND STATUS -->
+
+        <div class="col-lg-4">
+
+            <div class="large-card">
+
+                <h4>
+                    Demand Status
+                </h4>
+
+                <p class="muted">
+                    Current demand condition.
+                </p>
+
+
+                <div class="status-item mt-4">
+
+                    <span>
+                        Demand Trend
+                    </span>
+
+                    <strong class="ready">
+                        Waiting
+                    </strong>
+
+                </div>
+
+
+                <div class="status-item">
+
+                    <span>
+                        Seasonality
+                    </span>
+
+                    <strong class="ready">
+                        Waiting
+                    </strong>
+
+                </div>
+
+
+                <div class="status-item">
+
+                    <span>
+                        Growth
+                    </span>
+
+                    <strong class="ready">
+                        Waiting
+                    </strong>
+
+                </div>
+
+
+                <div class="status-item">
+
+                    <span>
+                        Forecast
+                    </span>
+
+                    <strong class="ready">
+                        Waiting
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         DEMAND DRIVERS
+    ====================================================== -->
+
+    <div class="large-card mb-4">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <div>
+
+                <h4>
+                    Demand Drivers
+                </h4>
+
+                <p class="muted mb-0">
+
+                    Factors that may influence product demand.
+
+                </p>
+
+            </div>
+
+            <div class="card-icon">
+
+                <i class="bi bi-diagram-3"></i>
+
+            </div>
+
+        </div>
+
+
+        <div class="row g-4 mt-2">
+
+
+            <!-- PRICE -->
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="info-card">
+
+                    <div class="card-icon">
+
+                        <i class="bi bi-tag"></i>
+
+                    </div>
+
+                    <h6>
+                        Price
+                    </h6>
+
+                    <h3>
+                        —
+                    </h3>
+
+                    <p>
+                        Price impact on demand.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- DISCOUNT -->
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="info-card">
+
+                    <div class="card-icon">
+
+                        <i class="bi bi-percent"></i>
+
+                    </div>
+
+                    <h6>
+                        Discount
+                    </h6>
+
+                    <h3>
+                        —
+                    </h3>
+
+                    <p>
+                        Effect of discounts on sales.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- PROMOTION -->
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="info-card">
+
+                    <div class="card-icon">
+
+                        <i class="bi bi-megaphone"></i>
+
+                    </div>
+
+                    <h6>
+                        Promotion
+                    </h6>
+
+                    <h3>
+                        —
+                    </h3>
+
+                    <p>
+                        Promotion impact on demand.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- WEATHER -->
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="info-card">
+
+                    <div class="card-icon">
+
+                        <i class="bi bi-cloud-sun"></i>
+
+                    </div>
+
+                    <h6>
+                        Weather
+                    </h6>
+
+                    <h3>
+                        —
+                    </h3>
+
+                    <p>
+                        Weather-related demand impact.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         FEATURE IMPORTANCE
+    ====================================================== -->
+
+    <div class="large-card mb-4">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <div>
+
+                <h4>
+                    Feature Importance
+                </h4>
+
+                <p class="muted mb-0">
+
+                    Machine-learning features influencing
+                    demand predictions.
+
+                </p>
+
+            </div>
+
+            <span class="badge bg-secondary">
+                XGBoost
+            </span>
+
+        </div>
+
+
+        <div class="table-responsive mt-4">
+
+            <table class="table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Feature
+                        </th>
+
+                        <th>
+                            Importance
+                        </th>
+
+                        <th>
+                            Business Meaning
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+
+                    <tr>
+
+                        <td>
+                            Price
+                        </td>
+
+                        <td>
+                            —
+                        </td>
+
+                        <td>
+                            Impact of product price
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Discount
+                        </td>
+
+                        <td>
+                            —
+                        </td>
+
+                        <td>
+                            Effect of discount percentage
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Promotion
+                        </td>
+
+                        <td>
+                            —
+                        </td>
+
+                        <td>
+                            Impact of promotional campaigns
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Temperature
+                        </td>
+
+                        <td>
+                            —
+                        </td>
+
+                        <td>
+                            Weather-related demand influence
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Holiday
+                        </td>
+
+                        <td>
+                            —
+                        </td>
+
+                        <td>
+                            Holiday demand effect
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Day of Week
+                        </td>
+
+                        <td>
+                            —
+                        </td>
+
+                        <td>
+                            Weekly purchasing pattern
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SEASONAL ANALYSIS
+    ====================================================== -->
+
+    <div class="row g-4">
+
+
+        <!-- SEASONALITY -->
+
+        <div class="col-lg-6">
+
+            <div class="large-card">
+
+                <h4>
+                    Seasonal Analysis
+                </h4>
+
+                <p class="muted">
+
+                    Identify recurring demand patterns.
+
+                </p>
+
+
+                <div
+                    class="chart-placeholder mt-4">
+
+                    <div class="text-center">
+
+                        <i
+                            class="bi bi-calendar3"
+                            style="font-size: 40px;">
+                        </i>
+
+                        <h5 class="mt-3">
+                            Seasonal chart
+                        </h5>
+
+                        <p class="muted">
+
+                            Monthly and yearly seasonal
+                            patterns will appear here.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- FESTIVAL -->
+
+        <div class="col-lg-6">
+
+            <div class="large-card">
+
+                <h4>
+                    Festival & Event Impact
+                </h4>
+
+                <p class="muted">
+
+                    Analyze demand changes during
+                    festivals and special events.
+
+                </p>
+
+
+                <div
+                    class="chart-placeholder mt-4">
+
+                    <div class="text-center">
+
+                        <i
+                            class="bi bi-calendar-event"
+                            style="font-size: 40px;">
+                        </i>
+
+                        <h5 class="mt-3">
+                            Event analysis
+                        </h5>
+
+                        <p class="muted">
+
+                            Festival and holiday impact
+                            will appear after data processing.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+{% endblock %}

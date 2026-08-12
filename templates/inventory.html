@@ -1,0 +1,808 @@
+{% extends "base.html" %}
+
+{% block title %}
+Inventory Optimization | Retail Demand Forecasting System
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-container">
+
+    <!-- =====================================================
+         PAGE HEADER
+    ====================================================== -->
+
+    <div class="dashboard-header">
+
+        <div>
+
+            <div class="dashboard-label">
+                INVENTORY OPTIMIZATION
+            </div>
+
+            <h1>
+                Inventory & Reorder Recommendations
+            </h1>
+
+            <p>
+                Monitor stock levels, calculate reorder points
+                and identify inventory risks.
+            </p>
+
+        </div>
+
+        <div class="role-badge">
+            <i class="bi bi-box-seam"></i>
+            Inventory Manager
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         INVENTORY SUMMARY CARDS
+    ====================================================== -->
+
+    <div class="row g-4 mb-4">
+
+        <!-- TOTAL PRODUCTS -->
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="dashboard-card">
+
+                <div class="card-icon">
+                    <i class="bi bi-boxes"></i>
+                </div>
+
+                <h5>
+                    Total Products
+                </h5>
+
+                <h3>
+                    —
+                </h3>
+
+                <p>
+                    Waiting for inventory data
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- LOW STOCK -->
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="dashboard-card">
+
+                <div class="card-icon">
+                    <i class="bi bi-exclamation-triangle"></i>
+                </div>
+
+                <h5>
+                    Low Stock
+                </h5>
+
+                <h3>
+                    —
+                </h3>
+
+                <p>
+                    Products requiring attention
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- OVERSTOCK -->
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="dashboard-card">
+
+                <div class="card-icon">
+                    <i class="bi bi-stack"></i>
+                </div>
+
+                <h5>
+                    Overstock
+                </h5>
+
+                <h3>
+                    —
+                </h3>
+
+                <p>
+                    Excess inventory detected
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- REORDER -->
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="dashboard-card">
+
+                <div class="card-icon">
+                    <i class="bi bi-cart-plus"></i>
+                </div>
+
+                <h5>
+                    Reorder Required
+                </h5>
+
+                <h3>
+                    —
+                </h3>
+
+                <p>
+                    Products needing replenishment
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         INVENTORY ANALYSIS
+    ====================================================== -->
+
+    <div class="large-card mb-4">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+
+            <div>
+
+                <h4>
+                    Inventory Analysis
+                </h4>
+
+                <p class="muted mb-0">
+                    Calculate inventory requirements using
+                    demand and lead-time information.
+                </p>
+
+            </div>
+
+            <div class="card-icon">
+
+                <i class="bi bi-calculator"></i>
+
+            </div>
+
+        </div>
+
+
+        <div class="row g-4">
+
+            <!-- PRODUCT -->
+
+            <div class="col-md-6">
+
+                <label class="form-label">
+                    Product
+                </label>
+
+                <select
+                    class="form-select"
+                    id="inventoryProduct">
+
+                    <option value="">
+                        Select Product
+                    </option>
+
+                    <option>
+                        All Products
+                    </option>
+
+                    <option>
+                        Product A
+                    </option>
+
+                    <option>
+                        Product B
+                    </option>
+
+                    <option>
+                        Product C
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- CURRENT STOCK -->
+
+            <div class="col-md-6">
+
+                <label class="form-label">
+                    Current Stock
+                </label>
+
+                <input
+                    type="number"
+                    class="form-control"
+                    id="currentStock"
+                    placeholder="Enter current stock">
+
+            </div>
+
+
+            <!-- AVERAGE DAILY DEMAND -->
+
+            <div class="col-md-6">
+
+                <label class="form-label">
+                    Average Daily Demand
+                </label>
+
+                <input
+                    type="number"
+                    class="form-control"
+                    id="dailyDemand"
+                    placeholder="Enter average daily demand">
+
+            </div>
+
+
+            <!-- LEAD TIME -->
+
+            <div class="col-md-6">
+
+                <label class="form-label">
+                    Supplier Lead Time (Days)
+                </label>
+
+                <input
+                    type="number"
+                    class="form-control"
+                    id="leadTime"
+                    placeholder="Enter lead time">
+
+            </div>
+
+
+            <!-- SAFETY STOCK -->
+
+            <div class="col-md-6">
+
+                <label class="form-label">
+                    Safety Stock
+                </label>
+
+                <input
+                    type="number"
+                    class="form-control"
+                    id="safetyStock"
+                    placeholder="Enter safety stock">
+
+            </div>
+
+
+            <!-- TARGET STOCK -->
+
+            <div class="col-md-6">
+
+                <label class="form-label">
+                    Target Stock Level
+                </label>
+
+                <input
+                    type="number"
+                    class="form-control"
+                    id="targetStock"
+                    placeholder="Enter target stock level">
+
+            </div>
+
+        </div>
+
+
+        <!-- CALCULATE BUTTON -->
+
+        <div class="mt-4">
+
+            <button
+                type="button"
+                class="primary-button"
+                onclick="calculateInventory()">
+
+                <i class="bi bi-calculator"></i>
+
+                Calculate Recommendation
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         CALCULATION RESULT
+    ====================================================== -->
+
+    <div class="large-card mb-4">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <div>
+
+                <h4>
+                    Reorder Recommendation
+                </h4>
+
+                <p class="muted mb-0">
+                    Recommended inventory action.
+                </p>
+
+            </div>
+
+            <span
+                id="inventoryStatus"
+                class="badge bg-secondary">
+
+                Waiting
+
+            </span>
+
+        </div>
+
+
+        <div
+            id="inventoryMessage"
+            class="alert alert-info mt-4">
+
+            <i class="bi bi-info-circle"></i>
+
+            Enter inventory information and calculate
+            the recommended reorder quantity.
+
+        </div>
+
+
+        <!-- RESULT CARDS -->
+
+        <div class="row g-4 mt-2">
+
+
+            <!-- REORDER POINT -->
+
+            <div class="col-md-4">
+
+                <div class="info-card">
+
+                    <div class="card-icon">
+
+                        <i class="bi bi-signpost-2"></i>
+
+                    </div>
+
+                    <h6>
+                        Reorder Point
+                    </h6>
+
+                    <h3 id="reorderPoint">
+                        —
+                    </h3>
+
+                    <p>
+                        Stock level at which
+                        replenishment should begin.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- RECOMMENDED ORDER -->
+
+            <div class="col-md-4">
+
+                <div class="info-card">
+
+                    <div class="card-icon">
+
+                        <i class="bi bi-cart-check"></i>
+
+                    </div>
+
+                    <h6>
+                        Recommended Order
+                    </h6>
+
+                    <h3 id="recommendedOrder">
+                        —
+                    </h3>
+
+                    <p>
+                        Suggested quantity to order.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- STOCK COVERAGE -->
+
+            <div class="col-md-4">
+
+                <div class="info-card">
+
+                    <div class="card-icon">
+
+                        <i class="bi bi-calendar-range"></i>
+
+                    </div>
+
+                    <h6>
+                        Stock Coverage
+                    </h6>
+
+                    <h3 id="stockCoverage">
+                        —
+                    </h3>
+
+                    <p>
+                        Estimated number of days
+                        current stock can cover.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         INVENTORY TABLE
+    ====================================================== -->
+
+    <div class="large-card">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <div>
+
+                <h4>
+                    Inventory Status
+                </h4>
+
+                <p class="muted mb-0">
+                    Product-level inventory recommendations
+                    will appear here.
+                </p>
+
+            </div>
+
+            <span class="badge bg-secondary">
+                Waiting for Dataset
+            </span>
+
+        </div>
+
+
+        <div class="table-responsive mt-4">
+
+            <table class="table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Product
+                        </th>
+
+                        <th>
+                            Current Stock
+                        </th>
+
+                        <th>
+                            Daily Demand
+                        </th>
+
+                        <th>
+                            Lead Time
+                        </th>
+
+                        <th>
+                            Reorder Point
+                        </th>
+
+                        <th>
+                            Recommended Order
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+
+                        <td colspan="7"
+                            class="text-center">
+
+                            No inventory data available yet.
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     INVENTORY JAVASCRIPT
+====================================================== -->
+
+<script>
+
+function calculateInventory() {
+
+    const product =
+        document.getElementById(
+            "inventoryProduct"
+        ).value;
+
+    const currentStock =
+        parseFloat(
+            document.getElementById(
+                "currentStock"
+            ).value
+        );
+
+    const dailyDemand =
+        parseFloat(
+            document.getElementById(
+                "dailyDemand"
+            ).value
+        );
+
+    const leadTime =
+        parseFloat(
+            document.getElementById(
+                "leadTime"
+            ).value
+        );
+
+    const safetyStock =
+        parseFloat(
+            document.getElementById(
+                "safetyStock"
+            ).value
+        );
+
+    const targetStock =
+        parseFloat(
+            document.getElementById(
+                "targetStock"
+            ).value
+        );
+
+
+    const message =
+        document.getElementById(
+            "inventoryMessage"
+        );
+
+    const status =
+        document.getElementById(
+            "inventoryStatus"
+        );
+
+
+    /*
+     * Validate input
+     */
+
+    if (
+        !product ||
+        isNaN(currentStock) ||
+        isNaN(dailyDemand) ||
+        isNaN(leadTime) ||
+        isNaN(safetyStock) ||
+        isNaN(targetStock)
+    ) {
+
+        message.className =
+            "alert alert-warning mt-4";
+
+        message.innerHTML = `
+            <i class="bi bi-exclamation-triangle"></i>
+
+            Please enter all inventory values
+            before calculating.
+        `;
+
+        status.className =
+            "badge bg-warning text-dark";
+
+        status.innerText =
+            "Incomplete";
+
+        return;
+
+    }
+
+
+    /*
+     * Reorder Point Formula
+     *
+     * Reorder Point =
+     * Average Daily Demand × Lead Time
+     * + Safety Stock
+     */
+
+    const reorderPoint =
+        (dailyDemand * leadTime)
+        + safetyStock;
+
+
+    /*
+     * Recommended Order
+     */
+
+    let recommendedOrder =
+        targetStock - currentStock;
+
+
+    if (recommendedOrder < 0) {
+
+        recommendedOrder = 0;
+
+    }
+
+
+    /*
+     * Stock Coverage
+     */
+
+    let stockCoverage = 0;
+
+    if (dailyDemand > 0) {
+
+        stockCoverage =
+            currentStock / dailyDemand;
+
+    }
+
+
+    /*
+     * Display Results
+     */
+
+    document.getElementById(
+        "reorderPoint"
+    ).innerText =
+        Math.ceil(reorderPoint);
+
+
+    document.getElementById(
+        "recommendedOrder"
+    ).innerText =
+        Math.ceil(recommendedOrder);
+
+
+    document.getElementById(
+        "stockCoverage"
+    ).innerText =
+        stockCoverage.toFixed(1) + " days";
+
+
+    /*
+     * Determine Inventory Status
+     */
+
+    if (currentStock <= reorderPoint) {
+
+        status.className =
+            "badge bg-danger";
+
+        status.innerText =
+            "Reorder Required";
+
+
+        message.className =
+            "alert alert-danger mt-4";
+
+        message.innerHTML = `
+
+            <i class="bi bi-exclamation-triangle"></i>
+
+            <strong>${product}</strong>
+            has reached or fallen below its
+            reorder point.
+
+            Recommended order quantity:
+            <strong>${Math.ceil(
+                recommendedOrder
+            )}</strong>
+
+        `;
+
+    }
+
+    else if (currentStock > targetStock) {
+
+        status.className =
+            "badge bg-warning text-dark";
+
+        status.innerText =
+            "Overstock";
+
+
+        message.className =
+            "alert alert-warning mt-4";
+
+        message.innerHTML = `
+
+            <i class="bi bi-exclamation-circle"></i>
+
+            <strong>${product}</strong>
+            appears to have excess inventory.
+
+        `;
+
+    }
+
+    else {
+
+        status.className =
+            "badge bg-success";
+
+        status.innerText =
+            "Healthy";
+
+
+        message.className =
+            "alert alert-success mt-4";
+
+        message.innerHTML = `
+
+            <i class="bi bi-check-circle"></i>
+
+            <strong>${product}</strong>
+            currently has a healthy inventory level.
+
+        `;
+
+    }
+
+}
+
+</script>
+
+{% endblock %}

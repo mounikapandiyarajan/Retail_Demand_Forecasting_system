@@ -1,0 +1,406 @@
+{% extends "base.html" %}
+
+{% block title %}
+Sales Forecasting | Retail Demand Forecasting System
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-container">
+
+    <!-- PAGE HEADER -->
+
+    <div class="dashboard-header">
+
+        <div>
+
+            <div class="dashboard-label">
+                AI DEMAND FORECASTING
+            </div>
+
+            <h1>
+                Sales Forecasting
+            </h1>
+
+            <p>
+                Predict future product demand using historical
+                retail sales data.
+            </p>
+
+        </div>
+
+        <div class="role-badge">
+            <i class="bi bi-graph-up-arrow"></i>
+            Forecast Engine
+        </div>
+
+    </div>
+
+
+    <!-- FORECAST REQUEST -->
+
+    <div class="large-card mb-4">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+
+            <div>
+
+                <h4>
+                    Forecast Request
+                </h4>
+
+                <p class="muted mb-0">
+                    Configure the forecast parameters.
+                </p>
+
+            </div>
+
+            <div class="card-icon">
+                <i class="bi bi-sliders"></i>
+            </div>
+
+        </div>
+
+
+        <div class="row g-4">
+
+
+            <!-- PRODUCT -->
+
+            <div class="col-md-6">
+
+                <label class="form-label">
+                    Product
+                </label>
+
+                <select class="form-select" id="product">
+
+                    <option value="">
+                        Select Product
+                    </option>
+
+                    <option>
+                        All Products
+                    </option>
+
+                    <option>
+                        Product A
+                    </option>
+
+                    <option>
+                        Product B
+                    </option>
+
+                    <option>
+                        Product C
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- STORE -->
+
+            <div class="col-md-6">
+
+                <label class="form-label">
+                    Store
+                </label>
+
+                <select class="form-select" id="store">
+
+                    <option value="">
+                        Select Store
+                    </option>
+
+                    <option>
+                        All Stores
+                    </option>
+
+                    <option>
+                        Store 1
+                    </option>
+
+                    <option>
+                        Store 2
+                    </option>
+
+                    <option>
+                        Store 3
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- FORECAST PERIOD -->
+
+            <div class="col-md-6">
+
+                <label class="form-label">
+                    Forecast Period
+                </label>
+
+                <select class="form-select" id="forecastPeriod">
+
+                    <option value="">
+                        Select Period
+                    </option>
+
+                    <option value="7">
+                        Next 7 Days
+                    </option>
+
+                    <option value="30">
+                        Next 30 Days
+                    </option>
+
+                    <option value="90">
+                        Next 90 Days
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- MODEL -->
+
+            <div class="col-md-6">
+
+                <label class="form-label">
+                    Forecasting Model
+                </label>
+
+                <select class="form-select" id="model">
+
+                    <option value="">
+                        Select Model
+                    </option>
+
+                    <option>
+                        Prophet
+                    </option>
+
+                    <option>
+                        XGBoost
+                    </option>
+
+                </select>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- BUTTON -->
+
+        <div class="mt-4">
+
+            <button
+                type="button"
+                class="primary-button"
+                onclick="generateForecast()">
+
+                <i class="bi bi-magic"></i>
+
+                Generate Forecast
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- FORECAST STATUS -->
+
+    <div class="large-card mb-4">
+
+        <div class="d-flex align-items-center gap-3">
+
+            <div class="card-icon">
+
+                <i class="bi bi-cpu"></i>
+
+            </div>
+
+            <div>
+
+                <h4 class="mb-1">
+                    Forecast Engine Status
+                </h4>
+
+                <p class="muted mb-0">
+
+                    The forecasting engine is waiting for
+                    the cleaned retail dataset.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- FORECAST RESULT -->
+
+    <div class="large-card">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <div>
+
+                <h4>
+                    Forecast Results
+                </h4>
+
+                <p class="muted mb-0">
+                    Predicted demand will appear here.
+                </p>
+
+            </div>
+
+            <span class="badge bg-secondary">
+                Waiting for Dataset
+            </span>
+
+        </div>
+
+
+        <div
+            id="forecastMessage"
+            class="alert alert-info mt-4">
+
+            <i class="bi bi-info-circle"></i>
+
+            Upload and process a retail sales dataset
+            before generating forecasts.
+
+        </div>
+
+
+        <!-- EMPTY FORECAST TABLE -->
+
+        <div class="table-responsive mt-4">
+
+            <table class="table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Date
+                        </th>
+
+                        <th>
+                            Product
+                        </th>
+
+                        <th>
+                            Predicted Demand
+                        </th>
+
+                        <th>
+                            Lower Estimate
+                        </th>
+
+                        <th>
+                            Upper Estimate
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+
+                        <td colspan="5"
+                            class="text-center">
+
+                            No forecast data available yet.
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     TEMPORARY FORECAST JAVASCRIPT
+====================================================== -->
+
+<script>
+
+function generateForecast() {
+
+    const product =
+        document.getElementById("product").value;
+
+    const store =
+        document.getElementById("store").value;
+
+    const period =
+        document.getElementById("forecastPeriod").value;
+
+    const model =
+        document.getElementById("model").value;
+
+    const message =
+        document.getElementById("forecastMessage");
+
+
+    if (!product || !store || !period || !model) {
+
+        message.className =
+            "alert alert-warning mt-4";
+
+        message.innerHTML = `
+            <i class="bi bi-exclamation-triangle"></i>
+
+            Please select Product, Store,
+            Forecast Period and Forecasting Model.
+        `;
+
+        return;
+
+    }
+
+
+    message.className =
+        "alert alert-info mt-4";
+
+    message.innerHTML = `
+
+        <i class="bi bi-info-circle"></i>
+
+        Forecast configuration received.
+
+        The actual ${model} forecasting model will be
+        connected after the retail dataset is uploaded
+        and cleaned.
+
+    `;
+
+}
+
+</script>
+
+{% endblock %}
