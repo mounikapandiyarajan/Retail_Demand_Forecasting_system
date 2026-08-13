@@ -8,7 +8,10 @@ Inventory Optimization | Retail Demand Forecasting System
 
 <div class="dashboard-container">
 
-    <!-- PAGE HEADER -->
+    <!-- =====================================================
+         PAGE HEADER
+    ====================================================== -->
+
     <div class="dashboard-header">
 
         <div>
@@ -22,16 +25,26 @@ Inventory Optimization | Retail Demand Forecasting System
             </h1>
 
             <p>
-                Monitor stock levels and generate intelligent
-                reorder recommendations.
+                Calculate inventory requirements and generate
+                reorder recommendations using demand and supply information.
             </p>
+
+        </div>
+
+        <div class="role-badge">
+
+            <i class="bi bi-box-seam"></i>
+
+            Smart Inventory
 
         </div>
 
     </div>
 
 
-    <!-- INVENTORY OVERVIEW -->
+    <!-- =====================================================
+         INVENTORY OVERVIEW
+    ====================================================== -->
 
     <div class="row g-4">
 
@@ -55,7 +68,7 @@ Inventory Optimization | Retail Demand Forecasting System
                 </h3>
 
                 <span>
-                    Waiting for Dataset
+                    No inventory dataset loaded
                 </span>
 
             </div>
@@ -82,7 +95,7 @@ Inventory Optimization | Retail Demand Forecasting System
                 </h3>
 
                 <span>
-                    Waiting for Dataset
+                    Requires inventory data
                 </span>
 
             </div>
@@ -109,7 +122,7 @@ Inventory Optimization | Retail Demand Forecasting System
                 </h3>
 
                 <span>
-                    Waiting for Dataset
+                    Requires inventory data
                 </span>
 
             </div>
@@ -136,7 +149,7 @@ Inventory Optimization | Retail Demand Forecasting System
                 </h3>
 
                 <span>
-                    Waiting for Dataset
+                    Calculated from inventory data
                 </span>
 
             </div>
@@ -147,44 +160,302 @@ Inventory Optimization | Retail Demand Forecasting System
 
 
 
-    <!-- REORDER CALCULATION -->
+    <!-- =====================================================
+         MANUAL INVENTORY CALCULATOR
+    ====================================================== -->
 
     <div class="large-card mt-4">
 
-        <h4>
-            Reorder Recommendation
-        </h4>
+        <div class="d-flex justify-content-between align-items-center">
 
-        <p class="muted">
-            The system will calculate reorder requirements
-            automatically after inventory and sales data
-            are available.
-        </p>
+            <div>
+
+                <div class="dashboard-label">
+                    INVENTORY CALCULATOR
+                </div>
+
+                <h4>
+                    Calculate Reorder Requirement
+                </h4>
+
+                <p class="muted mb-0">
+                    Enter the product demand, current stock,
+                    supply lead time and safety stock.
+                </p>
+
+            </div>
+
+            <div class="card-icon">
+
+                <i class="bi bi-calculator"></i>
+
+            </div>
+
+        </div>
 
 
-        <div class="row g-4 mt-2">
+        <!-- =================================================
+             CALCULATION FORM
+        ================================================== -->
+
+        <form
+            id="inventoryCalculator"
+            class="mt-4"
+        >
+
+            <div class="row g-4">
 
 
-            <!-- AVERAGE DEMAND -->
+                <!-- PRODUCT -->
 
-            <div class="col-md-6 col-lg-3">
+                <div class="col-md-6">
+
+                    <label
+                        for="productName"
+                        class="form-label"
+                    >
+                        Product Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="productName"
+                        class="form-control"
+                        placeholder="Example: Rice"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- CURRENT STOCK -->
+
+                <div class="col-md-6">
+
+                    <label
+                        for="currentStock"
+                        class="form-label"
+                    >
+                        Current Stock
+                    </label>
+
+                    <input
+                        type="number"
+                        id="currentStock"
+                        class="form-control"
+                        min="0"
+                        step="0.01"
+                        placeholder="Enter current stock"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- DAILY DEMAND -->
+
+                <div class="col-md-6">
+
+                    <label
+                        for="dailyDemand"
+                        class="form-label"
+                    >
+                        Expected Daily Demand
+                    </label>
+
+                    <input
+                        type="number"
+                        id="dailyDemand"
+                        class="form-control"
+                        min="0"
+                        step="0.01"
+                        placeholder="Enter expected daily demand"
+                        required
+                    >
+
+                    <div class="small text-muted mt-2">
+                        This can later come from the ML forecasting model.
+                    </div>
+
+                </div>
+
+
+                <!-- LEAD TIME -->
+
+                <div class="col-md-6">
+
+                    <label
+                        for="leadTime"
+                        class="form-label"
+                    >
+                        Supply Lead Time (Days)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="leadTime"
+                        class="form-control"
+                        min="0"
+                        step="1"
+                        placeholder="Example: 5"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- SAFETY STOCK -->
+
+                <div class="col-md-6">
+
+                    <label
+                        for="safetyStock"
+                        class="form-label"
+                    >
+                        Safety Stock
+                    </label>
+
+                    <input
+                        type="number"
+                        id="safetyStock"
+                        class="form-control"
+                        min="0"
+                        step="0.01"
+                        placeholder="Enter safety stock"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- TARGET STOCK -->
+
+                <div class="col-md-6">
+
+                    <label
+                        for="targetStock"
+                        class="form-label"
+                    >
+                        Target Stock Level
+                    </label>
+
+                    <input
+                        type="number"
+                        id="targetStock"
+                        class="form-control"
+                        min="0"
+                        step="0.01"
+                        placeholder="Optional target stock"
+                    >
+
+                    <div class="small text-muted mt-2">
+                        Leave empty to use the calculated reorder quantity.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- BUTTON -->
+
+            <div class="mt-4">
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+
+                    <i class="bi bi-calculator"></i>
+
+                    Calculate Inventory Requirement
+
+                </button>
+
+                <button
+                    type="button"
+                    class="btn btn-secondary ms-2"
+                    id="clearCalculator"
+                >
+
+                    <i class="bi bi-arrow-counterclockwise"></i>
+
+                    Clear
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         CALCULATION RESULT
+    ====================================================== -->
+
+    <div
+        class="large-card mt-4"
+        id="calculationResult"
+        style="display: none;"
+    >
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <div>
+
+                <div class="dashboard-label">
+                    CALCULATION RESULT
+                </div>
+
+                <h4>
+                    Inventory Recommendation
+                </h4>
+
+                <p
+                    class="muted mb-0"
+                    id="resultProduct"
+                ></p>
+
+            </div>
+
+            <span
+                class="badge"
+                id="stockStatus"
+            ></span>
+
+        </div>
+
+
+        <!-- RESULT CARDS -->
+
+        <div class="row g-4 mt-3">
+
+
+            <!-- DEMAND -->
+
+            <div class="col-md-6 col-xl-3">
 
                 <div class="dashboard-card">
 
                     <div class="card-icon">
+
                         <i class="bi bi-graph-up"></i>
+
                     </div>
 
                     <h5>
-                        Average Daily Demand
+                        Daily Demand
                     </h5>
 
-                    <h3>
+                    <h3 id="resultDemand">
                         —
                     </h3>
 
                     <span>
-                        ML calculated
+                        Units / day
                     </span>
 
                 </div>
@@ -194,51 +465,26 @@ Inventory Optimization | Retail Demand Forecasting System
 
             <!-- LEAD TIME -->
 
-            <div class="col-md-6 col-lg-3">
+            <div class="col-md-6 col-xl-3">
 
                 <div class="dashboard-card">
 
                     <div class="card-icon">
+
                         <i class="bi bi-clock"></i>
+
                     </div>
 
                     <h5>
                         Lead Time
                     </h5>
 
-                    <h3>
+                    <h3 id="resultLeadTime">
                         —
                     </h3>
 
                     <span>
-                        Supplier data
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- SAFETY STOCK -->
-
-            <div class="col-md-6 col-lg-3">
-
-                <div class="dashboard-card">
-
-                    <div class="card-icon">
-                        <i class="bi bi-shield-check"></i>
-                    </div>
-
-                    <h5>
-                        Safety Stock
-                    </h5>
-
-                    <h3>
-                        —
-                    </h3>
-
-                    <span>
-                        Calculated
+                        Days
                     </span>
 
                 </div>
@@ -248,24 +494,55 @@ Inventory Optimization | Retail Demand Forecasting System
 
             <!-- REORDER POINT -->
 
-            <div class="col-md-6 col-lg-3">
+            <div class="col-md-6 col-xl-3">
 
                 <div class="dashboard-card">
 
                     <div class="card-icon">
+
                         <i class="bi bi-arrow-repeat"></i>
+
                     </div>
 
                     <h5>
                         Reorder Point
                     </h5>
 
-                    <h3>
+                    <h3 id="resultReorderPoint">
                         —
                     </h3>
 
                     <span>
-                        Calculated
+                        Units
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- ORDER QUANTITY -->
+
+            <div class="col-md-6 col-xl-3">
+
+                <div class="dashboard-card">
+
+                    <div class="card-icon">
+
+                        <i class="bi bi-cart-plus"></i>
+
+                    </div>
+
+                    <h5>
+                        Recommended Order
+                    </h5>
+
+                    <h3 id="resultOrderQuantity">
+                        —
+                    </h3>
+
+                    <span>
+                        Units
                     </span>
 
                 </div>
@@ -274,11 +551,34 @@ Inventory Optimization | Retail Demand Forecasting System
 
         </div>
 
+
+        <!-- FORMULA -->
+
+        <div class="alert alert-info mt-4">
+
+            <i class="bi bi-info-circle"></i>
+
+            <strong>Reorder Point:</strong>
+
+            Daily Demand × Lead Time + Safety Stock
+
+        </div>
+
+
+        <!-- RECOMMENDATION -->
+
+        <div
+            class="alert mt-3"
+            id="recommendationMessage"
+        ></div>
+
     </div>
 
 
 
-    <!-- INVENTORY STATUS -->
+    <!-- =====================================================
+         INVENTORY STATUS
+    ====================================================== -->
 
     <div class="large-card mt-4">
 
@@ -287,19 +587,21 @@ Inventory Optimization | Retail Demand Forecasting System
         </h4>
 
         <p class="muted">
-            Product-level inventory analysis will appear
-            here after the dataset is processed.
+            Product-level inventory analysis will be available
+            after inventory data is uploaded or connected to the
+            forecasting system.
         </p>
-
 
         <div class="alert alert-info mt-4">
 
             <i class="bi bi-info-circle"></i>
 
-            No inventory data is available yet.
+            No inventory dataset is currently being analyzed.
 
-            Upload an inventory dataset to generate
-            stock-level analysis and recommendations.
+            <br><br>
+
+            You can use the calculator above to manually
+            calculate a reorder requirement.
 
         </div>
 
@@ -307,7 +609,110 @@ Inventory Optimization | Retail Demand Forecasting System
 
 
 
-    <!-- INVENTORY LOGIC -->
+    <!-- =====================================================
+         FUTURE ML INTEGRATION
+    ====================================================== -->
+
+    <div class="large-card mt-4">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <div>
+
+                <h4>
+                    ML-Based Inventory Optimization
+                </h4>
+
+                <p class="muted mb-0">
+                    Future integration with the demand forecasting model.
+                </p>
+
+            </div>
+
+            <span class="badge bg-secondary">
+                Future Integration
+            </span>
+
+        </div>
+
+
+        <div class="row g-4 mt-3">
+
+
+            <div class="col-lg-4">
+
+                <div class="dashboard-card">
+
+                    <div class="card-icon">
+                        <i class="bi bi-database"></i>
+                    </div>
+
+                    <h5>
+                        CSV Dataset
+                    </h5>
+
+                    <p>
+                        Product sales and inventory information
+                        will be obtained from the uploaded dataset.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-lg-4">
+
+                <div class="dashboard-card">
+
+                    <div class="card-icon">
+                        <i class="bi bi-cpu"></i>
+                    </div>
+
+                    <h5>
+                        ML Demand Forecast
+                    </h5>
+
+                    <p>
+                        The forecasting model will estimate
+                        future product demand.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-lg-4">
+
+                <div class="dashboard-card">
+
+                    <div class="card-icon">
+                        <i class="bi bi-lightbulb"></i>
+                    </div>
+
+                    <h5>
+                        Smart Recommendation
+                    </h5>
+
+                    <p>
+                        Forecasted demand can be used to generate
+                        intelligent reorder recommendations.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         INVENTORY FORMULAS
+    ====================================================== -->
 
     <div class="large-card mt-4">
 
@@ -316,16 +721,13 @@ Inventory Optimization | Retail Demand Forecasting System
         </h4>
 
         <p class="muted">
-            The system will use demand predictions and
-            inventory information to determine when and
-            how much stock should be reordered.
+            The system uses these calculations to determine
+            when additional stock may be required.
         </p>
 
 
         <div class="row g-4 mt-2">
 
-
-            <!-- REORDER POINT -->
 
             <div class="col-lg-6">
 
@@ -340,20 +742,17 @@ Inventory Optimization | Retail Demand Forecasting System
                     </h5>
 
                     <p>
-                        Average Daily Demand × Lead Time
-                        + Safety Stock
+                        Daily Demand × Lead Time + Safety Stock
                     </p>
 
                     <span>
-                        Calculation
+                        Basic inventory calculation
                     </span>
 
                 </div>
 
             </div>
 
-
-            <!-- RECOMMENDED ORDER -->
 
             <div class="col-lg-6">
 
@@ -368,13 +767,12 @@ Inventory Optimization | Retail Demand Forecasting System
                     </h5>
 
                     <p>
-                        The system will recommend an order
-                        quantity based on predicted demand
-                        and current inventory.
+                        The amount required to bring current
+                        stock back toward the target stock level.
                     </p>
 
                     <span>
-                        ML + Inventory Analysis
+                        Inventory calculation
                     </span>
 
                 </div>
@@ -386,7 +784,242 @@ Inventory Optimization | Retail Demand Forecasting System
     </div>
 
 
-
 </div>
+
+
+
+<!-- =====================================================
+     INVENTORY CALCULATOR JAVASCRIPT
+====================================================== -->
+
+<script>
+
+const inventoryForm =
+    document.getElementById("inventoryCalculator");
+
+const calculationResult =
+    document.getElementById("calculationResult");
+
+const clearButton =
+    document.getElementById("clearCalculator");
+
+
+inventoryForm.addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+
+    /* GET VALUES */
+
+    const productName =
+        document.getElementById("productName").value.trim();
+
+    const currentStock =
+        parseFloat(
+            document.getElementById("currentStock").value
+        );
+
+    const dailyDemand =
+        parseFloat(
+            document.getElementById("dailyDemand").value
+        );
+
+    const leadTime =
+        parseFloat(
+            document.getElementById("leadTime").value
+        );
+
+    const safetyStock =
+        parseFloat(
+            document.getElementById("safetyStock").value
+        );
+
+    const targetStockInput =
+        document.getElementById("targetStock").value;
+
+    const targetStock =
+        targetStockInput === ""
+            ? null
+            : parseFloat(targetStockInput);
+
+
+    /* VALIDATION */
+
+    if (
+        !productName ||
+        isNaN(currentStock) ||
+        isNaN(dailyDemand) ||
+        isNaN(leadTime) ||
+        isNaN(safetyStock)
+    ) {
+
+        alert(
+            "Please enter all required inventory values."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        currentStock < 0 ||
+        dailyDemand < 0 ||
+        leadTime < 0 ||
+        safetyStock < 0
+    ) {
+
+        alert(
+            "Inventory values cannot be negative."
+        );
+
+        return;
+
+    }
+
+
+    /* REORDER POINT */
+
+    const reorderPoint =
+        (dailyDemand * leadTime) + safetyStock;
+
+
+    /* RECOMMENDED ORDER */
+
+    let recommendedOrder = 0;
+
+
+    if (targetStock !== null && targetStock >= 0) {
+
+        recommendedOrder =
+            Math.max(0, targetStock - currentStock);
+
+    }
+    else {
+
+        recommendedOrder =
+            Math.max(0, reorderPoint - currentStock);
+
+    }
+
+
+    /* STOCK STATUS */
+
+    let statusText;
+    let statusClass;
+    let recommendationText;
+    let recommendationClass;
+
+
+    if (currentStock <= reorderPoint) {
+
+        statusText =
+            "Reorder Required";
+
+        statusClass =
+            "bg-danger";
+
+        recommendationText =
+            "Current stock is at or below the calculated reorder point. Additional stock is recommended.";
+
+        recommendationClass =
+            "alert-danger";
+
+    }
+    else {
+
+        statusText =
+            "Stock Sufficient";
+
+        statusClass =
+            "bg-success";
+
+        recommendationText =
+            "Current stock is above the calculated reorder point. No immediate reorder is required.";
+
+        recommendationClass =
+            "alert-success";
+
+    }
+
+
+    /* DISPLAY RESULTS */
+
+    document.getElementById("resultProduct").innerHTML =
+        "Product: <strong>" + productName + "</strong>";
+
+
+    document.getElementById("resultDemand").textContent =
+        dailyDemand.toFixed(2);
+
+
+    document.getElementById("resultLeadTime").textContent =
+        leadTime;
+
+
+    document.getElementById("resultReorderPoint").textContent =
+        reorderPoint.toFixed(2);
+
+
+    document.getElementById("resultOrderQuantity").textContent =
+        recommendedOrder.toFixed(2);
+
+
+    const stockStatus =
+        document.getElementById("stockStatus");
+
+
+    stockStatus.textContent =
+        statusText;
+
+    stockStatus.className =
+        "badge " + statusClass;
+
+
+    const recommendationMessage =
+        document.getElementById(
+            "recommendationMessage"
+        );
+
+
+    recommendationMessage.textContent =
+        recommendationText;
+
+    recommendationMessage.className =
+        "alert mt-3 " + recommendationClass;
+
+
+    /* SHOW RESULT */
+
+    calculationResult.style.display =
+        "block";
+
+
+    /* SCROLL TO RESULT */
+
+    calculationResult.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+
+});
+
+
+
+/* =====================================================
+   CLEAR CALCULATOR
+===================================================== */
+
+clearButton.addEventListener("click", function() {
+
+    inventoryForm.reset();
+
+    calculationResult.style.display =
+        "none";
+
+});
+
+</script>
+
 
 {% endblock %}

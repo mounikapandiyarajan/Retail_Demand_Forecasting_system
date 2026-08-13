@@ -57,10 +57,8 @@ Dataset Management | Retail Demand Forecasting System
                 </h4>
 
                 <p class="muted mb-0">
-
                     Upload a CSV file and the system will
-                    analyze its structure automatically.
-
+                    automatically analyze its structure.
                 </p>
 
             </div>
@@ -83,9 +81,7 @@ Dataset Management | Retail Demand Forecasting System
                 {% for category, message in messages %}
 
                     <div class="alert alert-{{ category }} mt-4">
-
                         {{ message }}
-
                     </div>
 
                 {% endfor %}
@@ -93,7 +89,6 @@ Dataset Management | Retail Demand Forecasting System
             {% endif %}
 
         {% endwith %}
-
 
 
         <!-- =================================================
@@ -108,7 +103,6 @@ Dataset Management | Retail Demand Forecasting System
             id="datasetUploadForm"
         >
 
-
             <!-- DATASET TYPE -->
 
             <div class="mb-4">
@@ -117,11 +111,8 @@ Dataset Management | Retail Demand Forecasting System
                     for="dataset_type"
                     class="form-label"
                 >
-
                     Dataset Type
-
                 </label>
-
 
                 <select
                     name="dataset_type"
@@ -167,7 +158,6 @@ Dataset Management | Retail Demand Forecasting System
             </div>
 
 
-
             <!-- FILE -->
 
             <div class="mb-4">
@@ -176,11 +166,8 @@ Dataset Management | Retail Demand Forecasting System
                     for="dataset"
                     class="form-label"
                 >
-
                     CSV Dataset
-
                 </label>
-
 
                 <input
                     type="file"
@@ -191,21 +178,17 @@ Dataset Management | Retail Demand Forecasting System
                     required
                 >
 
-
                 <div
                     id="fileInfo"
                     class="small text-muted mt-2"
                 >
-
                     Only CSV files are currently supported.
-
                 </div>
 
             </div>
 
 
-
-            <!-- UPLOAD BUTTON -->
+            <!-- BUTTON -->
 
             <button
                 type="submit"
@@ -219,11 +202,9 @@ Dataset Management | Retail Demand Forecasting System
 
             </button>
 
-
         </form>
 
     </div>
-
 
 
     <!-- =====================================================
@@ -233,7 +214,6 @@ Dataset Management | Retail Demand Forecasting System
     {% if upload_success %}
 
     <div class="large-card mt-4">
-
 
         <!-- RESULT HEADER -->
 
@@ -250,14 +230,11 @@ Dataset Management | Retail Demand Forecasting System
                 </h4>
 
                 <p class="muted mb-0">
-
                     Automated analysis of the uploaded
                     retail dataset.
-
                 </p>
 
             </div>
-
 
             <span class="badge bg-success">
 
@@ -270,13 +247,11 @@ Dataset Management | Retail Demand Forecasting System
         </div>
 
 
-
         <!-- =================================================
-             DATASET SUMMARY CARDS
+             SUMMARY CARDS
         ================================================== -->
 
         <div class="row g-4 mt-3">
-
 
             <!-- ROWS -->
 
@@ -285,9 +260,7 @@ Dataset Management | Retail Demand Forecasting System
                 <div class="dashboard-card">
 
                     <div class="card-icon">
-
                         <i class="bi bi-list-ol"></i>
-
                     </div>
 
                     <h5>
@@ -307,7 +280,6 @@ Dataset Management | Retail Demand Forecasting System
             </div>
 
 
-
             <!-- COLUMNS -->
 
             <div class="col-md-6 col-xl-3">
@@ -315,9 +287,7 @@ Dataset Management | Retail Demand Forecasting System
                 <div class="dashboard-card">
 
                     <div class="card-icon">
-
                         <i class="bi bi-layout-three-columns"></i>
-
                     </div>
 
                     <h5>
@@ -337,17 +307,14 @@ Dataset Management | Retail Demand Forecasting System
             </div>
 
 
-
-            <!-- MISSING -->
+            <!-- MISSING VALUES -->
 
             <div class="col-md-6 col-xl-3">
 
                 <div class="dashboard-card">
 
                     <div class="card-icon">
-
                         <i class="bi bi-question-circle"></i>
-
                     </div>
 
                     <h5>
@@ -367,7 +334,6 @@ Dataset Management | Retail Demand Forecasting System
             </div>
 
 
-
             <!-- DUPLICATES -->
 
             <div class="col-md-6 col-xl-3">
@@ -375,9 +341,7 @@ Dataset Management | Retail Demand Forecasting System
                 <div class="dashboard-card">
 
                     <div class="card-icon">
-
                         <i class="bi bi-files"></i>
-
                     </div>
 
                     <h5>
@@ -397,7 +361,6 @@ Dataset Management | Retail Demand Forecasting System
             </div>
 
         </div>
-
 
 
         <!-- =================================================
@@ -435,7 +398,7 @@ Dataset Management | Retail Demand Forecasting System
                 </span>
 
                 <strong>
-                    {{ dataset_type }}
+                    {{ dataset_type|capitalize }}
                 </strong>
 
             </div>
@@ -473,7 +436,6 @@ Dataset Management | Retail Demand Forecasting System
         </div>
 
 
-
         <!-- =================================================
              AUTOMATIC COLUMN MAPPING
         ================================================== -->
@@ -489,20 +451,32 @@ Dataset Management | Retail Demand Forecasting System
                     </h5>
 
                     <p class="muted mb-0">
-
-                        The system identifies important retail
-                        columns automatically.
-
+                        Important retail columns detected automatically.
                     </p>
 
                 </div>
 
+                {% if mapped_count is defined %}
 
-                <span class="badge bg-primary">
+                    <span class="badge bg-primary">
 
-                    Automatic
+                        {{ mapped_count }}
 
-                </span>
+                        /
+
+                        {{ total_mapping_fields }}
+
+                        Mapped
+
+                    </span>
+
+                {% else %}
+
+                    <span class="badge bg-primary">
+                        Automatic
+                    </span>
+
+                {% endif %}
 
             </div>
 
@@ -517,31 +491,38 @@ Dataset Management | Retail Demand Forecasting System
                     <div class="dashboard-card">
 
                         <div class="card-icon">
-
                             <i class="bi bi-calendar3"></i>
-
                         </div>
 
                         <h6>
                             Date Column
                         </h6>
 
-                        <p class="muted">
+                        {% if column_mapping.date %}
 
-                            Used for time-series forecasting.
+                            <span class="badge bg-success">
 
-                        </p>
+                                <i class="bi bi-check-circle"></i>
 
-                        <span class="badge bg-secondary">
+                                {{ column_mapping.date }}
 
-                            Automatic Detection
+                            </span>
 
-                        </span>
+                            <p class="muted mt-2 mb-0">
+                                Used for time-series forecasting.
+                            </p>
+
+                        {% else %}
+
+                            <span class="badge bg-secondary">
+                                Not Detected
+                            </span>
+
+                        {% endif %}
 
                     </div>
 
                 </div>
-
 
 
                 <!-- PRODUCT -->
@@ -551,31 +532,79 @@ Dataset Management | Retail Demand Forecasting System
                     <div class="dashboard-card">
 
                         <div class="card-icon">
-
                             <i class="bi bi-box"></i>
-
                         </div>
 
                         <h6>
                             Product Column
                         </h6>
 
-                        <p class="muted">
+                        {% if column_mapping.product %}
 
-                            Identifies products or SKUs.
+                            <span class="badge bg-success">
 
-                        </p>
+                                <i class="bi bi-check-circle"></i>
 
-                        <span class="badge bg-secondary">
+                                {{ column_mapping.product }}
 
-                            Automatic Detection
+                            </span>
 
-                        </span>
+                            <p class="muted mt-2 mb-0">
+                                Identifies products or SKUs.
+                            </p>
+
+                        {% else %}
+
+                            <span class="badge bg-secondary">
+                                Not Detected
+                            </span>
+
+                        {% endif %}
 
                     </div>
 
                 </div>
 
+
+                <!-- DEMAND -->
+
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="dashboard-card">
+
+                        <div class="card-icon">
+                            <i class="bi bi-cart-check"></i>
+                        </div>
+
+                        <h6>
+                            Demand Column
+                        </h6>
+
+                        {% if column_mapping.demand %}
+
+                            <span class="badge bg-success">
+
+                                <i class="bi bi-check-circle"></i>
+
+                                {{ column_mapping.demand }}
+
+                            </span>
+
+                            <p class="muted mt-2 mb-0">
+                                Used as forecasting target.
+                            </p>
+
+                        {% else %}
+
+                            <span class="badge bg-secondary">
+                                Not Detected
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
 
 
                 <!-- SALES -->
@@ -585,31 +614,34 @@ Dataset Management | Retail Demand Forecasting System
                     <div class="dashboard-card">
 
                         <div class="card-icon">
-
-                            <i class="bi bi-cart-check"></i>
-
+                            <i class="bi bi-graph-up-arrow"></i>
                         </div>
 
                         <h6>
-                            Sales / Demand Column
+                            Sales Column
                         </h6>
 
-                        <p class="muted">
+                        {% if column_mapping.sales %}
 
-                            Used as the forecasting target.
+                            <span class="badge bg-success">
 
-                        </p>
+                                <i class="bi bi-check-circle"></i>
 
-                        <span class="badge bg-secondary">
+                                {{ column_mapping.sales }}
 
-                            Automatic Detection
+                            </span>
 
-                        </span>
+                        {% else %}
+
+                            <span class="badge bg-secondary">
+                                Not Detected
+                            </span>
+
+                        {% endif %}
 
                     </div>
 
                 </div>
-
 
 
                 <!-- STORE -->
@@ -619,31 +651,34 @@ Dataset Management | Retail Demand Forecasting System
                     <div class="dashboard-card">
 
                         <div class="card-icon">
-
                             <i class="bi bi-shop"></i>
-
                         </div>
 
                         <h6>
                             Store Column
                         </h6>
 
-                        <p class="muted">
+                        {% if column_mapping.store %}
 
-                            Identifies individual stores.
+                            <span class="badge bg-success">
 
-                        </p>
+                                <i class="bi bi-check-circle"></i>
 
-                        <span class="badge bg-secondary">
+                                {{ column_mapping.store }}
 
-                            Automatic Detection
+                            </span>
 
-                        </span>
+                        {% else %}
+
+                            <span class="badge bg-secondary">
+                                Not Detected
+                            </span>
+
+                        {% endif %}
 
                     </div>
 
                 </div>
-
 
 
                 <!-- PRICE -->
@@ -653,31 +688,71 @@ Dataset Management | Retail Demand Forecasting System
                     <div class="dashboard-card">
 
                         <div class="card-icon">
-
                             <i class="bi bi-currency-rupee"></i>
-
                         </div>
 
                         <h6>
                             Price Column
                         </h6>
 
-                        <p class="muted">
+                        {% if column_mapping.price %}
 
-                            Used for demand-driver analysis.
+                            <span class="badge bg-success">
 
-                        </p>
+                                <i class="bi bi-check-circle"></i>
 
-                        <span class="badge bg-secondary">
+                                {{ column_mapping.price }}
 
-                            Automatic Detection
+                            </span>
 
-                        </span>
+                        {% else %}
+
+                            <span class="badge bg-secondary">
+                                Not Detected
+                            </span>
+
+                        {% endif %}
 
                     </div>
 
                 </div>
 
+
+                <!-- DISCOUNT -->
+
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="dashboard-card">
+
+                        <div class="card-icon">
+                            <i class="bi bi-percent"></i>
+                        </div>
+
+                        <h6>
+                            Discount Column
+                        </h6>
+
+                        {% if column_mapping.discount %}
+
+                            <span class="badge bg-success">
+
+                                <i class="bi bi-check-circle"></i>
+
+                                {{ column_mapping.discount }}
+
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-secondary">
+                                Not Detected
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
 
 
                 <!-- PROMOTION -->
@@ -687,35 +762,187 @@ Dataset Management | Retail Demand Forecasting System
                     <div class="dashboard-card">
 
                         <div class="card-icon">
-
                             <i class="bi bi-megaphone"></i>
-
                         </div>
 
                         <h6>
                             Promotion Column
                         </h6>
 
-                        <p class="muted">
+                        {% if column_mapping.promotion %}
 
-                            Identifies promotional effects.
+                            <span class="badge bg-success">
 
-                        </p>
+                                <i class="bi bi-check-circle"></i>
 
-                        <span class="badge bg-secondary">
+                                {{ column_mapping.promotion }}
 
-                            Automatic Detection
+                            </span>
 
-                        </span>
+                        {% else %}
+
+                            <span class="badge bg-secondary">
+                                Not Detected
+                            </span>
+
+                        {% endif %}
 
                     </div>
 
                 </div>
 
+
+                <!-- INVENTORY -->
+
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="dashboard-card">
+
+                        <div class="card-icon">
+                            <i class="bi bi-box-seam"></i>
+                        </div>
+
+                        <h6>
+                            Inventory Column
+                        </h6>
+
+                        {% if column_mapping.inventory %}
+
+                            <span class="badge bg-success">
+
+                                <i class="bi bi-check-circle"></i>
+
+                                {{ column_mapping.inventory }}
+
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-secondary">
+                                Not Detected
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <!-- CATEGORY -->
+
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="dashboard-card">
+
+                        <div class="card-icon">
+                            <i class="bi bi-tags"></i>
+                        </div>
+
+                        <h6>
+                            Category Column
+                        </h6>
+
+                        {% if column_mapping.category %}
+
+                            <span class="badge bg-success">
+
+                                <i class="bi bi-check-circle"></i>
+
+                                {{ column_mapping.category }}
+
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-secondary">
+                                Not Detected
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <!-- SUPPLIER -->
+
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="dashboard-card">
+
+                        <div class="card-icon">
+                            <i class="bi bi-truck"></i>
+                        </div>
+
+                        <h6>
+                            Supplier Column
+                        </h6>
+
+                        {% if column_mapping.supplier %}
+
+                            <span class="badge bg-success">
+
+                                <i class="bi bi-check-circle"></i>
+
+                                {{ column_mapping.supplier }}
+
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-secondary">
+                                Not Detected
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <!-- LEAD TIME -->
+
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="dashboard-card">
+
+                        <div class="card-icon">
+                            <i class="bi bi-clock"></i>
+                        </div>
+
+                        <h6>
+                            Lead Time Column
+                        </h6>
+
+                        {% if column_mapping.lead_time %}
+
+                            <span class="badge bg-success">
+
+                                <i class="bi bi-check-circle"></i>
+
+                                {{ column_mapping.lead_time }}
+
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-secondary">
+                                Not Detected
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
             </div>
 
         </div>
-
 
 
         <!-- =================================================
@@ -729,20 +956,15 @@ Dataset Management | Retail Demand Forecasting System
             </h5>
 
             <p class="muted">
-
                 Columns found inside the uploaded CSV.
-
             </p>
-
 
             <div class="d-flex flex-wrap gap-2 mt-3">
 
                 {% for column in columns %}
 
                     <span class="badge rounded-pill bg-primary">
-
                         {{ column }}
-
                     </span>
 
                 {% endfor %}
@@ -750,7 +972,6 @@ Dataset Management | Retail Demand Forecasting System
             </div>
 
         </div>
-
 
 
         <!-- =================================================
@@ -768,25 +989,20 @@ Dataset Management | Retail Demand Forecasting System
                     </h5>
 
                     <p class="muted mb-0">
-
                         Initial quality checks performed on
                         the uploaded dataset.
-
                     </p>
 
                 </div>
 
                 <span class="badge bg-success">
-
                     Analysis Complete
-
                 </span>
 
             </div>
 
 
             <div class="row g-4 mt-3">
-
 
                 <div class="col-md-4">
 
@@ -855,9 +1071,116 @@ Dataset Management | Retail Demand Forecasting System
         </div>
 
 
+        <!-- =================================================
+             DATA CLEANING STATUS
+        ================================================== -->
+
+        <div class="large-card mt-4">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <h5>
+                        Data Cleaning Status
+                    </h5>
+
+                    <p class="muted mb-0">
+                        Dataset cleaning preparation before
+                        machine learning.
+                    </p>
+
+                </div>
+
+
+                {% if cleaned_success is defined and cleaned_success %}
+
+                    <span class="badge bg-success">
+
+                        <i class="bi bi-check-circle"></i>
+
+                        Cleaning Completed
+
+                    </span>
+
+                {% else %}
+
+                    <span class="badge bg-warning text-dark">
+
+                        <i class="bi bi-hourglass-split"></i>
+
+                        Pending
+
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+
+            {% if cleaned_success is defined and cleaned_success %}
+
+                <div class="mt-4">
+
+                    <div class="status-item">
+
+                        <span>
+                            Cleaned Dataset
+                        </span>
+
+                        <strong class="online">
+                            ✓ Created
+                        </strong>
+
+                    </div>
+
+
+                    <div class="status-item">
+
+                        <span>
+                            Remaining Missing Values
+                        </span>
+
+                        <strong>
+                            {{ cleaned_missing_values }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="status-item">
+
+                        <span>
+                            Remaining Duplicate Rows
+                        </span>
+
+                        <strong>
+                            {{ cleaned_duplicate_rows }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            {% else %}
+
+                <div class="alert alert-info mt-4 mb-0">
+
+                    <i class="bi bi-info-circle"></i>
+
+                    Dataset analysis is complete.
+                    Data cleaning will be performed in the
+                    next processing stage.
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
 
         <!-- =================================================
-             PREVIEW
+             DATASET PREVIEW
         ================================================== -->
 
         <div class="large-card mt-4">
@@ -871,17 +1194,13 @@ Dataset Management | Retail Demand Forecasting System
                     </h5>
 
                     <p class="muted mb-0">
-
                         Preview of the uploaded retail data.
-
                     </p>
 
                 </div>
 
                 <span class="badge bg-secondary">
-
-                    Preview
-
+                    First 10 Rows
                 </span>
 
             </div>
@@ -896,9 +1215,8 @@ Dataset Management | Retail Demand Forecasting System
         </div>
 
 
-
         <!-- =================================================
-             FORECAST READINESS
+             FORECASTING READINESS
         ================================================== -->
 
         <div class="large-card mt-4">
@@ -912,25 +1230,41 @@ Dataset Management | Retail Demand Forecasting System
                     </h5>
 
                     <p class="muted mb-0">
-
                         Dataset preparation status before
                         connecting the forecasting models.
-
                     </p>
 
                 </div>
 
 
-                <span class="badge bg-warning text-dark">
+                {% if forecasting_ready is defined and forecasting_ready %}
 
-                    Awaiting ML Processing
+                    <span class="badge bg-success">
 
-                </span>
+                        <i class="bi bi-check-circle"></i>
+
+                        Ready for Forecasting
+
+                    </span>
+
+                {% else %}
+
+                    <span class="badge bg-warning text-dark">
+
+                        <i class="bi bi-hourglass-split"></i>
+
+                        Additional Processing Required
+
+                    </span>
+
+                {% endif %}
 
             </div>
 
 
             <div class="mt-4">
+
+                <!-- UPLOAD -->
 
                 <div class="status-item">
 
@@ -945,6 +1279,8 @@ Dataset Management | Retail Demand Forecasting System
                 </div>
 
 
+                <!-- ANALYSIS -->
+
                 <div class="status-item">
 
                     <span>
@@ -958,18 +1294,34 @@ Dataset Management | Retail Demand Forecasting System
                 </div>
 
 
+                <!-- MAPPING -->
+
                 <div class="status-item">
 
                     <span>
                         Automatic Column Mapping
                     </span>
 
-                    <strong class="ready">
-                        Ready
+                    <strong class="online">
+
+                        ✓
+
+                        {% if mapped_count is defined %}
+
+                            {{ mapped_count }} Fields Detected
+
+                        {% else %}
+
+                            Completed
+
+                        {% endif %}
+
                     </strong>
 
                 </div>
 
+
+                <!-- CLEANING -->
 
                 <div class="status-item">
 
@@ -977,12 +1329,24 @@ Dataset Management | Retail Demand Forecasting System
                         Data Cleaning
                     </span>
 
-                    <strong class="ready">
-                        Next Step
-                    </strong>
+                    {% if cleaned_success is defined and cleaned_success %}
+
+                        <strong class="online">
+                            ✓ Complete
+                        </strong>
+
+                    {% else %}
+
+                        <strong class="ready">
+                            Pending
+                        </strong>
+
+                    {% endif %}
 
                 </div>
 
+
+                <!-- ML -->
 
                 <div class="status-item">
 
@@ -990,15 +1354,26 @@ Dataset Management | Retail Demand Forecasting System
                         ML Forecasting
                     </span>
 
-                    <strong class="ready">
-                        Waiting for Dataset
-                    </strong>
+                    {% if forecasting_ready is defined and forecasting_ready %}
+
+                        <strong class="online">
+                            Ready
+                        </strong>
+
+                    {% else %}
+
+                        <strong class="ready">
+                            Waiting for Processing
+                        </strong>
+
+                    {% endif %}
 
                 </div>
 
             </div>
 
         </div>
+
 
     </div>
 
@@ -1007,176 +1382,186 @@ Dataset Management | Retail Demand Forecasting System
 </div>
 
 
-
 <!-- =====================================================
      CLIENT-SIDE FILE VALIDATION
 ====================================================== -->
 
 <script>
 
-document
-    .getElementById("dataset")
-    .addEventListener("change", function () {
+const datasetInput =
+    document.getElementById("dataset");
 
-        const file = this.files[0];
+const fileInfo =
+    document.getElementById("fileInfo");
 
-        const fileInfo =
-            document.getElementById("fileInfo");
-
-        if (!file) {
-
-            fileInfo.innerHTML =
-                "Only CSV files are currently supported.";
-
-            return;
-
-        }
+const uploadForm =
+    document.getElementById("datasetUploadForm");
 
 
-        /*
-         * Check extension
-         */
+/* =====================================================
+   FILE SELECTION
+===================================================== */
 
-        const fileName =
-            file.name.toLowerCase();
+if (datasetInput) {
+
+    datasetInput.addEventListener(
+        "change",
+        function () {
+
+            const file = this.files[0];
+
+            if (!file) {
+
+                fileInfo.innerHTML =
+                    "Only CSV files are currently supported.";
+
+                return;
+
+            }
 
 
-        if (!fileName.endsWith(".csv")) {
+            const fileName =
+                file.name.toLowerCase();
+
+
+            if (!fileName.endsWith(".csv")) {
+
+                fileInfo.innerHTML = `
+
+                    <span class="text-danger">
+
+                        <i class="bi bi-exclamation-triangle"></i>
+
+                        Please select a CSV file.
+
+                    </span>
+
+                `;
+
+                this.value = "";
+
+                return;
+
+            }
+
+
+            const fileSizeMB =
+                file.size / (1024 * 1024);
+
 
             fileInfo.innerHTML = `
 
-                <span class="text-danger">
+                <span class="text-success">
 
-                    <i class="bi bi-exclamation-triangle"></i>
+                    <i class="bi bi-check-circle"></i>
 
-                    Please select a CSV file.
+                    ${file.name}
+
+                    |
+
+                    ${fileSizeMB.toFixed(2)} MB
 
                 </span>
 
             `;
 
-            this.value = "";
+        }
+    );
 
-            return;
+}
+
+
+/* =====================================================
+   FORM VALIDATION
+===================================================== */
+
+if (uploadForm) {
+
+    uploadForm.addEventListener(
+        "submit",
+        function (event) {
+
+            const datasetType =
+                document.getElementById(
+                    "dataset_type"
+                ).value;
+
+
+            const file =
+                document.getElementById(
+                    "dataset"
+                ).files[0];
+
+
+            if (!datasetType) {
+
+                event.preventDefault();
+
+                alert(
+                    "Please select the dataset type."
+                );
+
+                return;
+
+            }
+
+
+            if (!file) {
+
+                event.preventDefault();
+
+                alert(
+                    "Please select a CSV file."
+                );
+
+                return;
+
+            }
+
+
+            if (
+                !file.name
+                    .toLowerCase()
+                    .endsWith(".csv")
+            ) {
+
+                event.preventDefault();
+
+                alert(
+                    "Only CSV files are supported."
+                );
+
+                return;
+
+            }
+
+
+            /* Loading state */
+
+            const button =
+                document.getElementById(
+                    "uploadButton"
+                );
+
+
+            button.disabled = true;
+
+
+            button.innerHTML = `
+
+                <span
+                    class="spinner-border spinner-border-sm"
+                    role="status"
+                ></span>
+
+                Processing Dataset...
+
+            `;
 
         }
+    );
 
-
-        /*
-         * File size
-         */
-
-        const fileSizeMB =
-            file.size / (1024 * 1024);
-
-
-        fileInfo.innerHTML = `
-
-            <span class="text-success">
-
-                <i class="bi bi-check-circle"></i>
-
-                ${file.name}
-
-                |
-
-                ${fileSizeMB.toFixed(2)} MB
-
-            </span>
-
-        `;
-
-    });
-
-
-
-/*
- * Prevent accidental empty submission
- */
-
-document
-    .getElementById("datasetUploadForm")
-    .addEventListener("submit", function (event) {
-
-        const datasetType =
-            document.getElementById(
-                "dataset_type"
-            ).value;
-
-        const file =
-            document.getElementById(
-                "dataset"
-            ).files[0];
-
-
-        if (!datasetType) {
-
-            event.preventDefault();
-
-            alert(
-                "Please select the dataset type."
-            );
-
-            return;
-
-        }
-
-
-        if (!file) {
-
-            event.preventDefault();
-
-            alert(
-                "Please select a CSV file."
-            );
-
-            return;
-
-        }
-
-
-        if (
-            !file.name
-                .toLowerCase()
-                .endsWith(".csv")
-        ) {
-
-            event.preventDefault();
-
-            alert(
-                "Only CSV files are supported."
-            );
-
-            return;
-
-        }
-
-
-        /*
-         * Loading state
-         */
-
-        const button =
-            document.getElementById(
-                "uploadButton"
-            );
-
-
-        button.disabled = true;
-
-
-        button.innerHTML = `
-
-            <span
-                class="spinner-border spinner-border-sm"
-                role="status"
-            ></span>
-
-            Processing Dataset...
-
-        `;
-
-    });
+}
 
 </script>
 
