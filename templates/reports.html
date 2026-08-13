@@ -1,113 +1,312 @@
 {% extends "base.html" %}
 
 {% block title %}
-Reports | Retail Demand Forecasting System
+Reports & Analytics | Retail Demand Forecasting System
 {% endblock %}
 
 {% block content %}
 
 <div class="dashboard-container">
 
-    <!-- =====================================================
-         PAGE HEADER
-    ====================================================== -->
+    <!-- PAGE HEADER -->
 
     <div class="dashboard-header">
 
         <div>
 
             <div class="dashboard-label">
-                BUSINESS INTELLIGENCE & REPORTING
+                BUSINESS REPORTING
             </div>
 
             <h1>
-                Reports & Business Insights
+                Reports & Analytics
             </h1>
 
             <p>
-                Generate reports for sales, forecasting,
-                inventory and business performance.
+                Generate and monitor retail sales,
+                forecasting and inventory reports.
             </p>
-
-        </div>
-
-        <div class="role-badge">
-
-            <i class="bi bi-file-earmark-bar-graph"></i>
-
-            Reports
 
         </div>
 
     </div>
 
 
-    <!-- =====================================================
-         REPORT GENERATOR
-    ====================================================== -->
+    <!-- REPORT OVERVIEW -->
 
-    <div class="large-card mb-4">
+    <div class="row g-4">
 
-        <div class="d-flex justify-content-between align-items-center mb-4">
 
-            <div>
+        <!-- SALES REPORT -->
 
-                <h4>
-                    Generate Report
-                </h4>
+        <div class="col-md-6 col-xl-3">
 
-                <p class="muted mb-0">
-                    Select the type and period of report
-                    you want to generate.
+            <div class="dashboard-card">
+
+                <div class="card-icon">
+                    <i class="bi bi-bar-chart-line"></i>
+                </div>
+
+                <h5>
+                    Sales Report
+                </h5>
+
+                <p>
+                    Analyze historical sales and
+                    future demand.
                 </p>
 
-            </div>
-
-            <div class="card-icon">
-
-                <i class="bi bi-file-earmark-text"></i>
+                <span>
+                    Waiting for Dataset
+                </span>
 
             </div>
 
         </div>
 
 
-        <div class="row g-4">
+        <!-- FORECAST REPORT -->
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="dashboard-card">
+
+                <div class="card-icon">
+                    <i class="bi bi-graph-up-arrow"></i>
+                </div>
+
+                <h5>
+                    Forecast Report
+                </h5>
+
+                <p>
+                    View predicted product demand
+                    and future trends.
+                </p>
+
+                <span>
+                    Waiting for ML
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- INVENTORY REPORT -->
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="dashboard-card">
+
+                <div class="card-icon">
+                    <i class="bi bi-box-seam"></i>
+                </div>
+
+                <h5>
+                    Inventory Report
+                </h5>
+
+                <p>
+                    Monitor stock levels and
+                    reorder recommendations.
+                </p>
+
+                <span>
+                    Waiting for Dataset
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- ACCURACY REPORT -->
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="dashboard-card">
+
+                <div class="card-icon">
+                    <i class="bi bi-bullseye"></i>
+                </div>
+
+                <h5>
+                    Forecast Accuracy
+                </h5>
+
+                <p>
+                    Measure the performance of
+                    forecasting models.
+                </p>
+
+                <span>
+                    Waiting for ML
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- FORECAST PERFORMANCE -->
+
+    <div class="large-card mt-4">
+
+        <h4>
+            Forecast Performance
+        </h4>
+
+        <p class="muted">
+            Model performance metrics will be displayed
+            here after the forecasting engine is trained.
+        </p>
+
+
+        <div class="row g-4 mt-2">
+
+
+            <!-- MAE -->
+
+            <div class="col-md-4">
+
+                <div class="dashboard-card">
+
+                    <div class="card-icon">
+                        <i class="bi bi-calculator"></i>
+                    </div>
+
+                    <h5>
+                        MAE
+                    </h5>
+
+                    <h3>
+                        —
+                    </h3>
+
+                    <span>
+                        Mean Absolute Error
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- RMSE -->
+
+            <div class="col-md-4">
+
+                <div class="dashboard-card">
+
+                    <div class="card-icon">
+                        <i class="bi bi-speedometer2"></i>
+                    </div>
+
+                    <h5>
+                        RMSE
+                    </h5>
+
+                    <h3>
+                        —
+                    </h3>
+
+                    <span>
+                        Root Mean Square Error
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- MODEL SCORE -->
+
+            <div class="col-md-4">
+
+                <div class="dashboard-card">
+
+                    <div class="card-icon">
+                        <i class="bi bi-award"></i>
+                    </div>
+
+                    <h5>
+                        Model Score
+                    </h5>
+
+                    <h3>
+                        —
+                    </h3>
+
+                    <span>
+                        Model Evaluation
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- REPORT GENERATION -->
+
+    <div class="large-card mt-4">
+
+        <h4>
+            Generate Report
+        </h4>
+
+        <p class="muted">
+            Select the type of report you want to
+            generate.
+        </p>
+
+
+        <div class="row g-4 mt-2">
+
 
             <!-- REPORT TYPE -->
 
             <div class="col-md-6">
 
-                <label class="form-label">
+                <label
+                    for="report_type"
+                    class="form-label"
+                >
                     Report Type
                 </label>
 
+
                 <select
+                    id="report_type"
                     class="form-select"
-                    id="reportType">
+                >
 
                     <option value="">
-                        Select Report Type
+                        Select report type
                     </option>
 
                     <option value="sales">
-                        Sales Performance Report
+                        Sales Report
                     </option>
 
                     <option value="forecast">
-                        Demand Forecast Report
+                        Forecast Report
                     </option>
 
                     <option value="inventory">
                         Inventory Report
                     </option>
 
-                    <option value="seasonal">
-                        Seasonal Trend Report
-                    </option>
-
-                    <option value="alerts">
-                        Alerts & Recommendations Report
+                    <option value="analytics">
+                        Analytics Report
                     </option>
 
                     <option value="complete">
@@ -119,61 +318,25 @@ Reports | Retail Demand Forecasting System
             </div>
 
 
-            <!-- REPORT PERIOD -->
+            <!-- REPORT FORMAT -->
 
             <div class="col-md-6">
 
-                <label class="form-label">
-                    Report Period
+                <label
+                    for="report_format"
+                    class="form-label"
+                >
+                    Report Format
                 </label>
 
-                <select
-                    class="form-select"
-                    id="reportPeriod">
-
-                    <option value="">
-                        Select Period
-                    </option>
-
-                    <option>
-                        Last 7 Days
-                    </option>
-
-                    <option>
-                        Last 30 Days
-                    </option>
-
-                    <option>
-                        Last 3 Months
-                    </option>
-
-                    <option>
-                        Last 6 Months
-                    </option>
-
-                    <option>
-                        Last 12 Months
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <!-- OUTPUT FORMAT -->
-
-            <div class="col-md-6">
-
-                <label class="form-label">
-                    Output Format
-                </label>
 
                 <select
+                    id="report_format"
                     class="form-select"
-                    id="reportFormat">
+                >
 
                     <option value="">
-                        Select Format
+                        Select format
                     </option>
 
                     <option value="pdf">
@@ -192,52 +355,18 @@ Reports | Retail Demand Forecasting System
 
             </div>
 
-
-            <!-- PRODUCT FILTER -->
-
-            <div class="col-md-6">
-
-                <label class="form-label">
-                    Product Filter
-                </label>
-
-                <select
-                    class="form-select"
-                    id="reportProduct">
-
-                    <option>
-                        All Products
-                    </option>
-
-                    <option>
-                        Product A
-                    </option>
-
-                    <option>
-                        Product B
-                    </option>
-
-                    <option>
-                        Product C
-                    </option>
-
-                </select>
-
-            </div>
-
         </div>
 
-
-        <!-- GENERATE BUTTON -->
 
         <div class="mt-4">
 
             <button
                 type="button"
-                class="primary-button"
-                onclick="generateReport()">
+                class="btn btn-primary"
+                onclick="generateReport()"
+            >
 
-                <i class="bi bi-file-earmark-arrow-down"></i>
+                <i class="bi bi-file-earmark-bar-graph"></i>
 
                 Generate Report
 
@@ -246,574 +375,183 @@ Reports | Retail Demand Forecasting System
         </div>
 
 
-        <!-- REPORT MESSAGE -->
-
         <div
             id="reportMessage"
-            class="alert alert-info mt-4">
+            class="alert alert-info mt-4 d-none"
+        >
 
             <i class="bi bi-info-circle"></i>
 
-            Select the report type, period and output
-            format to generate a report.
+            Report generation will be available after
+            the dataset and ML models are connected.
 
         </div>
 
     </div>
 
 
-    <!-- =====================================================
-         REPORT SUMMARY
-    ====================================================== -->
 
-    <div class="large-card mb-4">
+    <!-- REPORT HISTORY -->
 
-        <div class="d-flex justify-content-between align-items-center">
-
-            <div>
-
-                <h4>
-                    Business Performance Summary
-                </h4>
-
-                <p class="muted mb-0">
-                    Key business indicators from your
-                    processed retail data.
-                </p>
-
-            </div>
-
-            <span class="badge bg-secondary">
-                Waiting for Dataset
-            </span>
-
-        </div>
-
-
-        <div class="row g-4 mt-2">
-
-
-            <!-- SALES -->
-
-            <div class="col-md-6 col-xl-3">
-
-                <div class="info-card">
-
-                    <div class="card-icon">
-
-                        <i class="bi bi-currency-rupee"></i>
-
-                    </div>
-
-                    <h6>
-                        Sales
-                    </h6>
-
-                    <h3>
-                        ₹ —
-                    </h3>
-
-                    <p>
-                        Total sales
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <!-- DEMAND -->
-
-            <div class="col-md-6 col-xl-3">
-
-                <div class="info-card">
-
-                    <div class="card-icon">
-
-                        <i class="bi bi-graph-up"></i>
-
-                    </div>
-
-                    <h6>
-                        Demand
-                    </h6>
-
-                    <h3>
-                        —
-                    </h3>
-
-                    <p>
-                        Forecasted demand
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <!-- INVENTORY -->
-
-            <div class="col-md-6 col-xl-3">
-
-                <div class="info-card">
-
-                    <div class="card-icon">
-
-                        <i class="bi bi-box-seam"></i>
-
-                    </div>
-
-                    <h6>
-                        Inventory
-                    </h6>
-
-                    <h3>
-                        —
-                    </h3>
-
-                    <p>
-                        Current stock units
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <!-- ALERTS -->
-
-            <div class="col-md-6 col-xl-3">
-
-                <div class="info-card">
-
-                    <div class="card-icon">
-
-                        <i class="bi bi-bell"></i>
-
-                    </div>
-
-                    <h6>
-                        Alerts
-                    </h6>
-
-                    <h3>
-                        —
-                    </h3>
-
-                    <p>
-                        Active alerts
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- =====================================================
-         REPORT TYPES
-    ====================================================== -->
-
-    <div class="large-card mb-4">
+    <div class="large-card mt-4">
 
         <h4>
-            Available Reports
+            Report History
         </h4>
 
         <p class="muted">
-            Reports that will be generated from the
-            processed retail dataset.
+            Previously generated reports will appear
+            here.
         </p>
 
 
-        <div class="table-responsive mt-4">
+        <div class="alert alert-info mt-4">
 
-            <table class="table">
+            <i class="bi bi-clock-history"></i>
 
-                <thead>
-
-                    <tr>
-
-                        <th>
-                            Report
-                        </th>
-
-                        <th>
-                            Purpose
-                        </th>
-
-                        <th>
-                            Data Used
-                        </th>
-
-                        <th>
-                            Status
-                        </th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-
-                    <tr>
-
-                        <td>
-                            Sales Performance
-                        </td>
-
-                        <td>
-                            Analyze historical sales.
-                        </td>
-
-                        <td>
-                            Sales Data
-                        </td>
-
-                        <td>
-                            <span class="badge bg-secondary">
-                                Waiting
-                            </span>
-                        </td>
-
-                    </tr>
-
-
-                    <tr>
-
-                        <td>
-                            Demand Forecast
-                        </td>
-
-                        <td>
-                            View future demand predictions.
-                        </td>
-
-                        <td>
-                            Sales + Forecast
-                        </td>
-
-                        <td>
-                            <span class="badge bg-secondary">
-                                Waiting
-                            </span>
-                        </td>
-
-                    </tr>
-
-
-                    <tr>
-
-                        <td>
-                            Inventory
-                        </td>
-
-                        <td>
-                            Monitor stock and reorder needs.
-                        </td>
-
-                        <td>
-                            Inventory + Forecast
-                        </td>
-
-                        <td>
-                            <span class="badge bg-secondary">
-                                Waiting
-                            </span>
-                        </td>
-
-                    </tr>
-
-
-                    <tr>
-
-                        <td>
-                            Seasonal Trends
-                        </td>
-
-                        <td>
-                            Analyze seasonal demand.
-                        </td>
-
-                        <td>
-                            Sales + Events
-                        </td>
-
-                        <td>
-                            <span class="badge bg-secondary">
-                                Waiting
-                            </span>
-                        </td>
-
-                    </tr>
-
-
-                    <tr>
-
-                        <td>
-                            Smart Alerts
-                        </td>
-
-                        <td>
-                            View business recommendations.
-                        </td>
-
-                        <td>
-                            Forecast + Inventory
-                        </td>
-
-                        <td>
-                            <span class="badge bg-secondary">
-                                Waiting
-                            </span>
-                        </td>
-
-                    </tr>
-
-
-                </tbody>
-
-            </table>
+            No reports have been generated yet.
 
         </div>
 
     </div>
 
 
-    <!-- =====================================================
-         FORECAST ACCURACY
-    ====================================================== -->
 
-    <div class="large-card">
+    <!-- REPORT STATUS -->
 
-        <div class="d-flex justify-content-between align-items-center">
+    <div class="large-card mt-4">
 
-            <div>
+        <h4>
+            Reporting System Status
+        </h4>
 
-                <h4>
-                    Forecast Accuracy
-                </h4>
 
-                <p class="muted mb-0">
-                    Performance of the forecasting models.
-                </p>
+        <div class="status-item mt-3">
 
-            </div>
-
-            <span class="badge bg-secondary">
-                ML Not Connected
+            <span>
+                Sales Reporting
             </span>
 
+            <strong class="ready">
+                Ready
+            </strong>
+
         </div>
 
 
-        <div class="row g-4 mt-2">
+        <div class="status-item">
+
+            <span>
+                Forecast Reporting
+            </span>
+
+            <strong class="ready">
+                Waiting for ML
+            </strong>
+
+        </div>
 
 
-            <!-- MAE -->
+        <div class="status-item">
 
-            <div class="col-md-4">
+            <span>
+                Inventory Reporting
+            </span>
 
-                <div class="info-card">
+            <strong class="ready">
+                Waiting for Dataset
+            </strong>
 
-                    <div class="card-icon">
-
-                        <i class="bi bi-bullseye"></i>
-
-                    </div>
-
-                    <h6>
-                        MAE
-                    </h6>
-
-                    <h3>
-                        —
-                    </h3>
-
-                    <p>
-                        Mean Absolute Error
-                    </p>
-
-                </div>
-
-            </div>
+        </div>
 
 
-            <!-- RMSE -->
+        <div class="status-item">
 
-            <div class="col-md-4">
+            <span>
+                Analytics Reporting
+            </span>
 
-                <div class="info-card">
+            <strong class="ready">
+                Ready
+            </strong>
 
-                    <div class="card-icon">
-
-                        <i class="bi bi-speedometer"></i>
-
-                    </div>
-
-                    <h6>
-                        RMSE
-                    </h6>
-
-                    <h3>
-                        —
-                    </h3>
-
-                    <p>
-                        Root Mean Squared Error
-                    </p>
-
-                </div>
-
-            </div>
+        </div>
 
 
-            <!-- ACCURACY -->
+        <div class="status-item">
 
-            <div class="col-md-4">
+            <span>
+                PDF / Excel Export
+            </span>
 
-                <div class="info-card">
-
-                    <div class="card-icon">
-
-                        <i class="bi bi-check-circle"></i>
-
-                    </div>
-
-                    <h6>
-                        Forecast Accuracy
-                    </h6>
-
-                    <h3>
-                        —
-                    </h3>
-
-                    <p>
-                        Model performance
-                    </p>
-
-                </div>
-
-            </div>
+            <strong class="ready">
+                Coming Soon
+            </strong>
 
         </div>
 
     </div>
+
 
 </div>
 
 
-<!-- =====================================================
-     REPORT JAVASCRIPT
-====================================================== -->
+<!-- REPORT JAVASCRIPT -->
 
 <script>
 
 function generateReport() {
 
     const reportType =
-        document.getElementById(
-            "reportType"
-        ).value;
-
-    const reportPeriod =
-        document.getElementById(
-            "reportPeriod"
-        ).value;
+        document.getElementById("report_type").value;
 
     const reportFormat =
-        document.getElementById(
-            "reportFormat"
-        ).value;
-
-    const product =
-        document.getElementById(
-            "reportProduct"
-        ).value;
+        document.getElementById("report_format").value;
 
     const message =
-        document.getElementById(
-            "reportMessage"
-        );
+        document.getElementById("reportMessage");
 
 
-    /*
-     * Validate selections
-     */
-
-    if (
-        !reportType ||
-        !reportPeriod ||
-        !reportFormat
-    ) {
+    if (!reportType) {
 
         message.className =
             "alert alert-warning mt-4";
 
-        message.innerHTML = `
-
-            <i class="bi bi-exclamation-triangle"></i>
-
-            Please select Report Type,
-            Report Period and Output Format.
-
-        `;
+        message.innerHTML =
+            '<i class="bi bi-exclamation-circle"></i> ' +
+            'Please select a report type.';
 
         return;
 
     }
 
 
-    /*
-     * Temporary message
-     *
-     * Actual report generation will be
-     * connected to Flask after the dataset
-     * and database are integrated.
-     */
+    if (!reportFormat) {
+
+        message.className =
+            "alert alert-warning mt-4";
+
+        message.innerHTML =
+            '<i class="bi bi-exclamation-circle"></i> ' +
+            'Please select a report format.';
+
+        return;
+
+    }
+
 
     message.className =
-        "alert alert-success mt-4";
+        "alert alert-info mt-4";
 
-    message.innerHTML = `
-
-        <i class="bi bi-check-circle"></i>
-
-        Report configuration received.
-
-        <br><br>
-
-        <strong>Report:</strong>
-        ${reportType}
-
-        <br>
-
-        <strong>Period:</strong>
-        ${reportPeriod}
-
-        <br>
-
-        <strong>Format:</strong>
-        ${reportFormat.toUpperCase()}
-
-        <br>
-
-        <strong>Product:</strong>
-        ${product}
-
-        <br><br>
-
-        The actual report will be generated after
-        the retail dataset is connected.
-
-    `;
+    message.innerHTML =
+        '<i class="bi bi-info-circle"></i> ' +
+        'Report generation will be connected to the ' +
+        'database and machine-learning results after ' +
+        'the dataset is integrated.';
 
 }
 
 </script>
+
 
 {% endblock %}

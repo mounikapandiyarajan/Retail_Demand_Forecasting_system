@@ -6,6 +6,7 @@
 import os
 import pandas as pd
 import re
+
 from flask import (
     Flask,
     render_template,
@@ -131,6 +132,254 @@ def allowed_file(filename):
 
 
 # ============================================================
+# AUTOMATIC COLUMN MAPPING ENGINE
+# ============================================================
+
+def automatic_column_mapping(columns):
+
+    """
+    Automatically identifies important retail dataset
+    columns based on common column-name variations.
+
+    Example:
+
+    Order_Date      -> date
+    Product_Name    -> product
+    Units_Sold      -> demand
+    Selling_Price   -> price
+    Store_ID        -> store
+    Discount        -> discount
+    """
+
+    # --------------------------------------------------------
+    # Normalize original column names
+    # --------------------------------------------------------
+
+    normalized_columns = {}
+
+    for column in columns:
+
+        original = str(column).strip()
+
+        normalized = re.sub(
+            r"[^a-zA-Z0-9]",
+            "_",
+            original.lower()
+        )
+
+        normalized = re.sub(
+            r"_+",
+            "_",
+            normalized
+        ).strip("_")
+
+        normalized_columns[original] = normalized
+
+
+    # --------------------------------------------------------
+    # Possible names for important retail fields
+    # --------------------------------------------------------
+
+    column_patterns = {
+
+        "date": [
+            "date",
+            "order_date",
+            "sales_date",
+            "sale_date",
+            "transaction_date",
+            "invoice_date",
+            "purchase_date",
+            "datetime",
+            "timestamp"
+        ],
+
+        "product": [
+            "product",
+            "product_name",
+            "product_id",
+            "item",
+            "item_name",
+            "item_id",
+            "sku",
+            "sku_id",
+            "product_code"
+        ],
+
+        "sales": [
+            "sales",
+            "sale",
+            "sales_amount",
+            "sale_amount",
+            "revenue",
+            "total_sales",
+            "sales_value",
+            "turnover"
+        ],
+
+        "demand": [
+            "demand",
+            "units_sold",
+            "unit_sold",
+            "quantity",
+            "qty",
+            "sales_quantity",
+            "units",
+            "units_demanded"
+        ],
+
+        "store": [
+            "store",
+            "store_id",
+            "store_name",
+            "shop",
+            "shop_id",
+            "branch",
+            "branch_id",
+            "location"
+        ],
+
+        "price": [
+            "price",
+            "unit_price",
+            "selling_price",
+            "sale_price",
+            "product_price",
+            "cost",
+            "unit_cost"
+        ],
+
+        "discount": [
+            "discount",
+            "discount_rate",
+            "discount_percentage",
+            "discount_percent",
+            "markdown"
+        ],
+
+        "promotion": [
+            "promotion",
+            "promotion_status",
+            "promo",
+            "promotional",
+            "campaign",
+            "offer",
+            "promotion_flag"
+        ],
+
+        "category": [
+            "category",
+            "product_category",
+            "item_category",
+            "product_type",
+            "department",
+            "segment"
+        ],
+
+        "inventory": [
+            "inventory",
+            "stock",
+            "current_stock",
+            "stock_level",
+            "stock_quantity",
+            "inventory_level",
+            "available_stock"
+        ],
+
+        "supplier": [
+            "supplier",
+            "supplier_id",
+            "supplier_name",
+            "vendor",
+            "vendor_id",
+            "vendor_name"
+        ],
+
+        "lead_time": [
+            "lead_time",
+            "lead_days",
+            "delivery_time",
+            "delivery_days",
+            "supplier_lead_time"
+        ],
+
+        "temperature": [
+            "temperature",
+            "temp",
+            "avg_temperature",
+            "average_temperature"
+        ],
+
+        "holiday": [
+            "holiday",
+            "holiday_flag",
+            "is_holiday",
+            "holiday_status"
+        ],
+
+        "festival": [
+            "festival",
+            "festival_flag",
+            "is_festival",
+            "festival_name"
+        ]
+    }
+
+
+    # --------------------------------------------------------
+    # Find matching columns
+    # --------------------------------------------------------
+
+    mapping = {}
+
+    for field, possible_names in column_patterns.items():
+
+        mapping[field] = None
+
+
+        # ----------------------------------------------------
+        # First: exact matching
+        # ----------------------------------------------------
+
+        for original, normalized in normalized_columns.items():
+
+            if normalized in possible_names:
+
+                mapping[field] = original
+
+                break
+
+
+        # ----------------------------------------------------
+        # Second: partial matching
+        # ----------------------------------------------------
+
+        if mapping[field] is None:
+
+            for original, normalized in normalized_columns.items():
+
+                for possible_name in possible_names:
+
+                    if (
+                        possible_name in normalized
+                        or
+                        normalized in possible_name
+                    ):
+
+                        mapping[field] = original
+
+                        break
+
+
+                if mapping[field] is not None:
+
+                    break
+
+
+    return mapping
+
+
+# ============================================================
 # DATABASE
 # ============================================================
 
@@ -183,8 +432,10 @@ def role_required(*allowed_roles):
                     url_for("login")
                 )
 
+
             # Get current user's role
             user_role = current_user.role
+
 
             # Check permission
             if user_role not in allowed_roles:
@@ -198,12 +449,15 @@ def role_required(*allowed_roles):
                     url_for("dashboard")
                 )
 
+
             return function(
                 *args,
                 **kwargs
             )
 
+
         return wrapper
+
 
     return decorator
 
@@ -771,10 +1025,22 @@ def upload_dataset():
 
 
     # ========================================================
-    # 9. BASIC DATASET STATISTICS
+    # 9. AUTOMATIC COLUMN MAPPING
     # ========================================================
 
-    total_rows = len(df)
+    column_mapping = automatic_column_mapping(
+        df.columns.tolist()
+    )
+
+
+    # ========================================================
+    # 10. BASIC DATASET STATISTICS
+    # ========================================================
+
+    total_rows = len(
+        df
+    )
+
 
     total_columns = len(
         df.columns
@@ -795,7 +1061,7 @@ def upload_dataset():
 
 
     # ========================================================
-    # 10. SAVE RAW COPY
+    # 11. SAVE RAW COPY
     # ========================================================
 
     raw_filename = (
@@ -825,7 +1091,7 @@ def upload_dataset():
 
 
     # ========================================================
-    # 11. GET COLUMN NAMES
+    # 12. GET COLUMN NAMES
     # ========================================================
 
     columns = list(
@@ -834,7 +1100,7 @@ def upload_dataset():
 
 
     # ========================================================
-    # 12. CREATE PREVIEW
+    # 13. CREATE PREVIEW
     # ========================================================
 
     preview_df = df.head(
@@ -856,7 +1122,7 @@ def upload_dataset():
 
 
     # ========================================================
-    # 13. SHOW ANALYSIS
+    # 14. SHOW ANALYSIS + COLUMN MAPPING
     # ========================================================
 
     return render_template(
@@ -879,7 +1145,9 @@ def upload_dataset():
 
         columns=columns,
 
-        preview_html=preview_html
+        preview_html=preview_html,
+
+        column_mapping=column_mapping
 
     )
 
