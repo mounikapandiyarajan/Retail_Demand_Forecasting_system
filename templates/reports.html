@@ -17,7 +17,7 @@ Reports | Retail Demand Forecasting System
         <div>
 
             <div class="dashboard-label">
-                BUSINESS REPORTING & INSIGHTS
+                BUSINESS INTELLIGENCE
             </div>
 
             <h1>
@@ -25,8 +25,8 @@ Reports | Retail Demand Forecasting System
             </h1>
 
             <p>
-                View dataset summaries, forecasting results,
-                inventory insights and business performance reports.
+                Generate and review business reports from
+                uploaded retail datasets and forecasting results.
             </p>
 
         </div>
@@ -43,87 +43,15 @@ Reports | Retail Demand Forecasting System
 
 
     <!-- =====================================================
-         REPORT STATUS
+         REPORT OVERVIEW
     ====================================================== -->
 
-    <div class="large-card">
-
-        <div class="d-flex justify-content-between align-items-center">
-
-            <div>
-
-                <h4>
-                    Report Generation Status
-                </h4>
-
-                <p class="muted mb-0">
-                    Reports will be generated from the actual
-                    datasets and ML results available in the system.
-                </p>
-
-            </div>
-
-            <span class="badge bg-warning text-dark">
-                Awaiting Data
-            </span>
-
-        </div>
+    <div class="row g-4">
 
 
-        <div class="alert alert-info mt-4">
+        <!-- SALES REPORT -->
 
-            <i class="bi bi-info-circle"></i>
-
-            No report data is available yet.
-
-            Upload and process a compatible retail dataset
-            before generating business reports.
-
-        </div>
-
-    </div>
-
-
-
-    <!-- =====================================================
-         REPORT SUMMARY
-    ====================================================== -->
-
-    <div class="row g-4 mt-1">
-
-
-        <!-- DATASET -->
-
-        <div class="col-md-6 col-xl-3">
-
-            <div class="dashboard-card">
-
-                <div class="card-icon">
-
-                    <i class="bi bi-database"></i>
-
-                </div>
-
-                <h5>
-                    Dataset
-                </h5>
-
-                <h3>
-                    —
-                </h3>
-
-                <span>
-                    No active dataset
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <!-- FORECAST -->
-
-        <div class="col-md-6 col-xl-3">
+        <div class="col-md-6 col-xl-4">
 
             <div class="dashboard-card">
 
@@ -134,15 +62,16 @@ Reports | Retail Demand Forecasting System
                 </div>
 
                 <h5>
-                    Forecast
+                    Sales Report
                 </h5>
 
-                <h3>
-                    —
-                </h3>
+                <p class="muted">
+                    Review sales performance and historical
+                    demand information from uploaded datasets.
+                </p>
 
                 <span>
-                    ML results pending
+                    Forecasting data
                 </span>
 
             </div>
@@ -150,9 +79,9 @@ Reports | Retail Demand Forecasting System
         </div>
 
 
-        <!-- INVENTORY -->
+        <!-- INVENTORY REPORT -->
 
-        <div class="col-md-6 col-xl-3">
+        <div class="col-md-6 col-xl-4">
 
             <div class="dashboard-card">
 
@@ -163,15 +92,16 @@ Reports | Retail Demand Forecasting System
                 </div>
 
                 <h5>
-                    Inventory
+                    Inventory Report
                 </h5>
 
-                <h3>
-                    —
-                </h3>
+                <p class="muted">
+                    Review inventory levels, stock conditions
+                    and reorder-related information.
+                </p>
 
                 <span>
-                    Inventory data pending
+                    Inventory data
                 </span>
 
             </div>
@@ -179,28 +109,29 @@ Reports | Retail Demand Forecasting System
         </div>
 
 
-        <!-- REPORT -->
+        <!-- DATA QUALITY REPORT -->
 
-        <div class="col-md-6 col-xl-3">
+        <div class="col-md-6 col-xl-4">
 
             <div class="dashboard-card">
 
                 <div class="card-icon">
 
-                    <i class="bi bi-file-earmark-text"></i>
+                    <i class="bi bi-database-check"></i>
 
                 </div>
 
                 <h5>
-                    Reports
+                    Data Quality Report
                 </h5>
 
-                <h3>
-                    —
-                </h3>
+                <p class="muted">
+                    Review dataset structure, missing values,
+                    duplicates and detected columns.
+                </p>
 
                 <span>
-                    No report generated
+                    Dataset analysis
                 </span>
 
             </div>
@@ -212,7 +143,7 @@ Reports | Retail Demand Forecasting System
 
 
     <!-- =====================================================
-         DATASET REPORT
+         REPORT GENERATION
     ====================================================== -->
 
     <div class="large-card mt-4">
@@ -222,17 +153,146 @@ Reports | Retail Demand Forecasting System
             <div>
 
                 <h4>
-                    Dataset Report
+                    Report Generation
                 </h4>
 
                 <p class="muted mb-0">
-                    Summary of the currently processed retail dataset.
+                    Select a report type to view the relevant
+                    business information.
                 </p>
 
             </div>
 
-            <span class="badge bg-secondary">
-                No Data
+            <div class="card-icon">
+
+                <i class="bi bi-file-earmark-text"></i>
+
+            </div>
+
+        </div>
+
+
+        <div class="row g-4 mt-3">
+
+
+            <!-- DATASET REPORT -->
+
+            <div class="col-md-6 col-lg-4">
+
+                <div class="dashboard-card">
+
+                    <div class="card-icon">
+
+                        <i class="bi bi-table"></i>
+
+                    </div>
+
+                    <h5>
+                        Dataset Report
+                    </h5>
+
+                    <p>
+                        Contains information about the uploaded
+                        dataset and its data quality.
+                    </p>
+
+                    <span>
+                        Rows • Columns • Missing Values
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- FORECAST REPORT -->
+
+            <div class="col-md-6 col-lg-4">
+
+                <div class="dashboard-card">
+
+                    <div class="card-icon">
+
+                        <i class="bi bi-bar-chart-line"></i>
+
+                    </div>
+
+                    <h5>
+                        Forecast Report
+                    </h5>
+
+                    <p>
+                        Displays demand forecasting results,
+                        trends and model-related information.
+                    </p>
+
+                    <span>
+                        Demand forecasting
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- INVENTORY REPORT -->
+
+            <div class="col-md-6 col-lg-4">
+
+                <div class="dashboard-card">
+
+                    <div class="card-icon">
+
+                        <i class="bi bi-cart-check"></i>
+
+                    </div>
+
+                    <h5>
+                        Inventory Optimization Report
+                    </h5>
+
+                    <p>
+                        Displays stock information and
+                        inventory optimization recommendations
+                        when inventory data is available.
+                    </p>
+
+                    <span>
+                        Inventory optimization
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         REPORT STATUS
+    ====================================================== -->
+
+    <div class="large-card mt-4">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <div>
+
+                <h4>
+                    Report Status
+                </h4>
+
+                <p class="muted mb-0">
+                    Current availability of system reports.
+                </p>
+
+            </div>
+
+            <span class="badge bg-info">
+                System Reports
             </span>
 
         </div>
@@ -241,536 +301,7 @@ Reports | Retail Demand Forecasting System
         <div class="mt-4">
 
 
-            <div class="status-item">
-
-                <span>
-                    File Name
-                </span>
-
-                <strong>
-                    —
-                </strong>
-
-            </div>
-
-
-            <div class="status-item">
-
-                <span>
-                    Dataset Type
-                </span>
-
-                <strong>
-                    —
-                </strong>
-
-            </div>
-
-
-            <div class="status-item">
-
-                <span>
-                    Total Records
-                </span>
-
-                <strong>
-                    —
-                </strong>
-
-            </div>
-
-
-            <div class="status-item">
-
-                <span>
-                    Total Columns
-                </span>
-
-                <strong>
-                    —
-                </strong>
-
-            </div>
-
-
-            <div class="status-item">
-
-                <span>
-                    Missing Values
-                </span>
-
-                <strong>
-                    —
-                </strong>
-
-            </div>
-
-
-            <div class="status-item">
-
-                <span>
-                    Duplicate Rows
-                </span>
-
-                <strong>
-                    —
-                </strong>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-
-    <!-- =====================================================
-         FORECAST REPORT
-    ====================================================== -->
-
-    <div class="large-card mt-4">
-
-        <div class="d-flex justify-content-between align-items-center">
-
-            <div>
-
-                <h4>
-                    Forecasting Report
-                </h4>
-
-                <p class="muted mb-0">
-                    Forecasting performance and future demand
-                    predictions will appear here.
-                </p>
-
-            </div>
-
-            <span class="badge bg-secondary">
-                ML Pending
-            </span>
-
-        </div>
-
-
-        <div class="row g-4 mt-2">
-
-
-            <!-- FORECAST HORIZON -->
-
-            <div class="col-md-6 col-lg-3">
-
-                <div class="dashboard-card">
-
-                    <div class="card-icon">
-
-                        <i class="bi bi-calendar3"></i>
-
-                    </div>
-
-                    <h5>
-                        Forecast Period
-                    </h5>
-
-                    <h3>
-                        —
-                    </h3>
-
-                    <span>
-                        Not calculated
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- PREDICTED DEMAND -->
-
-            <div class="col-md-6 col-lg-3">
-
-                <div class="dashboard-card">
-
-                    <div class="card-icon">
-
-                        <i class="bi bi-graph-up"></i>
-
-                    </div>
-
-                    <h5>
-                        Predicted Demand
-                    </h5>
-
-                    <h3>
-                        —
-                    </h3>
-
-                    <span>
-                        Awaiting ML model
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- MODEL -->
-
-            <div class="col-md-6 col-lg-3">
-
-                <div class="dashboard-card">
-
-                    <div class="card-icon">
-
-                        <i class="bi bi-cpu"></i>
-
-                    </div>
-
-                    <h5>
-                        ML Model
-                    </h5>
-
-                    <h3>
-                        —
-                    </h3>
-
-                    <span>
-                        Not trained
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- ACCURACY -->
-
-            <div class="col-md-6 col-lg-3">
-
-                <div class="dashboard-card">
-
-                    <div class="card-icon">
-
-                        <i class="bi bi-bullseye"></i>
-
-                    </div>
-
-                    <h5>
-                        Model Accuracy
-                    </h5>
-
-                    <h3>
-                        —
-                    </h3>
-
-                    <span>
-                        Not evaluated
-                    </span>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="alert alert-light border mt-4">
-
-            <i class="bi bi-info-circle"></i>
-
-            Forecasting results will only be displayed after
-            a compatible dataset has been processed and an ML
-            forecasting model has been trained.
-
-        </div>
-
-    </div>
-
-
-
-    <!-- =====================================================
-         INVENTORY REPORT
-    ====================================================== -->
-
-    <div class="large-card mt-4">
-
-        <div class="d-flex justify-content-between align-items-center">
-
-            <div>
-
-                <h4>
-                    Inventory Optimization Report
-                </h4>
-
-                <p class="muted mb-0">
-                    Inventory health and reorder recommendations
-                    will be summarized here.
-                </p>
-
-            </div>
-
-            <span class="badge bg-secondary">
-                No Inventory Data
-            </span>
-
-        </div>
-
-
-        <div class="row g-4 mt-2">
-
-
-            <!-- PRODUCTS -->
-
-            <div class="col-md-6 col-xl-3">
-
-                <div class="dashboard-card">
-
-                    <div class="card-icon">
-
-                        <i class="bi bi-box"></i>
-
-                    </div>
-
-                    <h5>
-                        Products
-                    </h5>
-
-                    <h3>
-                        —
-                    </h3>
-
-                    <span>
-                        Awaiting inventory data
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- LOW STOCK -->
-
-            <div class="col-md-6 col-xl-3">
-
-                <div class="dashboard-card">
-
-                    <div class="card-icon">
-
-                        <i class="bi bi-exclamation-triangle"></i>
-
-                    </div>
-
-                    <h5>
-                        Low Stock
-                    </h5>
-
-                    <h3>
-                        —
-                    </h3>
-
-                    <span>
-                        Not calculated
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- REORDER -->
-
-            <div class="col-md-6 col-xl-3">
-
-                <div class="dashboard-card">
-
-                    <div class="card-icon">
-
-                        <i class="bi bi-cart-plus"></i>
-
-                    </div>
-
-                    <h5>
-                        Reorder Required
-                    </h5>
-
-                    <h3>
-                        —
-                    </h3>
-
-                    <span>
-                        Not calculated
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- OVERSTOCK -->
-
-            <div class="col-md-6 col-xl-3">
-
-                <div class="dashboard-card">
-
-                    <div class="card-icon">
-
-                        <i class="bi bi-stack"></i>
-
-                    </div>
-
-                    <h5>
-                        Overstock
-                    </h5>
-
-                    <h3>
-                        —
-                    </h3>
-
-                    <span>
-                        Not calculated
-                    </span>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-
-    <!-- =====================================================
-         BUSINESS INSIGHTS
-    ====================================================== -->
-
-    <div class="large-card mt-4">
-
-        <div class="d-flex justify-content-between align-items-center">
-
-            <div>
-
-                <h4>
-                    Business Insights
-                </h4>
-
-                <p class="muted mb-0">
-                    Important business observations generated
-                    from analytics and forecasting.
-                </p>
-
-            </div>
-
-            <span class="badge bg-secondary">
-                Awaiting Analytics
-            </span>
-
-        </div>
-
-
-        <div class="mt-4">
-
-
-            <div class="status-item">
-
-                <span>
-                    Demand Trend
-                </span>
-
-                <strong class="ready">
-                    Not Available
-                </strong>
-
-            </div>
-
-
-            <div class="status-item">
-
-                <span>
-                    Top Performing Product
-                </span>
-
-                <strong class="ready">
-                    Not Available
-                </strong>
-
-            </div>
-
-
-            <div class="status-item">
-
-                <span>
-                    High Demand Period
-                </span>
-
-                <strong class="ready">
-                    Not Available
-                </strong>
-
-            </div>
-
-
-            <div class="status-item">
-
-                <span>
-                    Important Demand Driver
-                </span>
-
-                <strong class="ready">
-                    Not Available
-                </strong>
-
-            </div>
-
-
-            <div class="status-item">
-
-                <span>
-                    Inventory Risk
-                </span>
-
-                <strong class="ready">
-                    Not Available
-                </strong>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-
-    <!-- =====================================================
-         REPORT CHECKLIST
-    ====================================================== -->
-
-    <div class="large-card mt-4">
-
-        <h4>
-            Report Readiness
-        </h4>
-
-        <p class="muted">
-            Current status of the information required to
-            generate a complete business report.
-        </p>
-
-
-        <div class="mt-4">
-
-
-            <div class="status-item">
-
-                <span>
-                    Dataset Uploaded
-                </span>
-
-                <strong class="ready">
-                    Waiting
-                </strong>
-
-            </div>
-
+            <!-- DATASET ANALYSIS -->
 
             <div class="status-item">
 
@@ -778,76 +309,73 @@ Reports | Retail Demand Forecasting System
                     Dataset Analysis
                 </span>
 
-                <strong class="ready">
-                    Waiting
+                <strong class="online">
+
+                    <i class="bi bi-check-circle"></i>
+
+                    Available
+
                 </strong>
 
             </div>
 
+
+            <!-- FORECASTING -->
 
             <div class="status-item">
 
                 <span>
-                    Data Cleaning
+                    Demand Forecasting
                 </span>
 
                 <strong class="ready">
-                    Waiting
+
+                    <i class="bi bi-clock"></i>
+
+                    Based on Dataset
+
                 </strong>
 
             </div>
 
+
+            <!-- INVENTORY -->
 
             <div class="status-item">
 
                 <span>
-                    Demand Analytics
+                    Inventory Analysis
                 </span>
 
                 <strong class="ready">
-                    Waiting
+
+                    <i class="bi bi-database"></i>
+
+                    Requires Inventory Dataset
+
                 </strong>
 
             </div>
 
+
+            <!-- ANALYTICS -->
 
             <div class="status-item">
 
                 <span>
-                    ML Forecasting
+                    Business Analytics
                 </span>
 
                 <strong class="ready">
-                    Waiting
+
+                    <i class="bi bi-bar-chart"></i>
+
+                    Based on Available Data
+
                 </strong>
 
             </div>
 
-
-            <div class="status-item">
-
-                <span>
-                    Inventory Optimization
-                </span>
-
-                <strong class="ready">
-                    Waiting
-                </strong>
-
-            </div>
-
-
-            <div class="status-item">
-
-                <span>
-                    Final Business Report
-                </span>
-
-                <strong class="ready">
-                    Not Generated
-                </strong>
-
-            </div>
 
         </div>
 
@@ -856,50 +384,79 @@ Reports | Retail Demand Forecasting System
 
 
     <!-- =====================================================
-         FUTURE REPORT GENERATION
+         REPORT INFORMATION
     ====================================================== -->
 
-    <div class="large-card mt-4 mb-4">
+    <div class="large-card mt-4">
 
-        <div class="d-flex justify-content-between align-items-center">
+        <h4>
+            About Reports
+        </h4>
 
-            <div>
+        <p class="muted">
+            Reports are generated from the information available
+            in the system. The application does not create
+            artificial sales, inventory or forecasting values.
+        </p>
 
-                <h4>
-                    Generate Business Report
-                </h4>
 
-                <p class="muted mb-0">
+        <div class="row g-4 mt-2">
 
-                    A complete report will become available once
-                    the required dataset, analytics and ML results
-                    are ready.
 
-                </p>
+            <div class="col-md-4">
+
+                <div class="status-item">
+
+                    <span>
+                        Data Source
+                    </span>
+
+                    <strong>
+                        Uploaded CSV
+                    </strong>
+
+                </div>
 
             </div>
 
-            <button
-                type="button"
-                class="btn btn-primary"
-                disabled
-            >
 
-                <i class="bi bi-file-earmark-arrow-down"></i>
+            <div class="col-md-4">
 
-                Generate Report
+                <div class="status-item">
 
-            </button>
+                    <span>
+                        Analysis
+                    </span>
 
-        </div>
+                    <strong>
+                        Automatic
+                    </strong>
+
+                </div>
+
+            </div>
 
 
-        <div class="alert alert-secondary mt-4 mb-0">
+            <div class="col-md-4">
 
-            <i class="bi bi-lock"></i>
+                <div class="status-item">
 
-            Report generation is currently disabled because
-            there is no processed dataset or forecasting result.
+                    <span>
+                        Artificial Values
+                    </span>
+
+                    <strong class="online">
+
+                        <i class="bi bi-shield-check"></i>
+
+                        Not Generated
+
+                    </strong>
+
+                </div>
+
+            </div>
+
 
         </div>
 

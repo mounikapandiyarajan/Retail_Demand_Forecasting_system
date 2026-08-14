@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-Demand Analytics | Retail Demand Forecasting System
+Analytics | Retail Demand Forecasting System
 {% endblock %}
 
 {% block content %}
@@ -17,16 +17,16 @@ Demand Analytics | Retail Demand Forecasting System
         <div>
 
             <div class="dashboard-label">
-                DEMAND DRIVERS & FEATURE ENGINEERING
+                DATA ANALYTICS & INSIGHTS
             </div>
 
             <h1>
-                Demand Analytics
+                Retail Analytics
             </h1>
 
             <p>
-                Analyze the factors that influence product demand,
-                seasonal patterns and business performance.
+                Analyze sales, demand, inventory and business
+                performance using the uploaded retail data.
             </p>
 
         </div>
@@ -43,7 +43,7 @@ Demand Analytics | Retail Demand Forecasting System
 
 
     <!-- =====================================================
-         CURRENT SYSTEM STATE
+         DATA STATUS
     ====================================================== -->
 
     <div class="large-card">
@@ -53,46 +53,47 @@ Demand Analytics | Retail Demand Forecasting System
             <div>
 
                 <h4>
-                    Analytics Status
+                    Analytics Data Status
                 </h4>
 
                 <p class="muted mb-0">
-                    Analytics will be generated after a compatible
-                    retail dataset is uploaded and processed.
+                    Analytics will automatically use processed
+                    datasets when they become available.
                 </p>
 
             </div>
 
-            <span class="badge bg-warning text-dark">
-
+            <span class="badge bg-secondary">
                 Awaiting Dataset
-
             </span>
 
         </div>
 
 
-        <div class="alert alert-info mt-4">
+        <div class="alert alert-info mt-4 mb-0">
 
             <i class="bi bi-info-circle"></i>
 
-            No analytics are available yet.
+            <strong>
+                No analytics data loaded yet.
+            </strong>
 
-            Upload a sales dataset from the
-            <strong>Dataset Management</strong> page to enable
-            demand analysis.
+            <br>
+
+            Upload and process a retail dataset from
+            <strong>Dataset Management</strong> to populate
+            these analytics.
 
         </div>
 
     </div>
 
 
-
     <!-- =====================================================
-         ANALYTICS OVERVIEW
+         KEY PERFORMANCE INDICATORS
     ====================================================== -->
 
-    <div class="row g-4 mt-1">
+    <div class="row g-4 mt-2">
 
 
         <!-- TOTAL SALES -->
@@ -116,7 +117,7 @@ Demand Analytics | Retail Demand Forecasting System
                 </h3>
 
                 <span>
-                    Awaiting sales data
+                    Waiting for sales data
                 </span>
 
             </div>
@@ -145,7 +146,7 @@ Demand Analytics | Retail Demand Forecasting System
                 </h3>
 
                 <span>
-                    Awaiting demand data
+                    Waiting for demand data
                 </span>
 
             </div>
@@ -166,7 +167,7 @@ Demand Analytics | Retail Demand Forecasting System
                 </div>
 
                 <h5>
-                    Products Analyzed
+                    Products
                 </h5>
 
                 <h3>
@@ -174,7 +175,7 @@ Demand Analytics | Retail Demand Forecasting System
                 </h3>
 
                 <span>
-                    Awaiting product data
+                    Waiting for product data
                 </span>
 
             </div>
@@ -182,7 +183,7 @@ Demand Analytics | Retail Demand Forecasting System
         </div>
 
 
-        <!-- DATA PERIOD -->
+        <!-- STORES -->
 
         <div class="col-md-6 col-xl-3">
 
@@ -190,12 +191,12 @@ Demand Analytics | Retail Demand Forecasting System
 
                 <div class="card-icon">
 
-                    <i class="bi bi-calendar-range"></i>
+                    <i class="bi bi-shop"></i>
 
                 </div>
 
                 <h5>
-                    Data Period
+                    Stores
                 </h5>
 
                 <h3>
@@ -203,7 +204,7 @@ Demand Analytics | Retail Demand Forecasting System
                 </h3>
 
                 <span>
-                    Awaiting date information
+                    Waiting for store data
                 </span>
 
             </div>
@@ -212,6 +213,56 @@ Demand Analytics | Retail Demand Forecasting System
 
     </div>
 
+
+    <!-- =====================================================
+         SALES & DEMAND ANALYSIS
+    ====================================================== -->
+
+    <div class="large-card mt-4">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <div>
+
+                <h4>
+                    Sales & Demand Analysis
+                </h4>
+
+                <p class="muted mb-0">
+                    Historical sales and demand trends will
+                    be visualized here.
+                </p>
+
+            </div>
+
+            <i class="bi bi-graph-up fs-3"></i>
+
+        </div>
+
+
+        <div class="analytics-placeholder mt-4">
+
+            <div class="text-center py-5">
+
+                <i class="bi bi-bar-chart-line fs-1"></i>
+
+                <h5 class="mt-3">
+                    Sales Trend Chart
+                </h5>
+
+                <p class="muted">
+
+                    Upload a dataset containing date and
+                    sales or demand columns to generate
+                    the trend analysis.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
 
 
     <!-- =====================================================
@@ -229,93 +280,34 @@ Demand Analytics | Retail Demand Forecasting System
                 </h4>
 
                 <p class="muted mb-0">
-
-                    Historical demand patterns will be displayed
-                    after the sales dataset is processed.
-
+                    Demand behavior over time will be analyzed
+                    using the processed dataset.
                 </p>
 
             </div>
 
             <span class="badge bg-secondary">
-
                 No Data
-
             </span>
 
         </div>
 
 
-        <div class="alert alert-light border mt-4 text-center p-5">
-
-            <i class="bi bi-graph-up display-6"></i>
-
-            <h5 class="mt-3">
-                Demand Trend Not Available
-            </h5>
-
-            <p class="muted mb-0">
-
-                Upload a dataset containing a valid date column
-                and demand or sales column to generate the trend.
-
-            </p>
-
-        </div>
-
-    </div>
+        <div class="row g-4 mt-3">
 
 
-
-    <!-- =====================================================
-         DEMAND DRIVERS
-    ====================================================== -->
-
-    <div class="large-card mt-4">
-
-        <div class="d-flex justify-content-between align-items-center">
-
-            <div>
-
-                <h4>
-                    Demand Drivers
-                </h4>
-
-                <p class="muted mb-0">
-
-                    The system will identify factors that influence
-                    product demand.
-
-                </p>
-
-            </div>
-
-            <span class="badge bg-secondary">
-
-                Awaiting Data
-
-            </span>
-
-        </div>
-
-
-        <div class="row g-4 mt-2">
-
-
-            <!-- PRICE -->
-
-            <div class="col-md-6 col-lg-3">
+            <div class="col-lg-8">
 
                 <div class="dashboard-card">
 
                     <div class="card-icon">
 
-                        <i class="bi bi-currency-rupee"></i>
+                        <i class="bi bi-activity"></i>
 
                     </div>
 
                     <h5>
-                        Price
+                        Historical Demand
                     </h5>
 
                     <h3>
@@ -323,7 +315,7 @@ Demand Analytics | Retail Demand Forecasting System
                     </h3>
 
                     <span>
-                        Correlation pending
+                        Waiting for time-series data
                     </span>
 
                 </div>
@@ -331,20 +323,18 @@ Demand Analytics | Retail Demand Forecasting System
             </div>
 
 
-            <!-- DISCOUNT -->
-
-            <div class="col-md-6 col-lg-3">
+            <div class="col-lg-4">
 
                 <div class="dashboard-card">
 
                     <div class="card-icon">
 
-                        <i class="bi bi-percent"></i>
+                        <i class="bi bi-arrow-up-right"></i>
 
                     </div>
 
                     <h5>
-                        Discount
+                        Demand Growth
                     </h5>
 
                     <h3>
@@ -352,65 +342,7 @@ Demand Analytics | Retail Demand Forecasting System
                     </h3>
 
                     <span>
-                        Impact pending
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- PROMOTION -->
-
-            <div class="col-md-6 col-lg-3">
-
-                <div class="dashboard-card">
-
-                    <div class="card-icon">
-
-                        <i class="bi bi-megaphone"></i>
-
-                    </div>
-
-                    <h5>
-                        Promotion
-                    </h5>
-
-                    <h3>
-                        —
-                    </h3>
-
-                    <span>
-                        Impact pending
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- SEASONALITY -->
-
-            <div class="col-md-6 col-lg-3">
-
-                <div class="dashboard-card">
-
-                    <div class="card-icon">
-
-                        <i class="bi bi-calendar-event"></i>
-
-                    </div>
-
-                    <h5>
-                        Seasonality
-                    </h5>
-
-                    <h3>
-                        —
-                    </h3>
-
-                    <span>
-                        Pattern pending
+                        Calculated from actual data
                     </span>
 
                 </div>
@@ -420,7 +352,6 @@ Demand Analytics | Retail Demand Forecasting System
         </div>
 
     </div>
-
 
 
     <!-- =====================================================
@@ -434,28 +365,24 @@ Demand Analytics | Retail Demand Forecasting System
             <div>
 
                 <h4>
-                    Product Demand Analysis
+                    Product Performance
                 </h4>
 
                 <p class="muted mb-0">
-
-                    Product-level demand performance will appear
-                    after the dataset is processed.
-
+                    Identify high-demand and low-demand
+                    products from the uploaded dataset.
                 </p>
 
             </div>
 
-            <span class="badge bg-secondary">
-                No Data
-            </span>
+            <i class="bi bi-boxes fs-3"></i>
 
         </div>
 
 
         <div class="table-responsive mt-4">
 
-            <table class="table table-bordered align-middle">
+            <table class="table table-hover">
 
                 <thead>
 
@@ -466,19 +393,19 @@ Demand Analytics | Retail Demand Forecasting System
                         </th>
 
                         <th>
-                            Total Demand
+                            Sales
                         </th>
 
                         <th>
-                            Average Demand
+                            Demand
                         </th>
 
                         <th>
-                            Demand Trend
+                            Inventory
                         </th>
 
                         <th>
-                            Status
+                            Performance
                         </th>
 
                     </tr>
@@ -489,19 +416,13 @@ Demand Analytics | Retail Demand Forecasting System
 
                     <tr>
 
-                        <td colspan="5"
-                            class="text-center text-muted py-5">
+                        <td colspan="5" class="text-center py-4">
 
-                            <i class="bi bi-database-x fs-3"></i>
+                            <span class="text-muted">
 
-                            <br>
+                                No product data available yet.
 
-                            No product demand data available.
-
-                            <br>
-
-                            Upload and process a compatible
-                            sales dataset first.
+                            </span>
 
                         </td>
 
@@ -516,9 +437,8 @@ Demand Analytics | Retail Demand Forecasting System
     </div>
 
 
-
     <!-- =====================================================
-         SEASONAL ANALYSIS
+         CATEGORY ANALYSIS
     ====================================================== -->
 
     <div class="large-card mt-4">
@@ -528,14 +448,194 @@ Demand Analytics | Retail Demand Forecasting System
             <div>
 
                 <h4>
-                    Seasonal Analysis
+                    Category Analysis
                 </h4>
 
                 <p class="muted mb-0">
+                    Compare demand and sales performance
+                    across product categories.
+                </p>
 
-                    Seasonal and time-based demand patterns
-                    will be detected automatically.
+            </div>
 
+            <i class="bi bi-tags fs-3"></i>
+
+        </div>
+
+
+        <div class="row g-4 mt-3">
+
+
+            <div class="col-md-6">
+
+                <div class="dashboard-card">
+
+                    <div class="card-icon">
+
+                        <i class="bi bi-pie-chart"></i>
+
+                    </div>
+
+                    <h5>
+                        Best Performing Category
+                    </h5>
+
+                    <h3>
+                        —
+                    </h3>
+
+                    <span>
+                        Requires category data
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6">
+
+                <div class="dashboard-card">
+
+                    <div class="card-icon">
+
+                        <i class="bi bi-bar-chart"></i>
+
+                    </div>
+
+                    <h5>
+                        Category Demand
+                    </h5>
+
+                    <h3>
+                        —
+                    </h3>
+
+                    <span>
+                        Requires category and demand data
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         INVENTORY VS DEMAND
+    ====================================================== -->
+
+    <div class="large-card mt-4">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <div>
+
+                <h4>
+                    Inventory vs Demand
+                </h4>
+
+                <p class="muted mb-0">
+                    Compare available inventory with actual
+                    or predicted demand.
+                </p>
+
+            </div>
+
+            <i class="bi bi-boxes fs-3"></i>
+
+        </div>
+
+
+        <div class="alert alert-secondary mt-4">
+
+            <i class="bi bi-database"></i>
+
+            Inventory and demand comparison will be available
+            when the required columns are detected in the
+            uploaded dataset.
+
+        </div>
+
+
+        <div class="row g-4">
+
+
+            <div class="col-md-4">
+
+                <div class="status-item">
+
+                    <span>
+                        Inventory Data
+                    </span>
+
+                    <strong>
+                        Not Available
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="status-item">
+
+                    <span>
+                        Demand Data
+                    </span>
+
+                    <strong>
+                        Not Available
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="status-item">
+
+                    <span>
+                        Analysis
+                    </span>
+
+                    <strong>
+                        Waiting
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         BUSINESS INSIGHTS
+    ====================================================== -->
+
+    <div class="large-card mt-4">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <div>
+
+                <h4>
+                    Business Insights
+                </h4>
+
+                <p class="muted mb-0">
+                    Smart insights generated from actual
+                    retail data and ML results.
                 </p>
 
             </div>
@@ -547,29 +647,35 @@ Demand Analytics | Retail Demand Forecasting System
         </div>
 
 
-        <div class="row g-4 mt-2">
+        <div class="row g-4 mt-3">
 
 
-            <div class="col-md-4">
+            <!-- INSIGHT 1 -->
+
+            <div class="col-lg-4">
 
                 <div class="dashboard-card">
 
                     <div class="card-icon">
 
-                        <i class="bi bi-calendar-week"></i>
+                        <i class="bi bi-lightbulb"></i>
 
                     </div>
 
                     <h5>
-                        Weekly Pattern
+                        Demand Insight
                     </h5>
 
-                    <h3>
-                        —
-                    </h3>
+                    <p class="muted">
+
+                        The system will identify demand
+                        patterns and changes from historical
+                        retail data.
+
+                    </p>
 
                     <span>
-                        Not calculated
+                        ML / Analytics
                     </span>
 
                 </div>
@@ -577,26 +683,32 @@ Demand Analytics | Retail Demand Forecasting System
             </div>
 
 
-            <div class="col-md-4">
+            <!-- INSIGHT 2 -->
+
+            <div class="col-lg-4">
 
                 <div class="dashboard-card">
 
                     <div class="card-icon">
 
-                        <i class="bi bi-calendar-month"></i>
+                        <i class="bi bi-calendar-event"></i>
 
                     </div>
 
                     <h5>
-                        Monthly Pattern
+                        Seasonal Insight
                     </h5>
 
-                    <h3>
-                        —
-                    </h3>
+                    <p class="muted">
+
+                        Seasonal and time-based demand
+                        patterns will be detected when
+                        sufficient historical data exists.
+
+                    </p>
 
                     <span>
-                        Not calculated
+                        Time-Series Analysis
                     </span>
 
                 </div>
@@ -604,26 +716,32 @@ Demand Analytics | Retail Demand Forecasting System
             </div>
 
 
-            <div class="col-md-4">
+            <!-- INSIGHT 3 -->
+
+            <div class="col-lg-4">
 
                 <div class="dashboard-card">
 
                     <div class="card-icon">
 
-                        <i class="bi bi-calendar-heart"></i>
+                        <i class="bi bi-clipboard-data"></i>
 
                     </div>
 
                     <h5>
-                        Festival Effect
+                        Inventory Insight
                     </h5>
 
-                    <h3>
-                        —
-                    </h3>
+                    <p class="muted">
+
+                        The system will compare demand with
+                        inventory to identify possible
+                        stock-related issues.
+
+                    </p>
 
                     <span>
-                        Not calculated
+                        Inventory Analytics
                     </span>
 
                 </div>
@@ -635,135 +753,8 @@ Demand Analytics | Retail Demand Forecasting System
     </div>
 
 
-
     <!-- =====================================================
-         DATA REQUIREMENTS
-    ====================================================== -->
-
-    <div class="large-card mt-4">
-
-        <h4>
-            Required Data for Analytics
-        </h4>
-
-        <p class="muted">
-            The following information can be used to generate
-            meaningful demand analytics.
-        </p>
-
-
-        <div class="row g-4 mt-2">
-
-
-            <div class="col-md-6 col-lg-4">
-
-                <div class="status-item">
-
-                    <span>
-                        Date
-                    </span>
-
-                    <strong class="ready">
-                        Required
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <div class="col-md-6 col-lg-4">
-
-                <div class="status-item">
-
-                    <span>
-                        Product
-                    </span>
-
-                    <strong class="ready">
-                        Recommended
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <div class="col-md-6 col-lg-4">
-
-                <div class="status-item">
-
-                    <span>
-                        Demand / Sales
-                    </span>
-
-                    <strong class="ready">
-                        Required
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <div class="col-md-6 col-lg-4">
-
-                <div class="status-item">
-
-                    <span>
-                        Price
-                    </span>
-
-                    <strong class="ready">
-                        Optional
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <div class="col-md-6 col-lg-4">
-
-                <div class="status-item">
-
-                    <span>
-                        Discount
-                    </span>
-
-                    <strong class="ready">
-                        Optional
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <div class="col-md-6 col-lg-4">
-
-                <div class="status-item">
-
-                    <span>
-                        Promotion
-                    </span>
-
-                    <strong class="ready">
-                        Optional
-                    </strong>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-
-    <!-- =====================================================
-         ANALYTICS PIPELINE
+         ANALYTICS READINESS
     ====================================================== -->
 
     <div class="large-card mt-4">
@@ -773,14 +764,18 @@ Demand Analytics | Retail Demand Forecasting System
             <div>
 
                 <h4>
-                    Analytics Pipeline
+                    Analytics Readiness
                 </h4>
 
                 <p class="muted mb-0">
-                    Current status of the demand analytics workflow.
+                    Current status of the analytics pipeline.
                 </p>
 
             </div>
+
+            <span class="badge bg-warning text-dark">
+                Waiting for Dataset
+            </span>
 
         </div>
 
@@ -791,50 +786,11 @@ Demand Analytics | Retail Demand Forecasting System
             <div class="status-item">
 
                 <span>
-                    Dataset Upload
-                </span>
-
-                <strong class="online">
-                    ✓ Available
-                </strong>
-
-            </div>
-
-
-            <div class="status-item">
-
-                <span>
-                    Data Quality Analysis
-                </span>
-
-                <strong class="online">
-                    ✓ Available
-                </strong>
-
-            </div>
-
-
-            <div class="status-item">
-
-                <span>
-                    Column Mapping
-                </span>
-
-                <strong class="online">
-                    ✓ Available
-                </strong>
-
-            </div>
-
-
-            <div class="status-item">
-
-                <span>
-                    Demand Trend Analysis
+                    Dataset Uploaded
                 </span>
 
                 <strong class="ready">
-                    Waiting for Dataset
+                    Waiting
                 </strong>
 
             </div>
@@ -843,11 +799,11 @@ Demand Analytics | Retail Demand Forecasting System
             <div class="status-item">
 
                 <span>
-                    Demand Driver Analysis
+                    Dataset Analysis
                 </span>
 
                 <strong class="ready">
-                    Waiting for Dataset
+                    Waiting
                 </strong>
 
             </div>
@@ -856,11 +812,11 @@ Demand Analytics | Retail Demand Forecasting System
             <div class="status-item">
 
                 <span>
-                    Seasonal Analysis
+                    Sales / Demand Analysis
                 </span>
 
                 <strong class="ready">
-                    Waiting for Dataset
+                    Waiting
                 </strong>
 
             </div>
@@ -869,14 +825,85 @@ Demand Analytics | Retail Demand Forecasting System
             <div class="status-item">
 
                 <span>
-                    ML Forecasting
+                    Product Analysis
                 </span>
 
                 <strong class="ready">
-                    Next Stage
+                    Waiting
                 </strong>
 
             </div>
+
+
+            <div class="status-item">
+
+                <span>
+                    ML Integration
+                </span>
+
+                <strong class="ready">
+                    Future Stage
+                </strong>
+
+            </div>
+
+
+            <div class="status-item">
+
+                <span>
+                    Business Insights
+                </span>
+
+                <strong class="ready">
+                    Future Stage
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         FUTURE ML CONNECTION
+    ====================================================== -->
+
+    <div class="large-card mt-4 mb-4">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <div>
+
+                <h4>
+                    ML Forecast Integration
+                </h4>
+
+                <p class="muted mb-0">
+                    This section is prepared for connection
+                    with the forecasting models.
+                </p>
+
+            </div>
+
+            <i class="bi bi-cpu fs-3"></i>
+
+        </div>
+
+
+        <div class="alert alert-info mt-4 mb-0">
+
+            <i class="bi bi-info-circle"></i>
+
+            <strong>
+                Future ML Integration
+            </strong>
+
+            <br>
+
+            Once the forecasting model is created, its
+            predictions can be connected here without
+            redesigning this Analytics page.
 
         </div>
 

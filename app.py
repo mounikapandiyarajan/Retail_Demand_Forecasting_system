@@ -4,7 +4,9 @@
 # ============================================================
 
 import os
+import re
 import pandas as pd
+import numpy as np
 
 from flask import (
     Flask,
@@ -37,10 +39,24 @@ from database.models import db, User
 
 
 # ============================================================
+# OPTIONAL DATA CLEANING SERVICE
+# ============================================================
+
+try:
+
+    from services.data_cleaner import clean_dataset
+
+except ImportError:
+
+    clean_dataset = None
+
+
+# ============================================================
 # FLASK APPLICATION
 # ============================================================
 
 app = Flask(__name__)
+
 app.config.from_object(Config)
 
 
@@ -52,11 +68,13 @@ BASE_DIR = os.path.dirname(
     os.path.abspath(__file__)
 )
 
+
 UPLOAD_FOLDER = os.path.join(
     BASE_DIR,
     "data",
     "uploads"
 )
+
 
 RAW_FOLDER = os.path.join(
     BASE_DIR,
@@ -64,11 +82,13 @@ RAW_FOLDER = os.path.join(
     "raw"
 )
 
+
 CLEANED_FOLDER = os.path.join(
     BASE_DIR,
     "data",
     "cleaned"
 )
+
 
 REPORT_FOLDER = os.path.join(
     BASE_DIR,
@@ -121,7 +141,8 @@ ALLOWED_EXTENSIONS = {
 def allowed_file(filename):
 
     return (
-        "." in filename
+        "."
+        in filename
         and
         filename.rsplit(
             ".",
@@ -132,10 +153,558 @@ def allowed_file(filename):
 
 
 # ============================================================
+# AUTOMATIC COLUMN MAPPING ENGINE
+# ============================================================
+
+def automatic_column_mapping(columns):
+
+    """
+    Automatically identifies important retail dataset
+    columns based on common column-name variations.
+
+    Detects:
+
+    - Date
+    - Order ID
+    - Order Name
+    - Transaction ID
+    - Invoice ID
+    - Product
+    - Sales
+    - Demand
+    - Store
+    - Price
+    - Discount
+    - Promotion
+    - Category
+    - Inventory
+    - Supplier
+    - Lead Time
+    - Temperature
+    - Holiday
+    - Festival
+
+    The system is designed to handle datasets where
+    column names may be written in different formats.
+    """
+
+    # ========================================================
+    # NORMALIZE COLUMN NAMES
+    # ========================================================
+
+    normalized_columns = {}
+
+
+    for column in columns:
+
+        original = str(
+            column
+        ).strip()
+
+
+        normalized = re.sub(
+            r"[^a-zA-Z0-9]",
+            "_",
+            original.lower()
+        )
+
+
+        normalized = re.sub(
+            r"_+",
+            "_",
+            normalized
+        ).strip("_")
+
+
+        normalized_columns[
+            original
+        ] = normalized
+
+
+    # ========================================================
+    # POSSIBLE COLUMN NAMES
+    # ========================================================
+
+    column_patterns = {
+
+
+        # ====================================================
+        # DATE
+        # ====================================================
+
+        "date": [
+
+            "date",
+            "order_date",
+            "sales_date",
+            "sale_date",
+            "transaction_date",
+            "invoice_date",
+            "purchase_date",
+            "delivery_date",
+            "shipping_date",
+            "created_date",
+            "datetime",
+            "timestamp"
+
+        ],
+
+
+        # ====================================================
+        # ORDER ID
+        # ====================================================
+
+        "order_id": [
+
+            "order_id",
+            "orderid",
+            "order_no",
+            "order_number",
+            "order_num",
+            "sales_order",
+            "sales_order_id",
+            "sales_order_number",
+            "order_code"
+
+        ],
+
+
+        # ====================================================
+        # ORDER NAME
+        # ====================================================
+
+        "order_name": [
+
+            "order_name",
+            "ordername",
+            "order_title",
+            "order_description"
+
+        ],
+
+
+        # ====================================================
+        # TRANSACTION ID
+        # ====================================================
+
+        "transaction_id": [
+
+            "transaction_id",
+            "transactionid",
+            "transaction_no",
+            "transaction_number",
+            "transaction_num",
+            "transaction_code",
+            "txn_id",
+            "txn_number"
+
+        ],
+
+
+        # ====================================================
+        # INVOICE ID
+        # ====================================================
+
+        "invoice_id": [
+
+            "invoice_id",
+            "invoiceid",
+            "invoice_no",
+            "invoice_number",
+            "invoice_num",
+            "invoice_code"
+
+        ],
+
+
+        # ====================================================
+        # PRODUCT
+        # ====================================================
+
+        "product": [
+
+            "product",
+            "product_name",
+            "product_id",
+            "item",
+            "item_name",
+            "item_id",
+            "sku",
+            "sku_id",
+            "product_code",
+            "item_code"
+
+        ],
+
+
+        # ====================================================
+        # SALES
+        # ====================================================
+
+        "sales": [
+
+            "sales",
+            "sale",
+            "sales_amount",
+            "sale_amount",
+            "revenue",
+            "total_sales",
+            "sales_value",
+            "sales_revenue",
+            "turnover",
+            "total_revenue"
+
+        ],
+
+
+        # ====================================================
+        # DEMAND / QUANTITY
+        # ====================================================
+
+        "demand": [
+
+            "demand",
+            "units_sold",
+            "unit_sold",
+            "quantity",
+            "qty",
+            "sales_quantity",
+            "sales_qty",
+            "units",
+            "units_demanded",
+            "demand_quantity",
+            "demand_qty"
+
+        ],
+
+
+        # ====================================================
+        # STORE
+        # ====================================================
+
+        "store": [
+
+            "store",
+            "store_id",
+            "store_name",
+            "store_code",
+            "shop",
+            "shop_id",
+            "shop_name",
+            "branch",
+            "branch_id",
+            "branch_name",
+            "location"
+
+        ],
+
+
+        # ====================================================
+        # PRICE
+        # ====================================================
+
+        "price": [
+
+            "price",
+            "unit_price",
+            "selling_price",
+            "sale_price",
+            "product_price",
+            "item_price",
+            "cost",
+            "unit_cost",
+            "selling_cost"
+
+        ],
+
+
+        # ====================================================
+        # DISCOUNT
+        # ====================================================
+
+        "discount": [
+
+            "discount",
+            "discount_rate",
+            "discount_percentage",
+            "discount_percent",
+            "discount_amount",
+            "markdown"
+
+        ],
+
+
+        # ====================================================
+        # PROMOTION
+        # ====================================================
+
+        "promotion": [
+
+            "promotion",
+            "promotion_status",
+            "promo",
+            "promotional",
+            "campaign",
+            "offer",
+            "promotion_flag",
+            "promo_flag"
+
+        ],
+
+
+        # ====================================================
+        # CATEGORY
+        # ====================================================
+
+        "category": [
+
+            "category",
+            "product_category",
+            "item_category",
+            "product_type",
+            "department",
+            "segment"
+
+        ],
+
+
+        # ====================================================
+        # INVENTORY
+        # ====================================================
+
+        "inventory": [
+
+            "inventory",
+            "stock",
+            "current_stock",
+            "stock_level",
+            "stock_quantity",
+            "inventory_level",
+            "available_stock",
+            "available_inventory"
+
+        ],
+
+
+        # ====================================================
+        # SUPPLIER
+        # ====================================================
+
+        "supplier": [
+
+            "supplier",
+            "supplier_id",
+            "supplier_name",
+            "supplier_code",
+            "vendor",
+            "vendor_id",
+            "vendor_name",
+            "vendor_code"
+
+        ],
+
+
+        # ====================================================
+        # LEAD TIME
+        # ====================================================
+
+        "lead_time": [
+
+            "lead_time",
+            "lead_days",
+            "delivery_time",
+            "delivery_days",
+            "supplier_lead_time",
+            "supplier_delivery_time"
+
+        ],
+
+
+        # ====================================================
+        # TEMPERATURE
+        # ====================================================
+
+        "temperature": [
+
+            "temperature",
+            "temp",
+            "avg_temperature",
+            "average_temperature",
+            "mean_temperature"
+
+        ],
+
+
+        # ====================================================
+        # HOLIDAY
+        # ====================================================
+
+        "holiday": [
+
+            "holiday",
+            "holiday_flag",
+            "is_holiday",
+            "holiday_status",
+            "holiday_indicator"
+
+        ],
+
+
+        # ====================================================
+        # FESTIVAL
+        # ====================================================
+
+        "festival": [
+
+            "festival",
+            "festival_flag",
+            "is_festival",
+            "festival_name",
+            "festival_status"
+
+        ]
+
+    }
+
+
+    # ========================================================
+    # FIND MATCHING COLUMNS
+    # ========================================================
+
+    mapping = {}
+
+
+    # ========================================================
+    # PREVENT SAME COLUMN BEING USED MULTIPLE TIMES
+    # ========================================================
+
+    used_columns = set()
+
+
+    # ========================================================
+    # PROCESS EACH FIELD
+    # ========================================================
+
+    for field, possible_names in column_patterns.items():
+
+        mapping[field] = None
+
+
+        # ====================================================
+        # EXACT MATCH
+        # ====================================================
+
+        for original, normalized in normalized_columns.items():
+
+            if original in used_columns:
+
+                continue
+
+
+            if normalized in possible_names:
+
+                mapping[field] = original
+
+                used_columns.add(
+                    original
+                )
+
+                break
+
+
+        # ====================================================
+        # PARTIAL MATCH
+        # ====================================================
+
+        if mapping[field] is None:
+
+            for original, normalized in normalized_columns.items():
+
+                if original in used_columns:
+
+                    continue
+
+
+                for possible_name in possible_names:
+
+                    if (
+                        possible_name in normalized
+                        or
+                        normalized in possible_name
+                    ):
+
+                        mapping[field] = original
+
+                        used_columns.add(
+                            original
+                        )
+
+                        break
+
+
+                if mapping[field] is not None:
+
+                    break
+
+
+    # ========================================================
+    # ORDER-RELATED SUMMARY
+    # ========================================================
+
+    order_columns = {
+
+        "order_id":
+            mapping.get("order_id"),
+
+        "order_name":
+            mapping.get("order_name"),
+
+        "transaction_id":
+            mapping.get("transaction_id"),
+
+        "invoice_id":
+            mapping.get("invoice_id")
+
+    }
+
+
+    # ========================================================
+    # CHECK WHETHER ORDER INFORMATION EXISTS
+    # ========================================================
+
+    order_detected = any(
+
+        value is not None
+
+        for value in order_columns.values()
+
+    )
+
+
+    mapping["order_detected"] = (
+        order_detected
+    )
+
+
+    mapping["order_columns"] = (
+        order_columns
+    )
+
+
+    # ========================================================
+    # RETURN MAPPING
+    # ========================================================
+
+    return mapping
+
+
+# ============================================================
 # DATABASE
 # ============================================================
 
-db.init_app(app)
+db.init_app(
+    app
+)
 
 
 # ============================================================
@@ -144,7 +713,9 @@ db.init_app(app)
 
 login_manager = LoginManager()
 
-login_manager.init_app(app)
+login_manager.init_app(
+    app
+)
 
 login_manager.login_view = "login"
 
@@ -184,7 +755,9 @@ def role_required(*allowed_roles):
                 )
 
 
-            user_role = current_user.role
+            user_role = (
+                current_user.role
+            )
 
 
             if user_role not in allowed_roles:
@@ -207,632 +780,6 @@ def role_required(*allowed_roles):
         return wrapper
 
     return decorator
-
-
-# ============================================================
-# COLUMN DETECTION HELPERS
-# ============================================================
-
-COLUMN_KEYWORDS = {
-
-    "date": [
-        "date",
-        "order_date",
-        "sales_date",
-        "sale_date",
-        "transaction_date",
-        "timestamp",
-        "datetime"
-    ],
-
-    "product": [
-        "product",
-        "product_id",
-        "product_name",
-        "sku",
-        "sku_id",
-        "item",
-        "item_id",
-        "item_name"
-    ],
-
-    "demand": [
-        "demand",
-        "predicted_demand",
-        "forecast_demand",
-        "units_demand",
-        "daily_demand"
-    ],
-
-    "sales": [
-        "sales",
-        "sale",
-        "sales_quantity",
-        "sales_qty",
-        "units_sold",
-        "quantity_sold",
-        "sold_quantity",
-        "revenue"
-    ],
-
-    "store": [
-        "store",
-        "store_id",
-        "store_name",
-        "shop",
-        "shop_id",
-        "branch",
-        "branch_id"
-    ],
-
-    "price": [
-        "price",
-        "unit_price",
-        "selling_price",
-        "sale_price",
-        "product_price",
-        "cost_price"
-    ],
-
-    "discount": [
-        "discount",
-        "discount_percent",
-        "discount_percentage",
-        "discount_rate"
-    ],
-
-    "promotion": [
-        "promotion",
-        "promo",
-        "promotional",
-        "is_promotion",
-        "promotion_flag"
-    ],
-
-    "inventory": [
-        "inventory",
-        "stock",
-        "current_stock",
-        "stock_level",
-        "stock_quantity",
-        "inventory_quantity",
-        "available_stock",
-        "quantity_in_stock",
-        "on_hand",
-        "on_hand_quantity"
-    ],
-
-    "category": [
-        "category",
-        "product_category",
-        "category_name",
-        "department"
-    ],
-
-    "supplier": [
-        "supplier",
-        "supplier_id",
-        "supplier_name",
-        "vendor",
-        "vendor_id",
-        "vendor_name"
-    ],
-
-    "lead_time": [
-        "lead_time",
-        "leadtime",
-        "supplier_lead_time",
-        "delivery_time",
-        "shipping_time"
-    ]
-}
-
-
-def normalize_column_name(column):
-
-    return (
-        str(column)
-        .strip()
-        .lower()
-        .replace(" ", "_")
-        .replace("-", "_")
-    )
-
-
-def detect_column_mapping(df):
-
-    mapping = {}
-
-    normalized_columns = {}
-
-    for column in df.columns:
-
-        normalized_columns[column] = (
-            normalize_column_name(column)
-        )
-
-
-    for field, keywords in COLUMN_KEYWORDS.items():
-
-        mapping[field] = None
-
-        # Exact match first
-
-        for original, normalized in normalized_columns.items():
-
-            if normalized in keywords:
-
-                mapping[field] = original
-
-                break
-
-
-        # Partial match second
-
-        if mapping[field] is None:
-
-            for original, normalized in normalized_columns.items():
-
-                for keyword in keywords:
-
-                    if (
-                        keyword in normalized
-                        or
-                        normalized in keyword
-                    ):
-
-                        mapping[field] = original
-
-                        break
-
-                if mapping[field] is not None:
-
-                    break
-
-
-    return mapping
-
-
-def count_mapped_fields(mapping):
-
-    return sum(
-        1
-        for value in mapping.values()
-        if value is not None
-    )
-
-
-# ============================================================
-# DATASET READING HELPER
-# ============================================================
-
-def read_csv_safely(file_path):
-
-    try:
-
-        return pd.read_csv(
-            file_path,
-            low_memory=False
-        )
-
-    except UnicodeDecodeError:
-
-        return pd.read_csv(
-            file_path,
-            encoding="latin1",
-            low_memory=False
-        )
-
-
-# ============================================================
-# FIND LATEST INVENTORY DATASET
-# ============================================================
-
-def find_latest_inventory_dataset():
-
-    if not os.path.exists(RAW_FOLDER):
-
-        return None
-
-
-    inventory_files = []
-
-
-    for filename in os.listdir(RAW_FOLDER):
-
-        if not filename.lower().endswith(".csv"):
-
-            continue
-
-
-        if filename.lower().startswith("inventory_"):
-
-            path = os.path.join(
-                RAW_FOLDER,
-                filename
-            )
-
-            inventory_files.append(path)
-
-
-    if not inventory_files:
-
-        return None
-
-
-    inventory_files.sort(
-        key=os.path.getmtime,
-        reverse=True
-    )
-
-
-    return inventory_files[0]
-
-
-# ============================================================
-# INVENTORY ANALYSIS
-# ============================================================
-
-def calculate_inventory_statistics():
-
-    result = {
-
-        "inventory_available": False,
-
-        "total_products": None,
-
-        "low_stock": None,
-
-        "overstock": None,
-
-        "reorder_required": None,
-
-        "average_daily_demand": None,
-
-        "lead_time": None,
-
-        "safety_stock": None,
-
-        "reorder_point": None,
-
-        "inventory_message":
-            "No inventory dataset has been uploaded yet."
-
-    }
-
-
-    inventory_path = (
-        find_latest_inventory_dataset()
-    )
-
-
-    if not inventory_path:
-
-        return result
-
-
-    try:
-
-        df = read_csv_safely(
-            inventory_path
-        )
-
-    except Exception:
-
-        return result
-
-
-    if df.empty:
-
-        result["inventory_message"] = (
-            "The uploaded inventory dataset contains no data."
-        )
-
-        return result
-
-
-    df.columns = [
-
-        normalize_column_name(column)
-
-        for column in df.columns
-
-    ]
-
-
-    # --------------------------------------------------------
-    # IDENTIFY IMPORTANT INVENTORY COLUMNS
-    # --------------------------------------------------------
-
-    mapping = detect_column_mapping(df)
-
-
-    product_column = mapping.get(
-        "product"
-    )
-
-    inventory_column = mapping.get(
-        "inventory"
-    )
-
-    demand_column = mapping.get(
-        "demand"
-    )
-
-    sales_column = mapping.get(
-        "sales"
-    )
-
-    lead_time_column = mapping.get(
-        "lead_time"
-    )
-
-
-    # --------------------------------------------------------
-    # PRODUCT COUNT
-    # --------------------------------------------------------
-
-    if product_column and product_column in df.columns:
-
-        total_products = int(
-            df[product_column]
-            .nunique()
-        )
-
-    else:
-
-        total_products = len(df)
-
-
-    result["total_products"] = (
-        total_products
-    )
-
-
-    # --------------------------------------------------------
-    # INVENTORY / STOCK ANALYSIS
-    # --------------------------------------------------------
-
-    if inventory_column and inventory_column in df.columns:
-
-        stock = pd.to_numeric(
-            df[inventory_column],
-            errors="coerce"
-        )
-
-        valid_stock = stock.dropna()
-
-
-        if not valid_stock.empty:
-
-            # ------------------------------------------------
-            # LOW STOCK
-            # ------------------------------------------------
-            #
-            # We only calculate this when a reorder
-            # threshold is actually present.
-            # Otherwise we do NOT invent a threshold.
-            # ------------------------------------------------
-
-            threshold_column = None
-
-            threshold_candidates = [
-                "reorder_threshold",
-                "reorder_point",
-                "minimum_stock",
-                "min_stock",
-                "minimum_stock_level",
-                "safety_stock"
-            ]
-
-
-            for candidate in threshold_candidates:
-
-                if candidate in df.columns:
-
-                    threshold_column = candidate
-
-                    break
-
-
-            if threshold_column:
-
-                threshold = pd.to_numeric(
-                    df[threshold_column],
-                    errors="coerce"
-                )
-
-                result["low_stock"] = int(
-                    (
-                        stock < threshold
-                    )
-                    .fillna(False)
-                    .sum()
-                )
-
-
-            # ------------------------------------------------
-            # OVERSTOCK
-            # ------------------------------------------------
-
-            max_stock_column = None
-
-            max_stock_candidates = [
-                "maximum_stock",
-                "max_stock",
-                "max_stock_level",
-                "overstock_threshold"
-            ]
-
-
-            for candidate in max_stock_candidates:
-
-                if candidate in df.columns:
-
-                    max_stock_column = candidate
-
-                    break
-
-
-            if max_stock_column:
-
-                max_stock = pd.to_numeric(
-                    df[max_stock_column],
-                    errors="coerce"
-                )
-
-                result["overstock"] = int(
-                    (
-                        stock > max_stock
-                    )
-                    .fillna(False)
-                    .sum()
-                )
-
-
-            # ------------------------------------------------
-            # REORDER REQUIRED
-            # ------------------------------------------------
-
-            if threshold_column:
-
-                threshold = pd.to_numeric(
-                    df[threshold_column],
-                    errors="coerce"
-                )
-
-                result["reorder_required"] = int(
-                    (
-                        stock <= threshold
-                    )
-                    .fillna(False)
-                    .sum()
-                )
-
-
-    # --------------------------------------------------------
-    # DEMAND
-    # --------------------------------------------------------
-
-    actual_demand_column = (
-        demand_column
-        or
-        sales_column
-    )
-
-
-    if (
-        actual_demand_column
-        and
-        actual_demand_column in df.columns
-    ):
-
-        demand_values = pd.to_numeric(
-            df[actual_demand_column],
-            errors="coerce"
-        ).dropna()
-
-
-        if not demand_values.empty:
-
-            result["average_daily_demand"] = round(
-                float(
-                    demand_values.mean()
-                ),
-                2
-            )
-
-
-    # --------------------------------------------------------
-    # LEAD TIME
-    # --------------------------------------------------------
-
-    if (
-        lead_time_column
-        and
-        lead_time_column in df.columns
-    ):
-
-        lead_values = pd.to_numeric(
-            df[lead_time_column],
-            errors="coerce"
-        ).dropna()
-
-
-        if not lead_values.empty:
-
-            result["lead_time"] = round(
-                float(
-                    lead_values.mean()
-                ),
-                2
-            )
-
-
-    # --------------------------------------------------------
-    # REORDER POINT
-    # --------------------------------------------------------
-
-    average_demand = (
-        result["average_daily_demand"]
-    )
-
-    lead_time = (
-        result["lead_time"]
-    )
-
-
-    if (
-        average_demand is not None
-        and
-        lead_time is not None
-    ):
-
-        result["reorder_point"] = round(
-            average_demand * lead_time,
-            2
-        )
-
-
-    # --------------------------------------------------------
-    # SAFETY STOCK
-    # --------------------------------------------------------
-    #
-    # IMPORTANT:
-    # Do not invent safety stock.
-    #
-    # If an actual safety-stock column exists,
-    # use its real average.
-    # --------------------------------------------------------
-
-    if "safety_stock" in df.columns:
-
-        safety_values = pd.to_numeric(
-            df["safety_stock"],
-            errors="coerce"
-        ).dropna()
-
-
-        if not safety_values.empty:
-
-            result["safety_stock"] = round(
-                float(
-                    safety_values.mean()
-                ),
-                2
-            )
-
-
-    result["inventory_available"] = True
-
-    result["inventory_message"] = (
-        "Inventory dataset loaded successfully. "
-        "Values shown below are calculated from the "
-        "uploaded inventory data."
-    )
-
-
-    return result
 
 
 # ============================================================
@@ -873,10 +820,6 @@ def register():
 
     if request.method == "POST":
 
-        # ----------------------------------------------------
-        # GET FORM DATA
-        # ----------------------------------------------------
-
         name = request.form.get(
             "name",
             ""
@@ -907,9 +850,9 @@ def register():
         )
 
 
-        # ----------------------------------------------------
-        # VALIDATION
-        # ----------------------------------------------------
+        # ====================================================
+        # NAME VALIDATION
+        # ====================================================
 
         if not name:
 
@@ -923,6 +866,10 @@ def register():
             )
 
 
+        # ====================================================
+        # EMAIL VALIDATION
+        # ====================================================
+
         if not email:
 
             flash(
@@ -934,6 +881,10 @@ def register():
                 url_for("register")
             )
 
+
+        # ====================================================
+        # PASSWORD VALIDATION
+        # ====================================================
 
         if not password:
 
@@ -971,14 +922,16 @@ def register():
             )
 
 
-        # ----------------------------------------------------
-        # VALIDATE ROLE
-        # ----------------------------------------------------
+        # ====================================================
+        # ALLOWED ROLES
+        # ====================================================
 
         allowed_roles = {
+
             "Admin",
             "Inventory Manager",
             "Business Analyst"
+
         }
 
 
@@ -987,13 +940,17 @@ def register():
             role = "Business Analyst"
 
 
-        # ----------------------------------------------------
+        # ====================================================
         # CHECK EXISTING USER
-        # ----------------------------------------------------
+        # ====================================================
 
-        existing_user = User.query.filter_by(
-            email=email
-        ).first()
+        existing_user = (
+            User.query
+            .filter_by(
+                email=email
+            )
+            .first()
+        )
 
 
         if existing_user:
@@ -1008,18 +965,20 @@ def register():
             )
 
 
-        # ----------------------------------------------------
+        # ====================================================
         # HASH PASSWORD
-        # ----------------------------------------------------
+        # ====================================================
 
-        hashed_password = generate_password_hash(
-            password
+        hashed_password = (
+            generate_password_hash(
+                password
+            )
         )
 
 
-        # ----------------------------------------------------
+        # ====================================================
         # CREATE USER
-        # ----------------------------------------------------
+        # ====================================================
 
         new_user = User(
 
@@ -1076,10 +1035,6 @@ def login():
 
     if request.method == "POST":
 
-        # ----------------------------------------------------
-        # GET LOGIN DATA
-        # ----------------------------------------------------
-
         email = request.form.get(
             "email",
             ""
@@ -1092,18 +1047,14 @@ def login():
         )
 
 
-        # ----------------------------------------------------
-        # FIND USER
-        # ----------------------------------------------------
+        user = (
+            User.query
+            .filter_by(
+                email=email
+            )
+            .first()
+        )
 
-        user = User.query.filter_by(
-            email=email
-        ).first()
-
-
-        # ----------------------------------------------------
-        # VERIFY PASSWORD
-        # ----------------------------------------------------
 
         if (
             user
@@ -1156,8 +1107,7 @@ def dashboard():
 
 
 # ============================================================
-# DATASET MANAGEMENT PAGE
-# ADMIN ONLY
+# DATASET MANAGEMENT
 # ============================================================
 
 @app.route("/datasets")
@@ -1172,7 +1122,6 @@ def datasets():
 
 # ============================================================
 # DATASET UPLOAD + ANALYSIS
-# ADMIN ONLY
 # ============================================================
 
 @app.route(
@@ -1184,7 +1133,7 @@ def datasets():
 def upload_dataset():
 
     # ========================================================
-    # 1. GET DATASET TYPE
+    # DATASET TYPE
     # ========================================================
 
     dataset_type = request.form.get(
@@ -1196,17 +1145,11 @@ def upload_dataset():
     allowed_dataset_types = {
 
         "sales",
-
         "inventory",
-
         "product",
-
         "supplier",
-
         "weather",
-
         "holiday",
-
         "other"
 
     }
@@ -1225,7 +1168,7 @@ def upload_dataset():
 
 
     # ========================================================
-    # 2. CHECK FILE
+    # FILE CHECK
     # ========================================================
 
     if "dataset" not in request.files:
@@ -1258,7 +1201,7 @@ def upload_dataset():
 
 
     # ========================================================
-    # 3. CHECK FILE FORMAT
+    # FILE FORMAT
     # ========================================================
 
     filename = secure_filename(
@@ -1279,8 +1222,46 @@ def upload_dataset():
 
 
     # ========================================================
-    # 4. CREATE FILE PATH
+    # UNIQUE FILE NAME
     # ========================================================
+
+    base_name, extension = (
+        os.path.splitext(
+            filename
+        )
+    )
+
+
+    upload_filename = (
+        filename
+    )
+
+
+    counter = 1
+
+
+    while os.path.exists(
+        os.path.join(
+            UPLOAD_FOLDER,
+            upload_filename
+        )
+    ):
+
+        upload_filename = (
+
+            f"{base_name}_"
+            f"{counter}"
+            f"{extension}"
+
+        )
+
+        counter += 1
+
+
+    filename = (
+        upload_filename
+    )
+
 
     upload_path = os.path.join(
         UPLOAD_FOLDER,
@@ -1289,7 +1270,7 @@ def upload_dataset():
 
 
     # ========================================================
-    # 5. SAVE FILE
+    # SAVE FILE
     # ========================================================
 
     try:
@@ -1311,14 +1292,25 @@ def upload_dataset():
 
 
     # ========================================================
-    # 6. READ CSV
+    # READ CSV
     # ========================================================
 
     try:
 
-        df = read_csv_safely(
-            upload_path
-        )
+        try:
+
+            df = pd.read_csv(
+                upload_path,
+                low_memory=False
+            )
+
+        except UnicodeDecodeError:
+
+            df = pd.read_csv(
+                upload_path,
+                encoding="latin1",
+                low_memory=False
+            )
 
 
     except pd.errors.EmptyDataError:
@@ -1358,7 +1350,7 @@ def upload_dataset():
 
 
     # ========================================================
-    # 7. CHECK EMPTY DATAFRAME
+    # EMPTY DATAFRAME CHECK
     # ========================================================
 
     if df.empty:
@@ -1374,23 +1366,47 @@ def upload_dataset():
 
 
     # ========================================================
-    # 8. CLEAN COLUMN NAMES
+    # CLEAN COLUMN NAMES
     # ========================================================
 
-    df.columns = [
+    df.columns = (
 
-        normalize_column_name(column)
+        df.columns
+        .astype(str)
+        .str.strip()
+        .str.lower()
+        .str.replace(
+            " ",
+            "_",
+            regex=False
+        )
+        .str.replace(
+            "-",
+            "_",
+            regex=False
+        )
 
-        for column in df.columns
-
-    ]
+    )
 
 
     # ========================================================
-    # 9. BASIC DATASET STATISTICS
+    # AUTOMATIC COLUMN MAPPING
     # ========================================================
 
-    total_rows = len(df)
+    column_mapping = (
+        automatic_column_mapping(
+            df.columns.tolist()
+        )
+    )
+
+
+    # ========================================================
+    # DATASET STATISTICS
+    # ========================================================
+
+    total_rows = len(
+        df
+    )
 
 
     total_columns = len(
@@ -1399,45 +1415,31 @@ def upload_dataset():
 
 
     missing_values = int(
+
         df.isnull()
         .sum()
         .sum()
+
     )
 
 
     duplicate_rows = int(
+
         df.duplicated()
         .sum()
+
     )
 
 
     # ========================================================
-    # 10. AUTOMATIC COLUMN MAPPING
-    # ========================================================
-
-    column_mapping = (
-        detect_column_mapping(df)
-    )
-
-
-    mapped_count = (
-        count_mapped_fields(
-            column_mapping
-        )
-    )
-
-
-    total_mapping_fields = (
-        len(COLUMN_KEYWORDS)
-    )
-
-
-    # ========================================================
-    # 11. SAVE RAW COPY
+    # SAVE RAW DATASET
     # ========================================================
 
     raw_filename = (
-        f"{dataset_type}_{filename}"
+
+        f"{dataset_type}_"
+        f"{filename}"
+
     )
 
 
@@ -1457,65 +1459,114 @@ def upload_dataset():
     except Exception as e:
 
         flash(
-            "Dataset analyzed but raw copy could not be saved.",
+            "Dataset analyzed but raw copy could not be saved: "
+            f"{str(e)}",
             "warning"
         )
 
 
     # ========================================================
-    # 12. DATA CLEANING STATUS
+    # DATA CLEANING
     # ========================================================
-    #
-    # We are NOT silently changing the uploaded dataset.
-    #
-    # The raw dataset is preserved.
-    # Cleaning will be performed as the next processing stage.
-    # ========================================================
+
+    cleaned_filename = (
+
+        f"cleaned_"
+        f"{dataset_type}_"
+        f"{filename}"
+
+    )
+
+
+    cleaned_path = os.path.join(
+        CLEANED_FOLDER,
+        cleaned_filename
+    )
+
 
     cleaned_success = False
 
-    cleaned_missing_values = 0
 
-    cleaned_duplicate_rows = 0
+    try:
+
+        if clean_dataset is not None:
+
+            cleaned_result = (
+                clean_dataset(
+                    df.copy()
+                )
+            )
+
+
+            if isinstance(
+                cleaned_result,
+                pd.DataFrame
+            ):
+
+                cleaned_df = (
+                    cleaned_result
+                )
+
+            else:
+
+                cleaned_df = (
+                    df.copy()
+                )
+
+        else:
+
+            cleaned_df = (
+                df.copy()
+            )
+
+
+        cleaned_df.to_csv(
+            cleaned_path,
+            index=False
+        )
+
+
+        cleaned_success = True
+
+
+    except Exception as e:
+
+        cleaned_df = (
+            df.copy()
+        )
+
+
+        flash(
+            "Dataset uploaded successfully, "
+            "but automatic cleaning could not be completed: "
+            f"{str(e)}",
+            "warning"
+        )
 
 
     # ========================================================
-    # 13. FORECASTING READINESS
+    # CLEANED DATASET STATISTICS
     # ========================================================
 
-    has_date = (
-        column_mapping.get("date")
-        is not None
+    cleaned_missing_values = int(
+
+        cleaned_df.isnull()
+        .sum()
+        .sum()
+
     )
 
 
-    has_demand = (
-        column_mapping.get("demand")
-        is not None
-    )
+    cleaned_duplicate_rows = int(
 
+        cleaned_df.duplicated()
+        .sum()
 
-    has_sales = (
-        column_mapping.get("sales")
-        is not None
-    )
-
-
-    has_product = (
-        column_mapping.get("product")
-        is not None
-    )
-
-
-    forecasting_ready = (
-        has_date
-        and
-        (has_demand or has_sales)
     )
 
 
     # ========================================================
-    # 14. GET COLUMN NAMES
+    # COLUMN LIST
     # ========================================================
 
     columns = list(
@@ -1524,7 +1575,7 @@ def upload_dataset():
 
 
     # ========================================================
-    # 15. CREATE PREVIEW
+    # PREVIEW
     # ========================================================
 
     preview_df = df.head(
@@ -1546,7 +1597,87 @@ def upload_dataset():
 
 
     # ========================================================
-    # 16. SHOW ANALYSIS
+    # MAPPING COUNTS
+    # ========================================================
+
+    mapped_count = sum(
+
+        1
+
+        for key, value
+        in column_mapping.items()
+
+        if (
+            key not in {
+                "order_detected",
+                "order_columns"
+            }
+            and
+            value is not None
+        )
+
+    )
+
+
+    total_mapping_fields = (
+
+        len(column_mapping)
+        - 2
+
+    )
+
+
+    # ========================================================
+    # ORDER INFORMATION
+    # ========================================================
+
+    order_detected = (
+        column_mapping.get(
+            "order_detected",
+            False
+        )
+    )
+
+
+    order_columns = (
+        column_mapping.get(
+            "order_columns",
+            {}
+        )
+    )
+
+
+    # ========================================================
+    # FORECASTING READINESS
+    # ========================================================
+
+    forecasting_ready = (
+
+        column_mapping.get(
+            "date"
+        ) is not None
+
+        and
+
+        (
+
+            column_mapping.get(
+                "demand"
+            ) is not None
+
+            or
+
+            column_mapping.get(
+                "sales"
+            ) is not None
+
+        )
+
+    )
+
+
+    # ========================================================
+    # SHOW RESULTS
     # ========================================================
 
     return render_template(
@@ -1575,21 +1706,43 @@ def upload_dataset():
 
         mapped_count=mapped_count,
 
-        total_mapping_fields=total_mapping_fields,
+        total_mapping_fields=(
+            total_mapping_fields
+        ),
 
-        cleaned_success=cleaned_success,
+        cleaned_success=(
+            cleaned_success
+        ),
 
-        cleaned_missing_values=cleaned_missing_values,
+        cleaned_missing_values=(
+            cleaned_missing_values
+        ),
 
-        cleaned_duplicate_rows=cleaned_duplicate_rows,
+        cleaned_duplicate_rows=(
+            cleaned_duplicate_rows
+        ),
 
-        forecasting_ready=forecasting_ready
+        cleaned_filename=(
+            cleaned_filename
+        ),
+
+        forecasting_ready=(
+            forecasting_ready
+        ),
+
+        order_detected=(
+            order_detected
+        ),
+
+        order_columns=(
+            order_columns
+        )
 
     )
 
 
 # ============================================================
-# SALES FORECASTING PAGE
+# FORECASTING PAGE
 # ============================================================
 
 @app.route("/forecasting")
@@ -1609,73 +1762,930 @@ def forecasting():
 @login_required
 def inventory():
 
-    # --------------------------------------------------------
-    # IMPORTANT
-    #
-    # This function does NOT create fake values.
-    #
-    # It checks whether an actual inventory CSV has been
-    # uploaded.
-    # --------------------------------------------------------
+    # ========================================================
+    # DEFAULT VALUES
+    # ========================================================
 
-    inventory_data = (
-        calculate_inventory_statistics()
-    )
+    total_products = 0
 
+    low_stock = 0
+
+    overstock = 0
+
+    reorder_required = 0
+
+    average_daily_demand = 0
+
+    average_lead_time = 0
+
+    safety_stock = 0
+
+    reorder_point = 0
+
+    inventory_data = []
+
+    inventory_available = False
+
+
+    # ========================================================
+    # FIND INVENTORY DATASET
+    # ========================================================
+
+    try:
+
+        inventory_files = []
+
+
+        # ====================================================
+        # CHECK CLEANED FOLDER
+        # ====================================================
+
+        if os.path.exists(
+            CLEANED_FOLDER
+        ):
+
+            for file_name in os.listdir(
+                CLEANED_FOLDER
+            ):
+
+                if (
+
+                    file_name.lower().endswith(
+                        ".csv"
+                    )
+
+                    and
+
+                    "inventory"
+                    in file_name.lower()
+
+                ):
+
+                    inventory_files.append(
+                        file_name
+                    )
+
+
+        # ====================================================
+        # CHECK RAW FOLDER
+        # ====================================================
+
+        if (
+
+            not inventory_files
+
+            and
+
+            os.path.exists(
+                RAW_FOLDER
+            )
+
+        ):
+
+            for file_name in os.listdir(
+                RAW_FOLDER
+            ):
+
+                if (
+
+                    file_name.lower().endswith(
+                        ".csv"
+                    )
+
+                    and
+
+                    "inventory"
+                    in file_name.lower()
+
+                ):
+
+                    inventory_files.append(
+                        file_name
+                    )
+
+
+        # ====================================================
+        # PROCESS INVENTORY DATASET
+        # ====================================================
+
+        if inventory_files:
+
+            selected_file = (
+                inventory_files[-1]
+            )
+
+
+            cleaned_path = os.path.join(
+
+                CLEANED_FOLDER,
+
+                selected_file
+
+            )
+
+
+            raw_path = os.path.join(
+
+                RAW_FOLDER,
+
+                selected_file
+
+            )
+
+
+            if os.path.exists(
+                cleaned_path
+            ):
+
+                inventory_path = (
+                    cleaned_path
+                )
+
+            else:
+
+                inventory_path = (
+                    raw_path
+                )
+
+
+            # =================================================
+            # LOAD CSV
+            # =================================================
+
+            df = pd.read_csv(
+
+                inventory_path,
+
+                low_memory=False
+
+            )
+
+
+            # =================================================
+            # CLEAN COLUMN NAMES
+            # =================================================
+
+            df.columns = (
+
+                df.columns
+                .astype(str)
+                .str.strip()
+                .str.lower()
+                .str.replace(
+                    " ",
+                    "_",
+                    regex=False
+                )
+                .str.replace(
+                    "-",
+                    "_",
+                    regex=False
+                )
+
+            )
+
+
+            inventory_available = True
+
+
+            # =================================================
+            # PRODUCT COLUMN
+            # =================================================
+
+            product_column = None
+
+
+            possible_product_columns = [
+
+                "product",
+                "product_id",
+                "product_name",
+                "item",
+                "item_id",
+                "item_name",
+                "sku",
+                "sku_id"
+
+            ]
+
+
+            for column in (
+                possible_product_columns
+            ):
+
+                if column in df.columns:
+
+                    product_column = (
+                        column
+                    )
+
+                    break
+
+
+            if product_column:
+
+                total_products = int(
+
+                    df[
+                        product_column
+                    ]
+                    .nunique()
+
+                )
+
+            else:
+
+                total_products = len(
+                    df
+                )
+
+
+            # =================================================
+            # INVENTORY / STOCK COLUMN
+            # =================================================
+
+            inventory_column = None
+
+
+            possible_inventory_columns = [
+
+                "inventory",
+                "current_stock",
+                "stock",
+                "stock_level",
+                "stock_quantity",
+                "inventory_level",
+                "available_stock"
+
+            ]
+
+
+            for column in (
+                possible_inventory_columns
+            ):
+
+                if column in df.columns:
+
+                    inventory_column = (
+                        column
+                    )
+
+                    break
+
+
+            # =================================================
+            # DEMAND COLUMN
+            # =================================================
+
+            demand_column = None
+
+
+            possible_demand_columns = [
+
+                "demand",
+                "units_sold",
+                "unit_sold",
+                "quantity",
+                "qty",
+                "sales_quantity",
+                "units",
+                "units_demanded"
+
+            ]
+
+
+            for column in (
+                possible_demand_columns
+            ):
+
+                if column in df.columns:
+
+                    demand_column = (
+                        column
+                    )
+
+                    break
+
+
+            # =================================================
+            # LEAD TIME COLUMN
+            # =================================================
+
+            lead_time_column = None
+
+
+            possible_lead_time_columns = [
+
+                "lead_time",
+                "lead_days",
+                "delivery_time",
+                "delivery_days",
+                "supplier_lead_time"
+
+            ]
+
+
+            for column in (
+                possible_lead_time_columns
+            ):
+
+                if column in df.columns:
+
+                    lead_time_column = (
+                        column
+                    )
+
+                    break
+
+
+            # =================================================
+            # REORDER THRESHOLD
+            # =================================================
+
+            reorder_threshold_column = None
+
+
+            possible_threshold_columns = [
+
+                "reorder_threshold",
+                "reorder_point",
+                "minimum_stock",
+                "min_stock"
+
+            ]
+
+
+            for column in (
+                possible_threshold_columns
+            ):
+
+                if column in df.columns:
+
+                    reorder_threshold_column = (
+                        column
+                    )
+
+                    break
+
+
+            # =================================================
+            # REORDER QUANTITY
+            # =================================================
+
+            reorder_quantity_column = None
+
+
+            possible_quantity_columns = [
+
+                "reorder_qty",
+                "reorder_quantity",
+                "order_quantity"
+
+            ]
+
+
+            for column in (
+                possible_quantity_columns
+            ):
+
+                if column in df.columns:
+
+                    reorder_quantity_column = (
+                        column
+                    )
+
+                    break
+
+
+            # =================================================
+            # CONVERT NUMERIC COLUMNS
+            # =================================================
+
+            if inventory_column:
+
+                df[
+                    inventory_column
+                ] = pd.to_numeric(
+
+                    df[
+                        inventory_column
+                    ],
+
+                    errors="coerce"
+
+                )
+
+
+            if demand_column:
+
+                df[
+                    demand_column
+                ] = pd.to_numeric(
+
+                    df[
+                        demand_column
+                    ],
+
+                    errors="coerce"
+
+                )
+
+
+            if lead_time_column:
+
+                df[
+                    lead_time_column
+                ] = pd.to_numeric(
+
+                    df[
+                        lead_time_column
+                    ],
+
+                    errors="coerce"
+
+                )
+
+
+            if reorder_threshold_column:
+
+                df[
+                    reorder_threshold_column
+                ] = pd.to_numeric(
+
+                    df[
+                        reorder_threshold_column
+                    ],
+
+                    errors="coerce"
+
+                )
+
+
+            if reorder_quantity_column:
+
+                df[
+                    reorder_quantity_column
+                ] = pd.to_numeric(
+
+                    df[
+                        reorder_quantity_column
+                    ],
+
+                    errors="coerce"
+
+                )
+
+
+            # =================================================
+            # INVENTORY ANALYSIS
+            # =================================================
+
+            if inventory_column:
+
+                stock_series = (
+
+                    df[
+                        inventory_column
+                    ]
+                    .dropna()
+
+                )
+
+
+                if len(
+                    stock_series
+                ) > 0:
+
+                    # =========================================
+                    # LOW STOCK
+                    # =========================================
+
+                    if reorder_threshold_column:
+
+                        low_stock = int(
+
+                            (
+
+                                df[
+                                    inventory_column
+                                ]
+
+                                <
+
+                                df[
+                                    reorder_threshold_column
+                                ]
+
+                            )
+                            .sum()
+
+                        )
+
+
+                    # =========================================
+                    # REORDER REQUIRED
+                    # =========================================
+
+                    if reorder_threshold_column:
+
+                        reorder_required = int(
+
+                            (
+
+                                df[
+                                    inventory_column
+                                ]
+
+                                <=
+
+                                df[
+                                    reorder_threshold_column
+                                ]
+
+                            )
+                            .sum()
+
+                        )
+
+
+                    # =========================================
+                    # OVERSTOCK
+                    # =========================================
+
+                    if demand_column:
+
+                        demand_values = (
+
+                            df[
+                                demand_column
+                            ]
+                            .dropna()
+
+                        )
+
+
+                        if len(
+                            demand_values
+                        ) > 0:
+
+                            average_demand_value = (
+
+                                demand_values.mean()
+
+                            )
+
+
+                            if (
+
+                                pd.notna(
+                                    average_demand_value
+                                )
+
+                                and
+
+                                average_demand_value > 0
+
+                            ):
+
+                                overstock_threshold = (
+
+                                    average_demand_value
+                                    *
+                                    30
+
+                                )
+
+
+                                overstock = int(
+
+                                    (
+
+                                        df[
+                                            inventory_column
+                                        ]
+
+                                        >
+
+                                        overstock_threshold
+
+                                    )
+                                    .sum()
+
+                                )
+
+
+            # =================================================
+            # AVERAGE DAILY DEMAND
+            # =================================================
+
+            if demand_column:
+
+                demand_values = (
+
+                    df[
+                        demand_column
+                    ]
+                    .dropna()
+
+                )
+
+
+                if len(
+                    demand_values
+                ) > 0:
+
+                    average_daily_demand = round(
+
+                        float(
+                            demand_values.mean()
+                        ),
+
+                        2
+
+                    )
+
+
+            # =================================================
+            # LEAD TIME
+            # =================================================
+
+            if lead_time_column:
+
+                lead_values = (
+
+                    df[
+                        lead_time_column
+                    ]
+                    .dropna()
+
+                )
+
+
+                if len(
+                    lead_values
+                ) > 0:
+
+                    average_lead_time = round(
+
+                        float(
+                            lead_values.mean()
+                        ),
+
+                        2
+
+                    )
+
+
+            # =================================================
+            # SAFETY STOCK
+            # =================================================
+
+            if average_daily_demand > 0:
+
+                safety_stock = round(
+
+                    average_daily_demand
+                    *
+                    0.20,
+
+                    2
+
+                )
+
+
+            # =================================================
+            # REORDER POINT
+            # =================================================
+
+            if (
+
+                average_daily_demand > 0
+
+                and
+
+                average_lead_time > 0
+
+            ):
+
+                reorder_point = round(
+
+                    (
+
+                        average_daily_demand
+                        *
+                        average_lead_time
+
+                    )
+
+                    +
+
+                    safety_stock,
+
+                    2
+
+                )
+
+
+            # =================================================
+            # PRODUCT-LEVEL INVENTORY TABLE
+            # =================================================
+
+            if inventory_column:
+
+                for index, row in (
+                    df.head(100).iterrows()
+                ):
+
+                    product_name = (
+                        "Product"
+                    )
+
+
+                    if product_column:
+
+                        product_name = str(
+
+                            row[
+                                product_column
+                            ]
+
+                        )
+
+
+                    current_stock = row[
+
+                        inventory_column
+
+                    ]
+
+
+                    if pd.isna(
+                        current_stock
+                    ):
+
+                        current_stock = 0
+
+
+                    current_stock = float(
+                        current_stock
+                    )
+
+
+                    # =========================================
+                    # STATUS
+                    # =========================================
+
+                    status = (
+                        "Healthy"
+                    )
+
+
+                    if (
+
+                        reorder_threshold_column
+
+                        and
+
+                        pd.notna(
+
+                            row[
+                                reorder_threshold_column
+                            ]
+
+                        )
+
+                    ):
+
+                        threshold = float(
+
+                            row[
+                                reorder_threshold_column
+                            ]
+
+                        )
+
+
+                        if current_stock <= threshold:
+
+                            status = (
+                                "Reorder Required"
+                            )
+
+
+                        elif current_stock <= (
+                            threshold * 1.5
+                        ):
+
+                            status = (
+                                "Low Stock"
+                            )
+
+
+                    elif current_stock <= 0:
+
+                        status = (
+                            "Out of Stock"
+                        )
+
+
+                    # =========================================
+                    # RECOMMENDED ORDER
+                    # =========================================
+
+                    recommended_order = 0
+
+
+                    if reorder_quantity_column:
+
+                        actual_reorder_quantity = (
+
+                            row[
+                                reorder_quantity_column
+                            ]
+
+                        )
+
+
+                        if pd.notna(
+                            actual_reorder_quantity
+                        ):
+
+                            recommended_order = round(
+
+                                float(
+                                    actual_reorder_quantity
+                                ),
+
+                                2
+
+                            )
+
+
+                    inventory_data.append({
+
+                        "product":
+                            product_name,
+
+                        "stock":
+                            round(
+                                current_stock,
+                                2
+                            ),
+
+                        "status":
+                            status,
+
+                        "recommended_order":
+                            recommended_order
+
+                    })
+
+
+    except Exception as e:
+
+        flash(
+            f"Inventory analysis could not be completed: {str(e)}",
+            "warning"
+        )
+
+
+    # ========================================================
+    # RENDER INVENTORY PAGE
+    # ========================================================
 
     return render_template(
 
         "inventory.html",
 
-        inventory_available=
-            inventory_data[
-                "inventory_available"
-            ],
-
         total_products=
-            inventory_data[
-                "total_products"
-            ],
+            total_products,
 
         low_stock=
-            inventory_data[
-                "low_stock"
-            ],
+            low_stock,
 
         overstock=
-            inventory_data[
-                "overstock"
-            ],
+            overstock,
 
         reorder_required=
-            inventory_data[
-                "reorder_required"
-            ],
+            reorder_required,
 
         average_daily_demand=
-            inventory_data[
-                "average_daily_demand"
-            ],
+            average_daily_demand,
 
-        lead_time=
-            inventory_data[
-                "lead_time"
-            ],
+        average_lead_time=
+            average_lead_time,
 
         safety_stock=
-            inventory_data[
-                "safety_stock"
-            ],
+            safety_stock,
 
         reorder_point=
-            inventory_data[
-                "reorder_point"
-            ],
+            reorder_point,
 
-        inventory_message=
-            inventory_data[
-                "inventory_message"
-            ]
+        inventory_data=
+            inventory_data,
+
+        inventory_available=
+            inventory_available
 
     )
 
@@ -1694,7 +2704,7 @@ def analytics():
 
 
 # ============================================================
-# SMART ALERTS PAGE
+# SMART ALERTS
 # ============================================================
 
 @app.route("/alerts")
@@ -1707,7 +2717,7 @@ def alerts():
 
 
 # ============================================================
-# REPORTS PAGE
+# REPORTS
 # ============================================================
 
 @app.route("/reports")
