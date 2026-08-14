@@ -222,3 +222,6 @@ venv/
 .env
 __pycache__/
 *.pyc
+
+# Local large dataset
+Dataset/05_Optional_Alternatives/Retail_Transactions_Dataset.csv
