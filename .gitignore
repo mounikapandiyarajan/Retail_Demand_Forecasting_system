@@ -228,3 +228,6 @@ Dataset/05_Optional_Alternatives/Retail_Transactions_Dataset.csv
 
 
 Dataset/
+# Generated forecasting outputs
+module2_*.csv
+module5_*.csv
