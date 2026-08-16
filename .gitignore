@@ -225,3 +225,6 @@ __pycache__/
 
 # Local large dataset
 Dataset/05_Optional_Alternatives/Retail_Transactions_Dataset.csv
+
+
+Dataset/
