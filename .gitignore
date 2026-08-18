@@ -231,3 +231,4 @@ Dataset/
 # Generated forecasting outputs
 module2_*.csv
 module5_*.csv
+module3_seasonal_ready.csv
