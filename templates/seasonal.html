@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}
+Seasonal & Event Analysis | Retail Demand Forecasting System
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <div>
+            <div class="dashboard-label">SEASONAL & EVENT ANALYSIS</div>
+            <h1>Seasonal Patterns</h1>
+            <p>Use the processed dataset to identify seasonality, holidays and demand events.</p>
+        </div>
+        <div class="role-badge">
+            <i class="bi bi-calendar2-week"></i>
+            Seasonal Engine
+        </div>
+    </div>
+
+    {% include "_dataset_source.html" %}
+
+    <div class="large-card">
+        <h4>Analysis source ready</h4>
+        {% if selected_dataset_filename %}
+        <p class="muted mb-0">
+            Seasonal analysis is connected to {{ selected_dataset_filename }}.
+            The existing seasonal services can now consume this selected dataset.
+        </p>
+        {% else %}
+        <p class="muted mb-0">Upload or process a dataset to begin seasonal analysis.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

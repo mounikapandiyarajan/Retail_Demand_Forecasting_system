@@ -1,0 +1,20 @@
+{
+    "original_rows": 12,
+    "cleaned_rows": 12,
+    "original_columns": 4,
+    "cleaned_columns": 4,
+    "duplicates_removed": 0,
+    "missing_values_before": 0,
+    "missing_values_after": 0,
+    "outliers_detected": {
+        "month": 0,
+        "average_sales": 1,
+        "total_sales": 0,
+        "number_of_records": 0
+    },
+    "extreme_outliers_removed": 0,
+    "automatic_column_mapping": {
+        "sales": "total_sales"
+    },
+    "warnings": []
+}

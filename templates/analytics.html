@@ -42,6 +42,9 @@ Demand Analytics | Retail Demand Forecasting System
     </div>
 
 
+    {% include "_dataset_source.html" %}
+
+
     <!-- =====================================================
          CURRENT SYSTEM STATE
     ====================================================== -->
@@ -112,11 +115,11 @@ Demand Analytics | Retail Demand Forecasting System
                 </h5>
 
                 <h3>
-                    —
+                    {{ total_sales if total_sales is not none else '—' }}
                 </h3>
 
                 <span>
-                    Awaiting sales data
+                    {{ selected_dataset_source|capitalize }} dataset
                 </span>
 
             </div>
@@ -141,11 +144,11 @@ Demand Analytics | Retail Demand Forecasting System
                 </h5>
 
                 <h3>
-                    —
+                    {{ total_demand if total_demand is not none else '—' }}
                 </h3>
 
                 <span>
-                    Awaiting demand data
+                    {{ selected_dataset_source|capitalize }} dataset
                 </span>
 
             </div>
@@ -170,11 +173,11 @@ Demand Analytics | Retail Demand Forecasting System
                 </h5>
 
                 <h3>
-                    —
+                    {{ products_analyzed if products_analyzed is not none else '—' }}
                 </h3>
 
                 <span>
-                    Awaiting product data
+                    Unique products
                 </span>
 
             </div>
@@ -199,11 +202,11 @@ Demand Analytics | Retail Demand Forecasting System
                 </h5>
 
                 <h3>
-                    —
+                    {{ data_period if data_period else '—' }}
                 </h3>
 
                 <span>
-                    Awaiting date information
+                    Date range
                 </span>
 
             </div>

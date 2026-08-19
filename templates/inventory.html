@@ -42,6 +42,9 @@ Inventory Optimization | Retail Demand Forecasting System
     </div>
 
 
+    {% include "_dataset_source.html" %}
+
+
     <!-- =====================================================
          INVENTORY OVERVIEW
     ====================================================== -->
@@ -64,11 +67,11 @@ Inventory Optimization | Retail Demand Forecasting System
                 </h5>
 
                 <h3>
-                    —
+                    {{ total_products if total_products is not none else '—' }}
                 </h3>
 
                 <span>
-                    No inventory dataset loaded
+                    {{ selected_dataset_source|capitalize }} dataset
                 </span>
 
             </div>
@@ -91,11 +94,11 @@ Inventory Optimization | Retail Demand Forecasting System
                 </h5>
 
                 <h3>
-                    —
+                    {{ low_stock if low_stock is not none else '—' }}
                 </h3>
 
                 <span>
-                    Requires inventory data
+                    Low stock items
                 </span>
 
             </div>
@@ -118,11 +121,11 @@ Inventory Optimization | Retail Demand Forecasting System
                 </h5>
 
                 <h3>
-                    —
+                    {{ overstock if overstock is not none else '—' }}
                 </h3>
 
                 <span>
-                    Requires inventory data
+                    Overstock items
                 </span>
 
             </div>
@@ -145,11 +148,11 @@ Inventory Optimization | Retail Demand Forecasting System
                 </h5>
 
                 <h3>
-                    —
+                    {{ reorder_required if reorder_required is not none else '—' }}
                 </h3>
 
                 <span>
-                    Calculated from inventory data
+                    Reorder recommendations
                 </span>
 
             </div>

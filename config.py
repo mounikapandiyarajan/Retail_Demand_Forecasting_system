@@ -1,46 +1,54 @@
 import os
-from dotenv import load_dotenv
-
-load_dotenv()
 
 
 class Config:
 
-    SECRET_KEY = os.getenv(
+    # Flask
+    SECRET_KEY = os.environ.get(
         "SECRET_KEY",
-        "development-secret-key"
+        "retail-demand-forecasting-secret-key"
     )
 
-    MYSQL_HOST = os.getenv(
+    # MySQL
+    MYSQL_HOST = os.environ.get(
         "MYSQL_HOST",
         "localhost"
     )
 
-    MYSQL_PORT = os.getenv(
-        "MYSQL_PORT",
-        "3306"
+    MYSQL_PORT = int(
+        os.environ.get(
+            "MYSQL_PORT",
+            3306
+        )
     )
 
-    MYSQL_DATABASE = os.getenv(
-        "MYSQL_DATABASE",
-        "retail_demand_forecasting"
-    )
-
-    MYSQL_USER = os.getenv(
+    MYSQL_USER = os.environ.get(
         "MYSQL_USER",
         "root"
     )
 
-    MYSQL_PASSWORD = os.getenv(
+    MYSQL_PASSWORD = os.environ.get(
         "MYSQL_PASSWORD",
-        ""
+        "subasri14585"
     )
 
+    MYSQL_DATABASE = os.environ.get(
+        "MYSQL_DATABASE",
+        "retail_demand_forecasting"
+    )
+
+    # Flask-SQLAlchemy
     SQLALCHEMY_DATABASE_URI = (
-        f"mysql+pymysql://"
-        f"{MYSQL_USER}:{MYSQL_PASSWORD}"
-        f"@{MYSQL_HOST}:{MYSQL_PORT}"
-        f"/{MYSQL_DATABASE}"
+        "mysql+pymysql://"
+        + MYSQL_USER
+        + ":"
+        + MYSQL_PASSWORD
+        + "@"
+        + MYSQL_HOST
+        + ":"
+        + str(MYSQL_PORT)
+        + "/"
+        + MYSQL_DATABASE
     )
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
