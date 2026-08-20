@@ -690,6 +690,23 @@ body {
 }
 
 
+/* Keep status badges readable inside dashboard cards. */
+.dashboard-card .badge,
+.large-card .badge {
+
+    color: #ffffff !important;
+
+}
+
+
+.dashboard-card .badge.bg-warning,
+.large-card .badge.bg-warning {
+
+    color: #212529 !important;
+
+}
+
+
 /* =========================================================
    LARGE CARD
 ========================================================= */
@@ -720,6 +737,80 @@ body {
 .large-card h4 {
 
     font-weight: 700;
+
+}
+
+
+.forecast-chart-wrapper {
+
+    position: relative;
+
+    height: 400px;
+
+}
+
+
+.forecast-chart-toggle {
+
+    width: 42px;
+
+    height: 42px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+}
+
+
+.forecast-chart-expanded {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 1050;
+
+    margin: 0 !important;
+
+    padding: 32px;
+
+    border-radius: 0;
+
+    background: rgba(250, 249, 255, 0.98);
+
+}
+
+
+.forecast-chart-expanded .forecast-chart-wrapper {
+
+    height: calc(100vh - 150px);
+
+}
+
+
+.forecast-chart-lock-scroll {
+
+    overflow: hidden;
+
+}
+
+
+@media (max-width: 576px) {
+
+    .forecast-chart-expanded {
+
+        padding: 18px;
+
+    }
+
+    .forecast-chart-expanded .forecast-chart-wrapper {
+
+        height: calc(100vh - 125px);
+
+    }
 
 }
 

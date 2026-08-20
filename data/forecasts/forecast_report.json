@@ -1,22 +1,22 @@
 {
     "date_column": "date",
-    "target_column": "sales",
+    "target_column": "quantity",
     "forecast_horizon": 30,
     "best_model": "Gradient Boosting",
-    "best_mae": 3.96,
-    "best_rmse": 4.29,
+    "best_mae": 0.97,
+    "best_rmse": 1.15,
     "models": [
         {
             "model": "Random Forest",
-            "mae": 4.6,
-            "rmse": 5.58,
-            "r2": 0.9429
+            "mae": 1.04,
+            "rmse": 1.25,
+            "r2": -0.3624
         },
         {
             "model": "Gradient Boosting",
-            "mae": 3.96,
-            "rmse": 4.29,
-            "r2": 0.9663
+            "mae": 0.97,
+            "rmse": 1.15,
+            "r2": -0.148
         }
     ],
     "forecast_file": "D:\\Retail_Demand_Forecasting_system\\data\\forecasts\\forecast_results.csv"

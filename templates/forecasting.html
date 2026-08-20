@@ -916,7 +916,7 @@ Sales Forecasting | Retail Demand Forecasting System
          ACTUAL VS PREDICTED CHART
     ====================================================== -->
 
-    <div class="large-card mt-4">
+        <div class="large-card mt-4 forecast-chart-card" id="forecast-chart-card">
 
         <div class="d-flex justify-content-between align-items-center">
 
@@ -937,17 +937,38 @@ Sales Forecasting | Retail Demand Forecasting System
 
             </div>
 
-            <div class="card-icon">
-                <i class="bi bi-graph-up-arrow"></i>
+            <div class="d-flex align-items-center gap-2">
+
+                <button
+                    type="button"
+                    class="btn btn-outline-primary forecast-chart-toggle"
+                    id="forecast-chart-expand"
+                    title="View chart full screen"
+                    aria-label="View chart full screen"
+                >
+                    <i class="bi bi-arrows-fullscreen"></i>
+                </button>
+
+                <button
+                    type="button"
+                    class="btn btn-outline-primary forecast-chart-toggle d-none"
+                    id="forecast-chart-close"
+                    title="Exit full screen"
+                    aria-label="Exit full screen"
+                >
+                    <i class="bi bi-x-lg"></i>
+                </button>
+
+                <div class="card-icon">
+                    <i class="bi bi-graph-up-arrow"></i>
+                </div>
+
             </div>
 
         </div>
 
 
-        <div
-            class="mt-4"
-            style="position: relative; height: 400px;"
-        >
+        <div class="mt-4 forecast-chart-wrapper">
 
             <canvas id="forecastChart"></canvas>
 
@@ -1162,11 +1183,12 @@ Sales Forecasting | Retail Demand Forecasting System
 
 <div
     id="forecast-chart-data"
-    data-dates="{{ chart_dates | tojson | e }}"
-    data-actual="{{ chart_actual | tojson | e }}"
-    data-predicted="{{ chart_predicted | tojson | e }}"
     style="display: none;"
-></div>
+>{{ {
+    "dates": chart_dates,
+    "actual": chart_actual,
+    "predicted": chart_predicted
+} | tojson }}</div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -1180,8 +1202,25 @@ document.addEventListener("DOMContentLoaded", function () {
     const chartCanvas =
         document.getElementById("forecastChart");
 
+    const chartCard =
+        document.getElementById("forecast-chart-card");
+
+    const expandButton =
+        document.getElementById("forecast-chart-expand");
+
+    const closeButton =
+        document.getElementById("forecast-chart-close");
+
 
     if (!dataElement || !chartCanvas) {
+
+        return;
+
+    }
+
+    if (!chartCard || !expandButton || !closeButton) {
+
+        console.error("Forecast chart controls are unavailable.");
 
         return;
 
@@ -1195,20 +1234,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     try {
 
-        chartDates =
-            JSON.parse(
-                dataElement.getAttribute("data-dates") || "[]"
-            );
+        const chartData =
+            JSON.parse(dataElement.textContent || "{}");
 
-        chartActual =
-            JSON.parse(
-                dataElement.getAttribute("data-actual") || "[]"
-            );
-
-        chartPredicted =
-            JSON.parse(
-                dataElement.getAttribute("data-predicted") || "[]"
-            );
+        chartDates = chartData.dates || [];
+        chartActual = chartData.actual || [];
+        chartPredicted = chartData.predicted || [];
 
     } catch (error) {
 
@@ -1241,7 +1272,7 @@ document.addEventListener("DOMContentLoaded", function () {
         chartCanvas.getContext("2d");
 
 
-    new Chart(ctx, {
+    const forecastChart = new Chart(ctx, {
 
         type: "line",
 
@@ -1382,6 +1413,35 @@ document.addEventListener("DOMContentLoaded", function () {
 
             }
 
+        }
+
+    });
+
+    function setChartExpanded(expanded) {
+
+        chartCard.classList.toggle("forecast-chart-expanded", expanded);
+        expandButton.classList.toggle("d-none", expanded);
+        closeButton.classList.toggle("d-none", !expanded);
+        document.body.classList.toggle("forecast-chart-lock-scroll", expanded);
+
+        window.requestAnimationFrame(function () {
+            forecastChart.resize();
+        });
+
+    }
+
+    expandButton.addEventListener("click", function () {
+        setChartExpanded(true);
+    });
+
+    closeButton.addEventListener("click", function () {
+        setChartExpanded(false);
+    });
+
+    document.addEventListener("keydown", function (event) {
+
+        if (event.key === "Escape" && chartCard.classList.contains("forecast-chart-expanded")) {
+            setChartExpanded(false);
         }
 
     });

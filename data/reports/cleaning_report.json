@@ -1,20 +1,27 @@
 {
-    "original_rows": 12,
-    "cleaned_rows": 12,
-    "original_columns": 4,
-    "cleaned_columns": 4,
+    "original_rows": 1000,
+    "cleaned_rows": 1000,
+    "original_columns": 9,
+    "cleaned_columns": 9,
     "duplicates_removed": 0,
     "missing_values_before": 0,
     "missing_values_after": 0,
     "outliers_detected": {
-        "month": 0,
-        "average_sales": 1,
-        "total_sales": 0,
-        "number_of_records": 0
+        "transaction_id": 0,
+        "age": 0,
+        "quantity": 0,
+        "price_per_unit": 0,
+        "total_amount": 0
     },
     "extreme_outliers_removed": 0,
     "automatic_column_mapping": {
-        "sales": "total_sales"
+        "date": "date",
+        "category": "product_category",
+        "demand": "quantity",
+        "sales": "total_amount",
+        "customer": "customer_id",
+        "price": "price_per_unit",
+        "discount": "age"
     },
     "warnings": []
 }

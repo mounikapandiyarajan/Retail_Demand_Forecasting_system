@@ -1,0 +1,29 @@
+{
+    "analytics": {
+        "filename": "inventory_test_saless_4.csv",
+        "rows": 9,
+        "columns": 5,
+        "cleaning_report": {
+            "original_rows": 10,
+            "cleaned_rows": 9,
+            "original_columns": 5,
+            "cleaned_columns": 5,
+            "duplicates_removed": 1,
+            "missing_values_before": 1,
+            "missing_values_after": 0,
+            "outliers_detected": {
+                "quantity": 0,
+                "price": 2
+            },
+            "extreme_outliers_removed": 0,
+            "automatic_column_mapping": {
+                "date": "date",
+                "product": "product",
+                "demand": "quantity",
+                "price": "price",
+                "store": "store"
+            },
+            "warnings": []
+        }
+    }
+}
